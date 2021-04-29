@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
+        //Transform[] HingeJoint = Gravity01.transform.localposition;
         SaveJumpForce = jumpForce;
         if (!photonView.isMine)
         {
