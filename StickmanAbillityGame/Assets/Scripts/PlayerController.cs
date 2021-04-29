@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private bool isOnWallLeft;
     private bool isOnWallRight;
     public float WalljumpForce;
+    [SerializeField] private List<Rigidbody2D> Gravity01;
 
     public PlayerController(float walljumpForce)
     {
@@ -32,7 +33,6 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         SaveJumpForce = jumpForce;
         if (!photonView.isMine)
         {
@@ -48,7 +48,6 @@ public class PlayerController : MonoBehaviour
     void Update()
 
     {
-        Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         if (Input.GetKey(Key))
         {
             foreach (Rigidbody2D gravitation in Gravity01)
