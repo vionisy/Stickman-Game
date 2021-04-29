@@ -12,7 +12,7 @@ GameObject:
   m_Layer: 0
   m_Name: PlayerPos (1)
   m_TagString: Untagged
-  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2160494962542256828}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.9, y: -1.48, z: -15.137866}
+  m_LocalPosition: {x: -1.29, y: -1.48, z: -15.137866}
   m_LocalScale: {x: 1.3019692, y: 1.3019692, z: 1.3019692}
   m_Children: []
   m_Father: {fileID: 8557466015949629161}
@@ -42,7 +42,7 @@ GameObject:
   m_Layer: 0
   m_Name: PlayerPos (2)
   m_TagString: Untagged
-  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -54,7 +54,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4027197794967140542}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.9, y: -1.48, z: -14.45}
+  m_LocalPosition: {x: 1.34, y: -1.48, z: -14.45}
   m_LocalScale: {x: 1.3019692, y: 1.3019692, z: 1.3019692}
   m_Children: []
   m_Father: {fileID: 8557466015949629161}
@@ -1810,6 +1810,7 @@ MonoBehaviour:
   playerPos1: {fileID: 9174321070184925175}
   playerPos2: {fileID: 4163200002956640569}
   WalljumpForce: 2000
+<<<<<<< HEAD
   Gravity01:
   - {fileID: 8557466016234894943}
   - {fileID: 8557466016764870708}
@@ -1822,6 +1823,9 @@ MonoBehaviour:
   - {fileID: 8557466017477547177}
   - {fileID: 8557466016595224783}
   - {fileID: 8557466016781978807}
+=======
+  Gravity01: []
+>>>>>>> 0770a99ba77bdb99f5c722ea3831fe68e9aaefbf
 --- !u!95 &8557466016732343687
 Animator:
   serializedVersion: 3
