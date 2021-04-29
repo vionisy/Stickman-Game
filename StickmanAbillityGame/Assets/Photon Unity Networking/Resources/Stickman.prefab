@@ -779,7 +779,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetRotation: 0
   rb: {fileID: 8557466016387921322}
-  force: 5
+  force: 0
   stop: 0
   mousebutton: 324
 --- !u!114 &6923915807836418976
@@ -1067,7 +1067,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetRotation: 0
   rb: {fileID: 8557466016490787417}
-  force: 5
+  force: 0
   stop: 0
   mousebutton: 324
 --- !u!114 &7606066323379941388
@@ -1626,7 +1626,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetRotation: 0
   rb: {fileID: 8557466016671340956}
-  force: 5
+  force: 0
   stop: 0
   mousebutton: 323
 --- !u!114 &918374086884013362
@@ -1810,22 +1810,7 @@ MonoBehaviour:
   playerPos1: {fileID: 9174321070184925175}
   playerPos2: {fileID: 4163200002956640569}
   WalljumpForce: 2000
-<<<<<<< HEAD
-  Gravity01:
-  - {fileID: 8557466016234894943}
-  - {fileID: 8557466016764870708}
-  - {fileID: 8557466015949629164}
-  - {fileID: 8557466016490787417}
-  - {fileID: 8557466016387921322}
-  - {fileID: 8557466016885711718}
-  - {fileID: 8557466016671340956}
-  - {fileID: 8557466017483974075}
-  - {fileID: 8557466017477547177}
-  - {fileID: 8557466016595224783}
-  - {fileID: 8557466016781978807}
-=======
   Gravity01: []
->>>>>>> 0770a99ba77bdb99f5c722ea3831fe68e9aaefbf
 --- !u!95 &8557466016732343687
 Animator:
   serializedVersion: 3
@@ -2672,7 +2657,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetRotation: 0
   rb: {fileID: 8557466016885711718}
-  force: 5
+  force: 0
   stop: 0
   mousebutton: 323
 --- !u!114 &2884624430679803952
