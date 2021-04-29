@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
     private bool isOnWallLeft;
     private bool isOnWallRight;
     public float WalljumpForce;
-    public LayerMask wall;
     [SerializeField] private List<Rigidbody2D> Gravity01;
 
     public PlayerController(float walljumpForce)
@@ -122,8 +121,8 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(Vector2.up * jumpForce);
         }
 
-        isOnWallLeft = Physics2D.OverlapCircle(playerPos2.position, positionRadius, wall);
-        isOnWallRight = Physics2D.OverlapCircle(playerPos1.position, positionRadius, wall);
+        isOnWallLeft = Physics2D.OverlapCircle(playerPos2.position, positionRadius, ground);
+        isOnWallRight = Physics2D.OverlapCircle(playerPos1.position, positionRadius, ground);
         isOnGround = Physics2D.OverlapCircle(playerPos.position, positionRadius, ground);
 
         if (isOnGround == false && isOnWallRight == true && Input.GetKeyDown(KeyCode.Space))

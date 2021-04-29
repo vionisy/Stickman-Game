@@ -766,7 +766,7 @@ GameObject:
   - component: {fileID: 637485080}
   - component: {fileID: 637485079}
   - component: {fileID: 637485081}
-  m_Layer: 17
+  m_Layer: 3
   m_Name: Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -812,7 +812,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 21089c14861c0764980e45bcede4a3a1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -855,9 +855,9 @@ EdgeCollider2D:
   m_EdgeRadius: 0
   m_Points:
   - {x: 2.7044413, y: -6.180524}
-  - {x: 2.7440987, y: 4.6377974}
-  - {x: 2.6906824, y: 4.6377974}
-  - {x: -2.7207212, y: 4.637826}
+  - {x: 2.7717476, y: 4.3060074}
+  - {x: 2.6906824, y: 4.3129196}
+  - {x: -2.7353315, y: 4.305733}
   - {x: -2.7282639, y: -6.1515565}
   - {x: 2.7196825, y: -6.1475906}
   m_AdjacentStartPoint: {x: 0, y: 0}
@@ -1078,7 +1078,7 @@ GameObject:
   - component: {fileID: 1009185979}
   - component: {fileID: 1009185978}
   - component: {fileID: 1009185980}
-  m_Layer: 17
+  m_Layer: 3
   m_Name: Tower (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1124,7 +1124,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 21089c14861c0764980e45bcede4a3a1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1277,7 +1277,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: a023c5f338541a34786e47794cb2ee5f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

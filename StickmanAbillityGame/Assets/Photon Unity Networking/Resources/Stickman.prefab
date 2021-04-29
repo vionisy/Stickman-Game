@@ -617,7 +617,7 @@ GameObject:
   - component: {fileID: 6923915807836418976}
   - component: {fileID: 5150327957999248117}
   m_Layer: 10
-  m_Name: LowerArm
+  m_Name: LeftLowerArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -781,7 +781,7 @@ MonoBehaviour:
   rb: {fileID: 8557466016387921322}
   force: 0
   stop: 0
-  mousebutton: 0
+  mousebutton: 324
 --- !u!114 &6923915807836418976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -905,7 +905,7 @@ GameObject:
   - component: {fileID: 7606066323379941388}
   - component: {fileID: 4038457312647077027}
   m_Layer: 9
-  m_Name: UpperArm
+  m_Name: LeftUpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1069,7 +1069,7 @@ MonoBehaviour:
   rb: {fileID: 8557466016490787417}
   force: 0
   stop: 0
-  mousebutton: 0
+  mousebutton: 324
 --- !u!114 &7606066323379941388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1192,7 +1192,7 @@ GameObject:
   - component: {fileID: 5477666926989614319}
   - component: {fileID: 1478659380762062867}
   m_Layer: 15
-  m_Name: UpperLeg (1)
+  m_Name: RightUpperLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1464,7 +1464,7 @@ GameObject:
   - component: {fileID: 918374086884013362}
   - component: {fileID: 7435799481327984382}
   m_Layer: 12
-  m_Name: LowerArm (1)
+  m_Name: RightLowerArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1628,7 +1628,7 @@ MonoBehaviour:
   rb: {fileID: 8557466016671340956}
   force: 0
   stop: 0
-  mousebutton: 0
+  mousebutton: 323
 --- !u!114 &918374086884013362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2226,7 +2226,7 @@ GameObject:
   - component: {fileID: 3916832229615921257}
   - component: {fileID: 2680715378409862002}
   m_Layer: 16
-  m_Name: LowerLeg (1)
+  m_Name: RightLowerLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2498,7 +2498,7 @@ GameObject:
   - component: {fileID: 2884624430679803952}
   - component: {fileID: 8068613404642404196}
   m_Layer: 11
-  m_Name: UpperArm (1)
+  m_Name: RightUpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2662,7 +2662,7 @@ MonoBehaviour:
   rb: {fileID: 8557466016885711718}
   force: 0
   stop: 0
-  mousebutton: 0
+  mousebutton: 323
 --- !u!114 &2884624430679803952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2815,7 +2815,7 @@ GameObject:
   - component: {fileID: 9217873362382068337}
   - component: {fileID: 9131045628057698926}
   m_Layer: 14
-  m_Name: LowerLeg
+  m_Name: LeftLowerLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3086,7 +3086,7 @@ GameObject:
   - component: {fileID: 2923883725424235588}
   - component: {fileID: 3425129000522779340}
   m_Layer: 13
-  m_Name: UpperLeg
+  m_Name: LeftUpperLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3231,7 +3231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetRotation: 0
-  rb: {fileID: 8557466016671340956}
+  rb: {fileID: 8557466017483974075}
   force: 500
   stop: 0
   mousebutton: 0
