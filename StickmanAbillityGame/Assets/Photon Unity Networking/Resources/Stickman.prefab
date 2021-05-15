@@ -462,7 +462,7 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466016234894939}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 8557466016764870708}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -513,7 +513,7 @@ MonoBehaviour:
   synchronization: 2
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
+  ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 9000930186549106362}
   ObservedComponentsFoldoutOpen: 1
@@ -718,7 +718,7 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466016387921318}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 8557466016490787417}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -801,7 +801,7 @@ MonoBehaviour:
   synchronization: 2
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
+  ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 5150327957999248117}
   ObservedComponentsFoldoutOpen: 1
@@ -1006,7 +1006,7 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466016490787413}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 8557466015949629164}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -1089,7 +1089,7 @@ MonoBehaviour:
   synchronization: 2
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
+  ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 4038457312647077027}
   ObservedComponentsFoldoutOpen: 1
@@ -1293,7 +1293,7 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466016595224779}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 8557466015949629164}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -1360,7 +1360,7 @@ MonoBehaviour:
   synchronization: 2
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
+  ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 1478659380762062867}
   ObservedComponentsFoldoutOpen: 1
@@ -1565,7 +1565,7 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466016671340952}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 8557466016885711718}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -1648,7 +1648,7 @@ MonoBehaviour:
   synchronization: 2
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
+  ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 7435799481327984382}
   ObservedComponentsFoldoutOpen: 1
@@ -1805,12 +1805,11 @@ MonoBehaviour:
     m_Bits: 8
   playerPos: {fileID: 8557466017464957268}
   Key: 113
-  GravitationScale: -2
+  GravitationScale: -5
   photonView: {fileID: 11848969078165954}
   playerPos1: {fileID: 9174321070184925175}
   playerPos2: {fileID: 4163200002956640569}
   WalljumpForce: 2000
-  Gravity01: []
 --- !u!95 &8557466016732343687
 Animator:
   serializedVersion: 3
@@ -2324,7 +2323,7 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466016781978803}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 8557466016595224783}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -2391,7 +2390,7 @@ MonoBehaviour:
   synchronization: 2
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
+  ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 2680715378409862002}
   ObservedComponentsFoldoutOpen: 1
@@ -2596,7 +2595,7 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466016885711714}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 8557466015949629164}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -2679,7 +2678,7 @@ MonoBehaviour:
   synchronization: 2
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
+  ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 8068613404642404196}
   ObservedComponentsFoldoutOpen: 1
@@ -2913,7 +2912,7 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466017477547173}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 8557466017483974075}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -2980,7 +2979,7 @@ MonoBehaviour:
   synchronization: 2
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
+  ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 9131045628057698926}
   ObservedComponentsFoldoutOpen: 1
@@ -3184,7 +3183,7 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466017483974071}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 8557466015949629164}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -3251,7 +3250,7 @@ MonoBehaviour:
   synchronization: 2
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
+  ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 3425129000522779340}
   ObservedComponentsFoldoutOpen: 1
