@@ -1909,6 +1909,7 @@ MonoBehaviour:
   playerPos1: {fileID: 9174321070184925175}
   playerPos2: {fileID: 4163200002956640569}
   WalljumpForce: 2000
+  maxHealth: 100
 --- !u!95 &8557466016732343687
 Animator:
   serializedVersion: 3
