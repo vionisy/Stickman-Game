@@ -40,12 +40,19 @@ public class PlayerController : MonoBehaviour
             foreach (Rigidbody2D RBCHILDREN in rbChildren)
             {
                 RBCHILDREN.isKinematic = true;
-                RBCHILDREN.gravityScale = 0;
+                //RBCHILDREN.gravityScale = 0;
             }
         }
     }
+    private void Update()
+    {
+        if (photonView.isMine)
+        {
+            KeyInput();
+        }
+    }
 
-    void Update()
+    void KeyInput()
 
     {
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
