@@ -24,14 +24,32 @@ public class PlayerController : MonoBehaviour
     private bool isOnWallLeft;
     private bool isOnWallRight;
     public float WalljumpForce;
-
+    public float maxHealth = 100;
+    private float currentHealth;
+    private HelthBar healthbar;
+    private HelthBar Oponenthealthbar;
     public PlayerController(float walljumpForce)
     {
         WalljumpForce = walljumpForce;
     }
-
+    [PunRPC]
+    public void OponentHealth(float health)
+    {
+        Oponenthealthbar.SetHealth(health);
+    }
+    public void Damage(float damageAmount)
+    {
+        currentHealth -= damageAmount;
+        healthbar.SetHealth(currentHealth);
+        photonView.RPC("OponentHealth", PhotonTargets.Others, currentHealth);
+        
+    }
     private void Start()
     {
+        healthbar = GameObject.FindGameObjectWithTag("OwnHealthBar").GetComponent<HelthBar>();
+        Oponenthealthbar = GameObject.FindGameObjectWithTag("OponentsHealthbar").GetComponent<HelthBar>();
+        currentHealth = maxHealth;
+        healthbar.SetMaxHealth(maxHealth);
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         SaveJumpForce = jumpForce;
         if (!photonView.isMine)
@@ -40,12 +58,23 @@ public class PlayerController : MonoBehaviour
             foreach (Rigidbody2D RBCHILDREN in rbChildren)
             {
                 RBCHILDREN.isKinematic = true;
-                RBCHILDREN.gravityScale = 0;
+                //RBCHILDREN.gravityScale = 0;
             }
         }
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Damage(5);
+        }
+        if (photonView.isMine)
+        {
+            KeyInput();
+        }
+    }
 
-    void Update()
+    void KeyInput()
 
     {
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();

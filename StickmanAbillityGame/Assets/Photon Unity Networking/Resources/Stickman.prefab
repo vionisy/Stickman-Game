@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 8557466015949629138}
   - component: {fileID: 237535056715738927}
   - component: {fileID: 7074231320498320294}
+  - component: {fileID: 4767035624001201037}
   m_Layer: 8
   m_Name: Chest
   m_TagString: Untagged
@@ -200,8 +201,8 @@ FixedJoint2D:
   m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 8557466016764870708}
   m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
+  m_BreakTorque: 3.402823e+38
+  m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0.98}
   m_ConnectedAnchor: {x: 0, y: -0.90277934}
   m_DampingRatio: 0
@@ -245,6 +246,7 @@ MonoBehaviour:
   ownershipTransfer: 0
   ObservedComponents:
   - {fileID: 7074231320498320294}
+  - {fileID: 4767035624001201037}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
@@ -328,6 +330,20 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &4767035624001201037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8557466015949629160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
 --- !u!1 &8557466016234894939
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,7 +359,8 @@ GameObject:
   - component: {fileID: 8557466016234894940}
   - component: {fileID: 8557466016234894941}
   - component: {fileID: 9162944649557232201}
-  - component: {fileID: 9000930186549106362}
+  - component: {fileID: 2894839776241739848}
+  - component: {fileID: 6475859857320325503}
   m_Layer: 6
   m_Name: Head
   m_TagString: Untagged
@@ -462,11 +479,11 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466016234894939}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 1
+  m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 8557466016764870708}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
+  m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: -0.69}
   m_ConnectedAnchor: {x: 0, y: 0.8355468}
   m_UseMotor: 0
@@ -515,13 +532,28 @@ MonoBehaviour:
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 1
   ObservedComponents:
-  - {fileID: 9000930186549106362}
+  - {fileID: 2894839776241739848}
+  - {fileID: 6475859857320325503}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!114 &9000930186549106362
+--- !u!114 &2894839776241739848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8557466016234894939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
+--- !u!114 &6475859857320325503
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -596,9 +628,9 @@ MonoBehaviour:
     InterpolateLerpSpeed: 20
   m_ScaleModel:
     SynchronizeEnabled: 0
-    InterpolateOption: 2
+    InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 20
+    InterpolateLerpSpeed: 0
 --- !u!1 &8557466016387921318
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,6 +648,7 @@ GameObject:
   - component: {fileID: 8557466016387921326}
   - component: {fileID: 6923915807836418976}
   - component: {fileID: 5150327957999248117}
+  - component: {fileID: 8974527497035963426}
   m_Layer: 10
   m_Name: LeftLowerArm
   m_TagString: Untagged
@@ -718,11 +751,11 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466016387921318}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 1
+  m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 8557466016490787417}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
+  m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0.75}
   m_ConnectedAnchor: {x: 0, y: -0.76301974}
   m_UseMotor: 0
@@ -765,6 +798,7 @@ MonoBehaviour:
   rb: {fileID: 8557466016387921322}
   cam: {fileID: 0}
   mousebutton: 324
+  photonView: {fileID: 6923915807836418976}
 --- !u!114 &8557466016387921326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -804,6 +838,7 @@ MonoBehaviour:
   ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 5150327957999248117}
+  - {fileID: 8974527497035963426}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
@@ -887,6 +922,20 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &8974527497035963426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8557466016387921318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
 --- !u!1 &8557466016490787413
 GameObject:
   m_ObjectHideFlags: 0
@@ -904,6 +953,7 @@ GameObject:
   - component: {fileID: 8557466016490787421}
   - component: {fileID: 7606066323379941388}
   - component: {fileID: 4038457312647077027}
+  - component: {fileID: 4417799825926147707}
   m_Layer: 9
   m_Name: LeftUpperArm
   m_TagString: Untagged
@@ -1006,11 +1056,11 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466016490787413}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 1
+  m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 8557466015949629164}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
+  m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0.76}
   m_ConnectedAnchor: {x: 0, y: 1.0036517}
   m_UseMotor: 0
@@ -1053,6 +1103,7 @@ MonoBehaviour:
   rb: {fileID: 8557466016490787417}
   cam: {fileID: 0}
   mousebutton: 324
+  photonView: {fileID: 7606066323379941388}
 --- !u!114 &8557466016490787421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1092,6 +1143,7 @@ MonoBehaviour:
   ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 4038457312647077027}
+  - {fileID: 4417799825926147707}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
@@ -1175,6 +1227,20 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &4417799825926147707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8557466016490787413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
 --- !u!1 &8557466016595224779
 GameObject:
   m_ObjectHideFlags: 0
@@ -1191,6 +1257,7 @@ GameObject:
   - component: {fileID: 8557466016595224780}
   - component: {fileID: 5477666926989614319}
   - component: {fileID: 1478659380762062867}
+  - component: {fileID: 2469505780888484809}
   m_Layer: 15
   m_Name: RightUpperLeg
   m_TagString: Untagged
@@ -1293,11 +1360,11 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466016595224779}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 1
+  m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 8557466015949629164}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
+  m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0.75}
   m_ConnectedAnchor: {x: 0, y: -1.0076976}
   m_UseMotor: 0
@@ -1363,6 +1430,7 @@ MonoBehaviour:
   ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 1478659380762062867}
+  - {fileID: 2469505780888484809}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
@@ -1446,6 +1514,20 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &2469505780888484809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8557466016595224779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
 --- !u!1 &8557466016671340952
 GameObject:
   m_ObjectHideFlags: 0
@@ -1463,6 +1545,7 @@ GameObject:
   - component: {fileID: 8557466016671340928}
   - component: {fileID: 918374086884013362}
   - component: {fileID: 7435799481327984382}
+  - component: {fileID: 1974771104874117209}
   m_Layer: 12
   m_Name: RightLowerArm
   m_TagString: Untagged
@@ -1565,11 +1648,11 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466016671340952}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 1
+  m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 8557466016885711718}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
+  m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0.75}
   m_ConnectedAnchor: {x: 0, y: -0.76301974}
   m_UseMotor: 0
@@ -1612,6 +1695,7 @@ MonoBehaviour:
   rb: {fileID: 8557466016671340956}
   cam: {fileID: 0}
   mousebutton: 323
+  photonView: {fileID: 918374086884013362}
 --- !u!114 &8557466016671340928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1651,6 +1735,7 @@ MonoBehaviour:
   ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 7435799481327984382}
+  - {fileID: 1974771104874117209}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
@@ -1734,6 +1819,20 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &1974771104874117209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8557466016671340952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
 --- !u!1 &8557466016732343683
 GameObject:
   m_ObjectHideFlags: 0
@@ -1810,6 +1909,7 @@ MonoBehaviour:
   playerPos1: {fileID: 9174321070184925175}
   playerPos2: {fileID: 4163200002956640569}
   WalljumpForce: 2000
+  maxHealth: 100
 --- !u!95 &8557466016732343687
 Animator:
   serializedVersion: 3
@@ -1950,6 +2050,7 @@ GameObject:
   - component: {fileID: 8557466016764870715}
   - component: {fileID: 7262503807451674862}
   - component: {fileID: 3899617438335997273}
+  - component: {fileID: 2803034176779291472}
   m_Layer: 7
   m_Name: Neck
   m_TagString: Untagged
@@ -2072,7 +2173,7 @@ HingeJoint2D:
   m_ConnectedRigidBody: {fileID: 8557466015949629164}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
+  m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: -0.72}
   m_ConnectedAnchor: {x: 0, y: 1.0727478}
   m_UseMotor: 0
@@ -2116,11 +2217,12 @@ MonoBehaviour:
   group: 0
   OwnerShipWasTransfered: 0
   prefixBackup: -1
-  synchronization: 2
+  synchronization: 3
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
   ObservedComponents:
+  - {fileID: 2803034176779291472}
   - {fileID: 3899617438335997273}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
@@ -2205,6 +2307,20 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &2803034176779291472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8557466016764870705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
 --- !u!1 &8557466016781978803
 GameObject:
   m_ObjectHideFlags: 0
@@ -2221,6 +2337,7 @@ GameObject:
   - component: {fileID: 8557466016781978804}
   - component: {fileID: 3916832229615921257}
   - component: {fileID: 2680715378409862002}
+  - component: {fileID: 7360459572589073446}
   m_Layer: 16
   m_Name: RightLowerLeg
   m_TagString: Untagged
@@ -2323,11 +2440,11 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466016781978803}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 1
+  m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 8557466016595224783}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
+  m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0.75}
   m_ConnectedAnchor: {x: 0, y: -0.7474186}
   m_UseMotor: 0
@@ -2393,6 +2510,7 @@ MonoBehaviour:
   ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 2680715378409862002}
+  - {fileID: 7360459572589073446}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
@@ -2476,6 +2594,20 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &7360459572589073446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8557466016781978803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
 --- !u!1 &8557466016885711714
 GameObject:
   m_ObjectHideFlags: 0
@@ -2493,6 +2625,7 @@ GameObject:
   - component: {fileID: 8557466016885711722}
   - component: {fileID: 2884624430679803952}
   - component: {fileID: 8068613404642404196}
+  - component: {fileID: 6605242673750502319}
   m_Layer: 11
   m_Name: RightUpperArm
   m_TagString: Untagged
@@ -2595,11 +2728,11 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466016885711714}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 1
+  m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 8557466015949629164}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
+  m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0.76}
   m_ConnectedAnchor: {x: 0, y: 1.0036517}
   m_UseMotor: 0
@@ -2642,6 +2775,7 @@ MonoBehaviour:
   rb: {fileID: 8557466016885711718}
   cam: {fileID: 0}
   mousebutton: 323
+  photonView: {fileID: 2884624430679803952}
 --- !u!114 &8557466016885711722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2681,6 +2815,7 @@ MonoBehaviour:
   ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 8068613404642404196}
+  - {fileID: 6605242673750502319}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
@@ -2764,6 +2899,20 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &6605242673750502319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8557466016885711714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
 --- !u!1 &8557466017464957271
 GameObject:
   m_ObjectHideFlags: 0
@@ -2810,6 +2959,7 @@ GameObject:
   - component: {fileID: 8557466017477547182}
   - component: {fileID: 9217873362382068337}
   - component: {fileID: 9131045628057698926}
+  - component: {fileID: 5420825502753039836}
   m_Layer: 14
   m_Name: LeftLowerLeg
   m_TagString: Untagged
@@ -2912,11 +3062,11 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466017477547173}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 1
+  m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 8557466017483974075}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
+  m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0.75}
   m_ConnectedAnchor: {x: 0, y: -0.7474186}
   m_UseMotor: 0
@@ -2982,6 +3132,7 @@ MonoBehaviour:
   ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 9131045628057698926}
+  - {fileID: 5420825502753039836}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
@@ -3065,6 +3216,20 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &5420825502753039836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8557466017477547173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
 --- !u!1 &8557466017483974071
 GameObject:
   m_ObjectHideFlags: 0
@@ -3081,6 +3246,7 @@ GameObject:
   - component: {fileID: 8557466017483974072}
   - component: {fileID: 2923883725424235588}
   - component: {fileID: 3425129000522779340}
+  - component: {fileID: 7338306668396450574}
   m_Layer: 13
   m_Name: LeftUpperLeg
   m_TagString: Untagged
@@ -3183,11 +3349,11 @@ HingeJoint2D:
   m_GameObject: {fileID: 8557466017483974071}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 1
+  m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 8557466015949629164}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
+  m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0.75}
   m_ConnectedAnchor: {x: 0, y: -1.0076976}
   m_UseMotor: 0
@@ -3253,6 +3419,7 @@ MonoBehaviour:
   ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 3425129000522779340}
+  - {fileID: 7338306668396450574}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
@@ -3336,6 +3503,20 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &7338306668396450574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8557466017483974071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
 --- !u!1 &8557466017803711767
 GameObject:
   m_ObjectHideFlags: 0
