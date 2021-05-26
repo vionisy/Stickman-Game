@@ -37,12 +37,16 @@ public class PlayerController : MonoBehaviour
     {
         Oponenthealthbar.SetHealth(health);
     }
-    public void Damage(float damageAmount)
+    [PunRPC]
+    public void Damage2(float Damageamont)
     {
-        currentHealth -= damageAmount;
+        currentHealth -= Damageamont;
         healthbar.SetHealth(currentHealth);
         photonView.RPC("OponentHealth", PhotonTargets.Others, currentHealth);
-        
+    }
+    public void Damage(float damageAmount)
+    {
+        photonView.RPC("Damage2", PhotonTargets.Others, damageAmount);
     }
     private void Start()
     {
@@ -58,16 +62,12 @@ public class PlayerController : MonoBehaviour
             foreach (Rigidbody2D RBCHILDREN in rbChildren)
             {
                 RBCHILDREN.isKinematic = true;
-                //RBCHILDREN.gravityScale = 0;
+                RBCHILDREN.gravityScale = 0;
             }
         }
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Damage(5);
-        }
         if (photonView.isMine)
         {
             KeyInput();
@@ -78,12 +78,18 @@ public class PlayerController : MonoBehaviour
 
     {
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
+        Balance[] Balances = GetComponentsInChildren<Balance>();
         if (Input.GetKey(Key))
         {
             foreach (Rigidbody2D gravitation in Gravity01)
             {
                 gravitation.gravityScale = GravitationScale;
             }
+            foreach (Balance balance in Balances)
+            {
+                balance.targetRotation = 180;
+            }
+            
         }
         else
         {
@@ -91,7 +97,12 @@ public class PlayerController : MonoBehaviour
             {
                 gravitation.gravityScale = 1f;
             }
+            foreach (Balance balance in Balances)
+            {
+                balance.targetRotation = 0;
+            }
         }
+
         if (Time.timeScale != 1)
         {
             jumpForce = 15000;

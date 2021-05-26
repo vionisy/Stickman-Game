@@ -44,4 +44,7 @@ MonoBehaviour:
   - RequestForPickupTimes
   - TaggedPlayer
   - OponentHealth
+  - knockback
+  - LOLposition
+  - Damage2
   DisableAutoOpenWizard: 1
