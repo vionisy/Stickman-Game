@@ -30,11 +30,14 @@ MonoBehaviour:
   RpcList:
   - Chat
   - ColorRpc
+  - Damage2
   - DestroyRpc
   - DoJump
   - Flash
   - InstantiateRpc
+  - knockback
   - Marco
+  - OponentHealth
   - PickupItemInit
   - Polo
   - PunPickup
@@ -43,8 +46,4 @@ MonoBehaviour:
   - RequestForPickupItems
   - RequestForPickupTimes
   - TaggedPlayer
-  - OponentHealth
-  - knockback
-  - LOLposition
-  - Damage2
   DisableAutoOpenWizard: 1
