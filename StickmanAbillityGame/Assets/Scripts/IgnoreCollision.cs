@@ -17,6 +17,7 @@ public class IgnoreCollision : MonoBehaviour
         }
     }
 
+    
 
 
     void OnCollisionEnter2D(Collision2D coll)

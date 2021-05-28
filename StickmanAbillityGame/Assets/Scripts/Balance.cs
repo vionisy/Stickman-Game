@@ -9,6 +9,7 @@ public class Balance : MonoBehaviour
     public float force;
     public float stop;
     public KeyCode mousebutton;
+    float smoothRotation;
 
     public void disable()
     {
@@ -19,7 +20,24 @@ public class Balance : MonoBehaviour
     {
         if (!Input.GetKey(mousebutton))
         {
-            rb.MoveRotation(Mathf.LerpAngle(rb.rotation, targetRotation, force * Time.fixedDeltaTime));
+            if (Input.GetKey(KeyCode.Q))
+            {
+                if (smoothRotation < 180)
+                {
+                    smoothRotation += 0.3f;
+                }
+            }
+            else
+            {
+                if (smoothRotation > 1)
+                {
+                    
+                    smoothRotation -= 0.3f;
+                }
+            }
+
+            rb.MoveRotation(Mathf.LerpAngle(rb.rotation, targetRotation - smoothRotation, force * Time.fixedDeltaTime));
+
         }
     }
 }

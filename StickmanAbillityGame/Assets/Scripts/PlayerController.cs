@@ -85,11 +85,7 @@ public class PlayerController : MonoBehaviour
             {
                 gravitation.gravityScale = GravitationScale;
             }
-            foreach (Balance balance in Balances)
-            
-            {
-                balance.targetRotation = 180;
-            }
+         
             
         }
         else
@@ -98,10 +94,7 @@ public class PlayerController : MonoBehaviour
             {
                 gravitation.gravityScale = 1f;
             }
-            foreach (Balance balance in Balances)
-            {
-                balance.targetRotation = 0;
-            }
+         
         }
 
         if (Time.timeScale != 1)
