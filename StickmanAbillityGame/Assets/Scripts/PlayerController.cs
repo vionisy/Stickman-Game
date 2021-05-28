@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviour
                 gravitation.gravityScale = GravitationScale;
             }
             foreach (Balance balance in Balances)
+            
             {
                 balance.targetRotation = 180;
             }
