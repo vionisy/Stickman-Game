@@ -30,10 +30,12 @@ MonoBehaviour:
   RpcList:
   - Chat
   - ColorRpc
+  - Damage2
   - DestroyRpc
   - DoJump
   - Flash
   - InstantiateRpc
+  - knockback
   - Marco
   - OponentHealth
   - PickupItemInit

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - OwnHealthBar
   - OponentsHealthbar
+  - Head
+  - Chest
   layers:
   - Default
   - TransparentFX

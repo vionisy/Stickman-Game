@@ -9,6 +9,7 @@ public class BalanceArms : MonoBehaviour
     public float force;
     public float stop;
     public KeyCode mousebutton;
+    public PhotonView photonView;
 
     public void disable()
     {
@@ -17,7 +18,7 @@ public class BalanceArms : MonoBehaviour
     }
     public void Update()
     {
-        if (!Input.GetKey(mousebutton))
+        if (!Input.GetKey(mousebutton) && photonView.isMine)
         {
             rb.MoveRotation(Mathf.LerpAngle(rb.rotation, targetRotation, force * Time.fixedDeltaTime));
         }
