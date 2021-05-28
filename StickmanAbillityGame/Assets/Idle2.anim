@@ -22,83 +22,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 4
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: force
-    path: MainBody/LowerArm
-    classID: 114
-    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 4
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: force
-    path: MainBody/UpperArm
-    classID: 114
-    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 4
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: force
-    path: MainBody/LowerArm (1)
-    classID: 114
-    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 4
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: force
-    path: MainBody/UpperArm (1)
-    classID: 114
-    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: -5
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -109,7 +33,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: targetRotation
-    path: MainBody/LowerArm
+    path: MainBody/LeftUpperArm
     classID: 114
     script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
   - curve:
@@ -117,7 +41,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -5
+        value: 4
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -127,8 +51,27 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: targetRotation
-    path: MainBody/UpperArm
+    attribute: force
+    path: MainBody/LeftUpperArm
+    classID: 114
+    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 4
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: force
+    path: MainBody/LeftLowerArm
     classID: 114
     script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
   - curve:
@@ -147,26 +90,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: targetRotation
-    path: MainBody/LowerArm (1)
-    classID: 114
-    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 5
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: targetRotation
-    path: MainBody/UpperArm (1)
+    path: MainBody/LeftLowerArm
     classID: 114
     script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
   - curve:
@@ -185,15 +109,53 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: targetRotation
-    path: MainBody/UpperLeg (1)
+    path: MainBody/RightUpperArm
     classID: 114
-    script: {fileID: 11500000, guid: 7afd2231d30e8994b92e9e91c4b34299, type: 3}
+    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
   - curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 5
+        value: 4
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: force
+    path: MainBody/RightUpperArm
+    classID: 114
+    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 4
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: force
+    path: MainBody/RightLowerArm
+    classID: 114
+    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -204,15 +166,15 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: targetRotation
-    path: MainBody/LowerLeg (1)
+    path: MainBody/RightLowerArm
     classID: 114
-    script: {fileID: 11500000, guid: 7afd2231d30e8994b92e9e91c4b34299, type: 3}
+    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
   - curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 5
+        value: 10
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -223,7 +185,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: targetRotation
-    path: MainBody/LowerLeg
+    path: MainBody/LeftLowerLeg
     classID: 114
     script: {fileID: 11500000, guid: 7afd2231d30e8994b92e9e91c4b34299, type: 3}
   - curve:
@@ -231,7 +193,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -5
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -242,7 +204,45 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: targetRotation
-    path: MainBody/UpperLeg
+    path: MainBody/LeftUpperLeg
+    classID: 114
+    script: {fileID: 11500000, guid: 7afd2231d30e8994b92e9e91c4b34299, type: 3}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 10
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: targetRotation
+    path: MainBody/RightLowerLeg
+    classID: 114
+    script: {fileID: 11500000, guid: 7afd2231d30e8994b92e9e91c4b34299, type: 3}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: -10
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: targetRotation
+    path: MainBody/RightUpperLeg
     classID: 114
     script: {fileID: 11500000, guid: 7afd2231d30e8994b92e9e91c4b34299, type: 3}
   m_PPtrCurves: []
@@ -254,84 +254,84 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 2288506352
-      attribute: 2540208936
-      script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
-      typeID: 114
-      customType: 0
-      isPPtrCurve: 0
-    - serializedVersion: 2
-      path: 1728062319
-      attribute: 2540208936
-      script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
-      typeID: 114
-      customType: 0
-      isPPtrCurve: 0
-    - serializedVersion: 2
-      path: 4147965866
-      attribute: 2540208936
-      script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
-      typeID: 114
-      customType: 0
-      isPPtrCurve: 0
-    - serializedVersion: 2
-      path: 3110015923
-      attribute: 2540208936
-      script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
-      typeID: 114
-      customType: 0
-      isPPtrCurve: 0
-    - serializedVersion: 2
-      path: 2288506352
+      path: 1790741088
       attribute: 1865065137
       script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 1728062319
+      path: 1790741088
+      attribute: 2540208936
+      script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
+      typeID: 114
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 2245754111
+      attribute: 2540208936
+      script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
+      typeID: 114
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 2245754111
       attribute: 1865065137
       script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 4147965866
+      path: 3070252679
       attribute: 1865065137
       script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 3110015923
+      path: 3070252679
+      attribute: 2540208936
+      script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
+      typeID: 114
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 1483186200
+      attribute: 2540208936
+      script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
+      typeID: 114
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 1483186200
       attribute: 1865065137
       script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 2364233969
+      path: 1750434340
       attribute: 1865065137
       script: {fileID: 11500000, guid: 7afd2231d30e8994b92e9e91c4b34299, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 3263735016
+      path: 2268230843
       attribute: 1865065137
       script: {fileID: 11500000, guid: 7afd2231d30e8994b92e9e91c4b34299, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 1709779755
+      path: 3051970243
       attribute: 1865065137
       script: {fileID: 11500000, guid: 7afd2231d30e8994b92e9e91c4b34299, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 2324618676
+      path: 1519298652
       attribute: 1865065137
       script: {fileID: 11500000, guid: 7afd2231d30e8994b92e9e91c4b34299, type: 3}
       typeID: 114
@@ -364,83 +364,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 4
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: force
-    path: MainBody/LowerArm
-    classID: 114
-    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 4
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: force
-    path: MainBody/UpperArm
-    classID: 114
-    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 4
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: force
-    path: MainBody/LowerArm (1)
-    classID: 114
-    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 4
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: force
-    path: MainBody/UpperArm (1)
-    classID: 114
-    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: -5
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -451,7 +375,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: targetRotation
-    path: MainBody/LowerArm
+    path: MainBody/LeftUpperArm
     classID: 114
     script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
   - curve:
@@ -459,7 +383,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -5
+        value: 4
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -469,8 +393,27 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: targetRotation
-    path: MainBody/UpperArm
+    attribute: force
+    path: MainBody/LeftUpperArm
+    classID: 114
+    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 4
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: force
+    path: MainBody/LeftLowerArm
     classID: 114
     script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
   - curve:
@@ -489,26 +432,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: targetRotation
-    path: MainBody/LowerArm (1)
-    classID: 114
-    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 5
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: targetRotation
-    path: MainBody/UpperArm (1)
+    path: MainBody/LeftLowerArm
     classID: 114
     script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
   - curve:
@@ -527,15 +451,53 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: targetRotation
-    path: MainBody/UpperLeg (1)
+    path: MainBody/RightUpperArm
     classID: 114
-    script: {fileID: 11500000, guid: 7afd2231d30e8994b92e9e91c4b34299, type: 3}
+    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
   - curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 5
+        value: 4
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: force
+    path: MainBody/RightUpperArm
+    classID: 114
+    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 4
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: force
+    path: MainBody/RightLowerArm
+    classID: 114
+    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -546,15 +508,15 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: targetRotation
-    path: MainBody/LowerLeg (1)
+    path: MainBody/RightLowerArm
     classID: 114
-    script: {fileID: 11500000, guid: 7afd2231d30e8994b92e9e91c4b34299, type: 3}
+    script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
   - curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 5
+        value: 10
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -565,7 +527,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: targetRotation
-    path: MainBody/LowerLeg
+    path: MainBody/LeftLowerLeg
     classID: 114
     script: {fileID: 11500000, guid: 7afd2231d30e8994b92e9e91c4b34299, type: 3}
   - curve:
@@ -573,7 +535,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -5
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -584,7 +546,45 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: targetRotation
-    path: MainBody/UpperLeg
+    path: MainBody/LeftUpperLeg
+    classID: 114
+    script: {fileID: 11500000, guid: 7afd2231d30e8994b92e9e91c4b34299, type: 3}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 10
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: targetRotation
+    path: MainBody/RightLowerLeg
+    classID: 114
+    script: {fileID: 11500000, guid: 7afd2231d30e8994b92e9e91c4b34299, type: 3}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: -10
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: targetRotation
+    path: MainBody/RightUpperLeg
     classID: 114
     script: {fileID: 11500000, guid: 7afd2231d30e8994b92e9e91c4b34299, type: 3}
   m_EulerEditorCurves: []

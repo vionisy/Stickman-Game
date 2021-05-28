@@ -10,7 +10,7 @@ public class BalanceArms : MonoBehaviour
     public float stop;
     public KeyCode mousebutton;
     public PhotonView photonView;
-
+    float smoothRotation;
     public void disable()
     {
         force = 0;
@@ -20,7 +20,23 @@ public class BalanceArms : MonoBehaviour
     {
         if (!Input.GetKey(mousebutton) && photonView.isMine)
         {
-            rb.MoveRotation(Mathf.LerpAngle(rb.rotation, targetRotation, force * Time.fixedDeltaTime));
+            if (Input.GetKey(KeyCode.Q))
+            {
+                if (smoothRotation < 180)
+                {
+                    smoothRotation += 0.3f;
+                }
+            }
+            else
+            {
+                if (smoothRotation > 1)
+                {
+
+                    smoothRotation -= 0.3f;
+                }
+            }
+
+            rb.MoveRotation(Mathf.LerpAngle(rb.rotation, targetRotation - smoothRotation, force * Time.fixedDeltaTime));
         }
     }
 }
