@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     private float currentHealth;
     private HelthBar healthbar;
     private HelthBar Oponenthealthbar;
+    private bool gravity = false;
     public PlayerController(float walljumpForce)
     {
         WalljumpForce = walljumpForce;
@@ -83,6 +84,7 @@ public class PlayerController : MonoBehaviour
         {
             foreach (Rigidbody2D gravitation in Gravity01)
             {
+                gravity = true;
                 gravitation.gravityScale = GravitationScale;
             }
          
@@ -92,6 +94,7 @@ public class PlayerController : MonoBehaviour
         {
             foreach (Rigidbody2D gravitation in Gravity01)
             {
+                gravity = false;
                 gravitation.gravityScale = 1f;
             }
          
@@ -111,9 +114,16 @@ public class PlayerController : MonoBehaviour
             {
                 if (isOnGround == true)
                 {
-                    anim.Play("Walk");
-                    rb.AddForce(Vector2.right * playerSpeed * Time.deltaTime);
                     direction = true;
+                    anim.Play("Walk");
+                    if (gravity == false)
+                    {
+                        rb.AddForce(Vector2.right * playerSpeed * Time.deltaTime);
+                    }
+                    else
+                    {
+                        rb.AddForce(Vector2.left * playerSpeed * Time.deltaTime);
+                    }
                 }
                 else
                 {
@@ -129,8 +139,15 @@ public class PlayerController : MonoBehaviour
                 if (isOnGround == true)
                 {
                     anim.Play("WalkBack");
-                    rb.AddForce(Vector2.left * playerSpeed * Time.deltaTime);
                     direction = false;
+                    if (gravity == true)
+                    {
+                        rb.AddForce(Vector2.right * playerSpeed * Time.deltaTime);
+                    }
+                    else
+                    {
+                        rb.AddForce(Vector2.left * playerSpeed * Time.deltaTime);
+                    }
                 }
                 else
                 {
@@ -153,7 +170,10 @@ public class PlayerController : MonoBehaviour
 
         if (isOnGround == true && Input.GetKeyDown(KeyCode.Space))
         {
-            rb.AddForce(Vector2.up * jumpForce);
+            if (gravity == false)
+                rb.AddForce(Vector2.up * jumpForce);
+            else
+                rb.AddForce(Vector2.down * jumpForce);
         }
 
         isOnWallLeft = Physics2D.OverlapCircle(playerPos2.position, positionRadius, ground);
@@ -163,13 +183,19 @@ public class PlayerController : MonoBehaviour
         if (isOnGround == false && isOnWallRight == true && Input.GetKeyDown(KeyCode.Space))
         {
             rb.AddForce(Vector2.left * WalljumpForce);
-            rb.AddForce(Vector2.up * WalljumpForce);
+            if (gravity == false)
+                rb.AddForce(Vector2.up * WalljumpForce);
+            else
+                rb.AddForce(Vector2.down * WalljumpForce);
             direction = false;
         }
         if (isOnGround == false && isOnWallLeft == true && Input.GetKeyDown(KeyCode.Space))
         {
             rb.AddForce(Vector2.right * WalljumpForce);
-            rb.AddForce(Vector2.up * WalljumpForce);
+            if (gravity == false)
+                rb.AddForce(Vector2.up * WalljumpForce);
+            else
+                rb.AddForce(Vector2.down * WalljumpForce);
             direction = true;
         }
 

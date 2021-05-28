@@ -1295,9 +1295,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetRotation: 0
+  targetRotation: 10
   rb: {fileID: 8557466016387921322}
-  force: 0
+  force: 100
   stop: 0
   mousebutton: 324
   photonView: {fileID: 6923915807836418976}
@@ -1588,7 +1588,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetRotation: 0
   rb: {fileID: 8557466016490787417}
-  force: 0
+  force: 100
   stop: 0
   mousebutton: 324
   photonView: {fileID: 7606066323379941388}
@@ -1861,7 +1861,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetRotation: 0
   rb: {fileID: 8557466016595224783}
-  force: 500
+  force: 5000
   stop: 0
   mousebutton: 0
 --- !u!114 &5477666926989614319
@@ -2149,7 +2149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetRotation: 0
+  targetRotation: 1
   rb: {fileID: 8557466016671340956}
   force: 0
   stop: 0
@@ -2272,9 +2272,9 @@ GameObject:
   - component: {fileID: 8557466016732343680}
   - component: {fileID: 8557466016732343681}
   - component: {fileID: 8557466016732343686}
-  - component: {fileID: 8557466016732343687}
   - component: {fileID: 11848969078165954}
   - component: {fileID: 8805625418652974891}
+  - component: {fileID: 7342628976529560613}
   m_Layer: 0
   m_Name: Stickman
   m_TagString: Untagged
@@ -2321,12 +2321,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2676b83b8d122a145a6d1c043fb4f0bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 8557466016732343687}
+  anim: {fileID: 7342628976529560613}
   rb: {fileID: 8557466015949629164}
   jumpForce: 3000
-  playerSpeed: 3000
+  playerSpeed: 2500
   JumpHeight: {x: 0, y: 0}
-  positionRadius: 0.1
+  positionRadius: 0.2
   ground:
     serializedVersion: 2
     m_Bits: 8
@@ -2338,25 +2338,6 @@ MonoBehaviour:
   playerPos2: {fileID: 4163200002956640569}
   WalljumpForce: 2000
   maxHealth: 100
---- !u!95 &8557466016732343687
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8557466016732343683}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d84151f7359106f43a1c9016d9e80e76, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &11848969078165954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2462,6 +2443,25 @@ MonoBehaviour:
     InterpolateOption: 2
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 20
+--- !u!95 &7342628976529560613
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8557466016732343683}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d84151f7359106f43a1c9016d9e80e76, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8557466016764870705
 GameObject:
   m_ObjectHideFlags: 0
@@ -2838,7 +2838,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: dc1a5052248b19446b81f73c857f1694, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -2897,7 +2897,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetRotation: 0
   rb: {fileID: 8557466016781978807}
-  force: 500
+  force: 5000
   stop: 0
   mousebutton: 0
 --- !u!114 &3916832229615921257
@@ -3321,7 +3321,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8557466017464957271}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.52, z: -15.137866}
+  m_LocalPosition: {x: 0, y: -4.47, z: -15.137866}
   m_LocalScale: {x: 1.3019692, y: 1.3019692, z: 1.3019692}
   m_Children: []
   m_Father: {fileID: 8557466015949629161}
@@ -3431,7 +3431,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: dc1a5052248b19446b81f73c857f1694, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -3490,7 +3490,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetRotation: 0
   rb: {fileID: 8557466017477547177}
-  force: 500
+  force: 5000
   stop: 0
   mousebutton: 0
 --- !u!114 &9217873362382068337
@@ -3762,7 +3762,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetRotation: 0
   rb: {fileID: 8557466017483974075}
-  force: 500
+  force: 5000
   stop: 0
   mousebutton: 0
 --- !u!114 &2923883725424235588
