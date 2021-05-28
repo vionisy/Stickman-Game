@@ -34,20 +34,21 @@ public class PlayerController : MonoBehaviour
         WalljumpForce = walljumpForce;
     }
     [PunRPC]
-    public void OponentHealth(float health)
+    public void OponentHealth(float thehealths)
     {
-        Oponenthealthbar.SetHealth(health);
+        Oponenthealthbar.SetHealth(thehealths);
     }
     [PunRPC]
-    public void Damage2(float Damageamont)
+    public void Damage2(float TheDamageAmont)
     {
-        currentHealth -= Damageamont;
+        currentHealth -= TheDamageAmont;
         healthbar.SetHealth(currentHealth);
         photonView.RPC("OponentHealth", PhotonTargets.Others, currentHealth);
     }
-    public void Damage(float damageAmount)
+    public void Damage(float damageamount)
     {
-        photonView.RPC("Damage2", PhotonTargets.Others, damageAmount);
+        if (!photonView.isMine)
+            photonView.RPC("Damage2", PhotonTargets.Others, damageamount);
     }
     private void Start()
     {
@@ -55,6 +56,7 @@ public class PlayerController : MonoBehaviour
         Oponenthealthbar = GameObject.FindGameObjectWithTag("OponentsHealthbar").GetComponent<HelthBar>();
         currentHealth = maxHealth;
         healthbar.SetMaxHealth(maxHealth);
+        Oponenthealthbar.SetMaxHealth(maxHealth);
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         SaveJumpForce = jumpForce;
         if (!photonView.isMine)
