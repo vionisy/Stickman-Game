@@ -12,6 +12,7 @@ public class damage : MonoBehaviour
     private Vector3 oldPosition;
     public PhotonView photonView;
     private StressReceiver camerashake;
+    public Transform Hand;
     private void Start()
     {
         camerashake = FindObjectOfType<Camera>().GetComponent<StressReceiver>();
@@ -26,10 +27,10 @@ public class damage : MonoBehaviour
     {
         if (speed >= 10)
         {
-            if (Input.GetKey(mousebutton)) //&& collision.gameObject.tag == "Head" || collision.gameObject.tag == "Chest")
+            if (Input.GetKey(mousebutton) && collision.gameObject.tag != "LowerArm" || collision.gameObject.tag != "LowerArm(1)")
             {
                 speed -= 10;
-                if (speed >= 35)
+                if (speed >= 35 && collision.gameObject.GetComponentInParent<PlayerController>())
                 {
                     Debug.Log("CameraShake");
                     StartCoroutine("CameraShake");
@@ -49,12 +50,12 @@ public class damage : MonoBehaviour
     [PunRPC]
     public void knockback(float speed)
     {
-        Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, fieldofImpact, LayerToHit);
+        Collider2D[] objects = Physics2D.OverlapCircleAll(Hand.transform.position, fieldofImpact, LayerToHit);
         foreach (Collider2D obj in objects)
         {
             Debug.Log("Knockback");
-            Vector2 direction = obj.transform.position - transform.position;
-            obj.GetComponent<Rigidbody2D>().AddForce(direction * (speed * 4));
+            Vector2 direction = obj.transform.position - Hand.transform.position;
+            obj.GetComponent<Rigidbody2D>().AddForce(direction * (speed * 3));
         }
     }
 }

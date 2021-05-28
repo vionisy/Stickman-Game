@@ -81,7 +81,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6475344688920933877
 Transform:
   m_ObjectHideFlags: 0
@@ -305,9 +305,39 @@ FixedJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 2.32}
-  m_ConnectedAnchor: {x: 0.01334231, y: -0.5156425}
+  m_ConnectedAnchor: {x: 0.013342336, y: -0.51564264}
   m_DampingRatio: 0
   m_Frequency: 0
+--- !u!1 &7540148289327397070
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7408628593774938163}
+  m_Layer: 12
+  m_Name: Hand1
+  m_TagString: Untagged
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7408628593774938163
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7540148289327397070}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.91, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8557466016671340953}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8545004236029496143
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,7 +360,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8717794768733961738
 Transform:
   m_ObjectHideFlags: 0
@@ -554,7 +584,7 @@ FixedJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 2.32}
-  m_ConnectedAnchor: {x: 0.01334231, y: -0.3650764}
+  m_ConnectedAnchor: {x: 0.013342336, y: -0.3650763}
   m_DampingRatio: 0
   m_Frequency: 0
 --- !u!114 &8079876064888850066
@@ -576,6 +606,7 @@ MonoBehaviour:
     m_Bits: 262080
   mousebutton: 323
   photonView: {fileID: 4930692326912988437}
+  Hand: {fileID: 0}
 --- !u!1 &8557466015949629160
 GameObject:
   m_ObjectHideFlags: 0
@@ -1987,6 +2018,7 @@ GameObject:
   - component: {fileID: 8557466016671340928}
   - component: {fileID: 918374086884013362}
   - component: {fileID: 7435799481327984382}
+  - component: {fileID: 2572404498885030139}
   m_Layer: 12
   m_Name: RightLowerArm
   m_TagString: Untagged
@@ -2004,7 +2036,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.2809, y: -3.7923, z: 11.6269}
   m_LocalScale: {x: 0.4871715, y: 0.4871715, z: 0.4871715}
-  m_Children: []
+  m_Children:
+  - {fileID: 7408628593774938163}
   m_Father: {fileID: 8557466017803711764}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2261,6 +2294,26 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &2572404498885030139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8557466016671340952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2d3c4d0a6dde11478d039e08bdc8e12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fieldofImpact: 10
+  force: 100
+  LayerToHit:
+    serializedVersion: 2
+    m_Bits: 131008
+  mousebutton: 0
+  photonView: {fileID: 918374086884013362}
+  Hand: {fileID: 7408628593774938163}
 --- !u!1 &8557466016732343683
 GameObject:
   m_ObjectHideFlags: 0
@@ -2291,7 +2344,7 @@ Transform:
   m_GameObject: {fileID: 8557466016732343683}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.602, z: -6.2504}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8557466017803711764}
   m_Father: {fileID: 0}
@@ -2323,8 +2376,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 7342628976529560613}
   rb: {fileID: 8557466015949629164}
-  jumpForce: 3000
-  playerSpeed: 2500
+  jumpForce: 4500
+  playerSpeed: 3500
   JumpHeight: {x: 0, y: 0}
   positionRadius: 0.2
   ground:
