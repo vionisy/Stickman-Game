@@ -7443,12 +7443,12 @@ HingeJoint2D:
   m_ConnectedAnchor: {x: 0.020000458, y: 0.05}
   m_UseMotor: 1
   m_Motor:
-    m_MotorSpeed: -10
+    m_MotorSpeed: -20
     m_MaximumMotorForce: 10000
   m_UseLimits: 1
   m_AngleLimits:
     m_LowerAngle: 0
-    m_UpperAngle: 90
+    m_UpperAngle: 30
 --- !u!50 &1622496485
 Rigidbody2D:
   serializedVersion: 4
@@ -8400,12 +8400,12 @@ HingeJoint2D:
   m_ConnectedAnchor: {x: -0.020000458, y: 0.05}
   m_UseMotor: 1
   m_Motor:
-    m_MotorSpeed: 10
+    m_MotorSpeed: 20
     m_MaximumMotorForce: 10000
   m_UseLimits: 1
   m_AngleLimits:
     m_LowerAngle: 0
-    m_UpperAngle: -90
+    m_UpperAngle: -30
 --- !u!50 &2070118301
 Rigidbody2D:
   serializedVersion: 4
