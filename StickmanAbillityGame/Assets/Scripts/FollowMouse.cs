@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FollowMouse : MonoBehaviour
 {
-    public float speed = 300;
+    private float speed = 300;
     public Rigidbody2D rb;
     public Camera cam;
     public KeyCode mousebutton;
@@ -26,7 +26,7 @@ public class FollowMouse : MonoBehaviour
             }
             else if (Time.timeScale == 1)
             {
-                speed = 300;
+                speed = 35;
             }
             else if (Time.timeScale != 1 && Time.timeScale != 0.5)
             {

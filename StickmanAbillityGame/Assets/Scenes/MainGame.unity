@@ -1706,7 +1706,7 @@ GameObject:
   - component: {fileID: 662903316}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1740,6 +1740,7 @@ MonoBehaviour:
   PlayerPreafab: {fileID: 8557466016732343683, guid: ef456f4534c7d134da44cca73530f5bf, type: 3}
   GameCanvas: {fileID: 257633953}
   SceneCamera: {fileID: 519420028}
+  respwanTime: 3
 --- !u!1 &752916793
 GameObject:
   m_ObjectHideFlags: 0

@@ -30,13 +30,16 @@ public class damage : MonoBehaviour
             if (Input.GetKey(mousebutton) && collision.gameObject.tag != "LowerArm" || collision.gameObject.tag != "LowerArm(1)")
             {
                 speed -= 10;
-                if (speed >= 35 && collision.gameObject.GetComponentInParent<PlayerController>())
+                if (speed >= 30 && collision.gameObject.GetComponentInParent<PlayerController>())
                 {
                     Debug.Log("CameraShake");
                     StartCoroutine("CameraShake");
                     speed += 10;
                 }
-                collision.gameObject.GetComponentInParent<PlayerController>().Damage(speed * 0.4f);
+                PlayerController playerHit = collision.gameObject.GetComponentInParent<PlayerController>();
+                if (playerHit)
+                    playerHit.Damage(speed * 0.4f);
+                //collision.gameObject.GetComponentInParent<PlayerController>().Damage(speed * 0.4f);
                 photonView.RPC("knockback", PhotonTargets.Others, speed);
             }
         }
