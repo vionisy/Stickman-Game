@@ -1309,7 +1309,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a81d23f98cc37245990c1521e75fc35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 100
   rb: {fileID: 8557466016387921322}
   cam: {fileID: 0}
   mousebutton: 324
@@ -1600,7 +1599,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a81d23f98cc37245990c1521e75fc35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 100
   rb: {fileID: 8557466016490787417}
   cam: {fileID: 0}
   mousebutton: 324
@@ -2165,7 +2163,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a81d23f98cc37245990c1521e75fc35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 100
   rb: {fileID: 8557466016671340956}
   cam: {fileID: 0}
   mousebutton: 323
@@ -2376,7 +2373,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 7342628976529560613}
   rb: {fileID: 8557466015949629164}
-  jumpForce: 4000
+  jumpForce: 4500
   playerSpeed: 3000
   JumpHeight: {x: 0, y: 0}
   positionRadius: 0.2
@@ -3221,7 +3218,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a81d23f98cc37245990c1521e75fc35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 100
   rb: {fileID: 8557466016885711718}
   cam: {fileID: 0}
   mousebutton: 323
