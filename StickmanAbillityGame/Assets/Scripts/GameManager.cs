@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public GameObject PlayerPreafab;
     public GameObject GameCanvas;
     public GameObject SceneCamera;
-    public float respwanTime = 5;
+    public float respwanTime = 3;
 
     private void Awake()
     {

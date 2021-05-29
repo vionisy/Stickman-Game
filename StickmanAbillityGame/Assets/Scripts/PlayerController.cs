@@ -28,7 +28,6 @@ public class PlayerController : MonoBehaviour
     private float currentHealth;
     private HelthBar healthbar;
     private HelthBar Oponenthealthbar;
-    private bool Dead = false;
     private bool gravity = false;
     public PlayerController(float walljumpForce)
     {
@@ -77,32 +76,16 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        if (currentHealth <= 0 && Dead == false)
+        if (currentHealth <= 0)
         {
+
             GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().StartCoroutine("Respawn");
-            Dead = true;
-            StartCoroutine("deadbody");
+            photonView.RPC("dead", PhotonTargets.All);
         }
-        if (photonView.isMine && Dead == false)
+        if (photonView.isMine)
         {
             KeyInput();
         }
-    }
-    private IEnumerator deadbody()
-    {
-        Balance[] balances = GetComponentsInChildren<Balance>();
-        foreach (Balance theBalances in balances)
-        {
-            theBalances.enabled = false;
-        }
-        BalanceArms[] balancesarms = GetComponentsInChildren<BalanceArms>();
-        foreach (BalanceArms theBalanceArms in balancesarms)
-        {
-            theBalanceArms.enabled = false;
-        }
-        
-        yield return new WaitForSeconds(4);
-        photonView.RPC("dead", PhotonTargets.All);
     }
 
     void KeyInput()
