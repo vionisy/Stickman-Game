@@ -110,15 +110,15 @@ public class PlayerController : MonoBehaviour
     {
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         Balance[] Balances = GetComponentsInChildren<Balance>();
-        if (Input.GetKey(Key))
+        if (Input.GetKey(Key) && MenuController.power == 1)
         {
             foreach (Rigidbody2D gravitation in Gravity01)
             {
                 gravity = true;
                 gravitation.gravityScale = GravitationScale;
             }
-         
-            
+
+
         }
         else
         {
@@ -127,8 +127,9 @@ public class PlayerController : MonoBehaviour
                 gravity = false;
                 gravitation.gravityScale = 1.5f;
             }
-         
+
         }
+
 
         if (Time.timeScale != 1)
         {
