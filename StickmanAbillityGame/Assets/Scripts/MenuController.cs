@@ -42,8 +42,10 @@ public class MenuController : MonoBehaviour
                 StartButton.SetActive(false);
             }
         }
+      
     }
 
+    
     public void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby(TypedLobby.Default);
@@ -67,13 +69,13 @@ public class MenuController : MonoBehaviour
 
     public void CreateGame()
     {
-        PhotonNetwork.CreateRoom(CreateGameInput.text, new RoomOptions() {maxPlayers = 4}, null);
+        PhotonNetwork.CreateRoom(CreateGameInput.text, new RoomOptions() {maxPlayers = 10}, null);
     }
 
     public void JoinGame()
     {
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.maxPlayers = 4;
+        roomOptions.maxPlayers = 10;
         PhotonNetwork.JoinOrCreateRoom(JoinGameInput.text, roomOptions, TypedLobby.Default);
     }
 
