@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask ground;
     public Transform playerPos;
     public KeyCode Key;
-    public float GravitationScale;
+    public float GravitationScale = -1.5f;
     private bool direction;
     public PhotonView photonView;
     private float SaveJumpForce;
@@ -69,8 +69,19 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    [PunRPC]
+    public void dead()
+    {
+        Destroy(gameObject);
+    }
     private void Update()
     {
+        if (currentHealth <= 0)
+        {
+
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().StartCoroutine("Respawn");
+            photonView.RPC("dead", PhotonTargets.All);
+        }
         if (photonView.isMine)
         {
             KeyInput();
@@ -97,7 +108,7 @@ public class PlayerController : MonoBehaviour
             foreach (Rigidbody2D gravitation in Gravity01)
             {
                 gravity = false;
-                gravitation.gravityScale = 1f;
+                gravitation.gravityScale = 1.5f;
             }
          
         }

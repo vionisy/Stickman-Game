@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public GameObject PlayerPreafab;
     public GameObject GameCanvas;
     public GameObject SceneCamera;
+    public float respwanTime = 3;
 
     private void Awake()
     {
@@ -22,5 +23,11 @@ public class GameManager : MonoBehaviour
         GameCanvas.SetActive(false);
         SceneCamera.SetActive(true);
     }
-  
+    public IEnumerator Respawn()
+    {
+        Debug.Log("Respawn");
+        yield return new WaitForSeconds(respwanTime);
+        float randomValue = Random.Range(-1f, 1f);
+        PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(this.transform.position.x * randomValue, this.transform.position.y), Quaternion.identity, 0);
+    }
 }
