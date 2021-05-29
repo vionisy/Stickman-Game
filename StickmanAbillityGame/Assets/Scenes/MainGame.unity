@@ -2189,7 +2189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f0585a8603b9d74c8d89d96ecea309f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowdownFactor: 0.2
+  slowdownFactor: 0.5
   key: 101
 --- !u!1 &1068407970
 GameObject:
