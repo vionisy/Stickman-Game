@@ -103,6 +103,8 @@ public class PlayerController : MonoBehaviour
         
         yield return new WaitForSeconds(4);
         photonView.RPC("dead", PhotonTargets.All);
+
+        
     }
 
     void KeyInput()

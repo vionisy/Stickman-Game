@@ -41,5 +41,8 @@ public class FollowMouse : MonoBehaviour
                 rb.MoveRotation(Mathf.LerpAngle(rb.rotation, rotationZ, speed * Time.fixedDeltaTime));
             }
         }
+    
+        
+    
     }
 }
