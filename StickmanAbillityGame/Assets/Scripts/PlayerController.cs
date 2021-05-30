@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour
     {
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         Balance[] Balances = GetComponentsInChildren<Balance>();
-        if (Input.GetKey(Key) && MenuController.power == 1)
+        if (Input.GetKey(Key) && MenuController.power == 4)
         {
             foreach (Rigidbody2D gravitation in Gravity01)
             {

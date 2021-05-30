@@ -20,11 +20,11 @@ public class Balance : MonoBehaviour
     {
         if (!Input.GetKey(mousebutton))
         {
-            if (Input.GetKey(KeyCode.Q) && MenuController.power == 1)
+            if (Input.GetKey(KeyCode.Q) && MenuController.power == 4)
             {
                 if (smoothRotation < 180)
                 {
-                    smoothRotation += 0.3f;
+                    smoothRotation += 1f;
                 }
             }
             else
@@ -32,7 +32,7 @@ public class Balance : MonoBehaviour
                 if (smoothRotation > 1)
                 {
                     
-                    smoothRotation -= 0.3f;
+                    smoothRotation -= 1f;
                 }
             }
 
