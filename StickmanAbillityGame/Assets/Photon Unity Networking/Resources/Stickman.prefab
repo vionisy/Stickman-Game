@@ -2388,6 +2388,7 @@ MonoBehaviour:
   playerPos2: {fileID: 4163200002956640569}
   WalljumpForce: 2000
   maxHealth: 100
+  regenerating: 0
 --- !u!114 &11848969078165954
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -47,4 +47,5 @@ MonoBehaviour:
   - RequestForPickupTimes
   - TaggedPlayer
   - dead
+  - UpdateHealthBar
   DisableAutoOpenWizard: 1

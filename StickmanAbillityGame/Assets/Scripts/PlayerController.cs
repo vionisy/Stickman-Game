@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private HelthBar Oponenthealthbar;
     private bool Dead = false;
     private bool gravity = false;
+    private bool regenerating = true;
     public PlayerController(float walljumpForce)
     {
         WalljumpForce = walljumpForce;
@@ -37,13 +38,14 @@ public class PlayerController : MonoBehaviour
     [PunRPC]
     public void OponentHealth(float thehealths)
     {
-        Oponenthealthbar.SetHealth(thehealths);
+        Oponenthealthbar.SetHealth(thehealths);;
     }
     [PunRPC]
     public void Damage2(float TheDamageAmont)
     {
         currentHealth -= TheDamageAmont;
         healthbar.SetHealth(currentHealth);
+        StartCoroutine("WaitForRegenerating");
         photonView.RPC("OponentHealth", PhotonTargets.Others, currentHealth);
     }
     public void Damage(float damageamount)
@@ -71,12 +73,34 @@ public class PlayerController : MonoBehaviour
         }
     }
     [PunRPC]
+    public void UpdateHealthBar(float theHealth)
+    {
+        Oponenthealthbar.SetHealth(theHealth);
+    }
+    [PunRPC]
     public void dead()
     {
         Destroy(gameObject);
     }
+    private IEnumerator WaitForRegenerating()
+    {
+        regenerating = false;
+        float HealthBeforeWaiting = currentHealth;
+        yield return new WaitForSeconds(5);
+        if (currentHealth == HealthBeforeWaiting)
+        {
+            regenerating = true;
+        }
+    }
     private void Update()
     {
+        if (regenerating == true && currentHealth <= maxHealth)
+        {
+            currentHealth += 0.2f;
+            healthbar.SetHealth(currentHealth);
+            photonView.RPC("UpdateHealthBar", PhotonTargets.Others, currentHealth);
+
+        }
         if (currentHealth <= 0 && Dead == false)
         {
             GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().StartCoroutine("Respawn");
@@ -100,7 +124,12 @@ public class PlayerController : MonoBehaviour
         {
             theBalanceArms.enabled = false;
         }
-        
+        FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
+        foreach (FollowMouse FollowTheMouse in followMouse)
+        {
+            FollowTheMouse.enabled = false;
+        }
+
         yield return new WaitForSeconds(4);
         photonView.RPC("dead", PhotonTargets.All);
 
