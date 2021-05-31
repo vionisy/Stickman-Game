@@ -2381,14 +2381,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   playerPos: {fileID: 8557466017464957268}
-  Key: 113
   GravitationScale: -1
   photonView: {fileID: 11848969078165954}
   playerPos1: {fileID: 9174321070184925175}
   playerPos2: {fileID: 4163200002956640569}
   WalljumpForce: 2000
   maxHealth: 100
-  regenerating: 0
+  growspeed: 0.01
 --- !u!114 &11848969078165954
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2190,7 +2190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slowdownFactor: 0.2
-  key: 101
+  key: 116
 --- !u!1 &1068407970
 GameObject:
   m_ObjectHideFlags: 0

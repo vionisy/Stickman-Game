@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
     private bool Dead = false;
     private bool gravity = false;
     private bool regenerating = true;
+    private int size = 0;
+    public float growspeed = 0.001f;
     public PlayerController(float walljumpForce)
     {
         WalljumpForce = walljumpForce;
@@ -54,17 +56,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
-        if (MenuController.power == 3 && photonView.isMine)
-        {
-            playerSpeed += 500;
-            jumpForce += 1000;
-            positionRadius = 0.6f;
-            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
-            foreach (Rigidbody2D RBCHILDREN in rbChildren)
-            {
-                RBCHILDREN.mass += 0.3f;
-            }
-        }
+        
         healthbar = GameObject.FindGameObjectWithTag("OwnHealthBar").GetComponent<HelthBar>();
         Oponenthealthbar = GameObject.FindGameObjectWithTag("OponentsHealthbar").GetComponent<HelthBar>();
         currentHealth = maxHealth;
@@ -102,13 +94,11 @@ public class PlayerController : MonoBehaviour
             regenerating = true;
         }
     }
+    private bool stop = true;
     private void Update()
     {
-        if (MenuController.power == 3 && transform.localScale.x <= 1.6f && photonView.isMine)
-        {
-            transform.localScale += new Vector3(0.05f, 0.05f, 0.05f);
-        }
         
+
         if (regenerating == true && currentHealth <= maxHealth)
         {
             currentHealth += 0.02f;
@@ -125,6 +115,42 @@ public class PlayerController : MonoBehaviour
         if (photonView.isMine && Dead == false)
         {
             KeyInput();
+        }
+        
+    }
+    private void FixedUpdate()
+    {
+        if (photonView.isMine && Dead == false)
+        {
+            KeyInput2();
+        }
+    }
+    void KeyInput2()
+    {
+        
+        if (MenuController.power == 3 && transform.localScale.x <= 1.5f && photonView.isMine && size == 1)
+        {
+            transform.localScale += new Vector3(growspeed, growspeed, growspeed);
+            if (gravity == false)
+                rb.AddForce(Vector2.up * 100);
+            if (gravity == true)
+                rb.AddForce(Vector2.down * 100);
+        }
+        if (MenuController.power == 3 && transform.localScale.x > 1 && photonView.isMine && size == 0)
+        {
+            transform.localScale -= new Vector3(growspeed, growspeed, growspeed);
+            if (gravity == false)
+                rb.AddForce(Vector2.up * 100);
+            if (gravity == true)
+                rb.AddForce(Vector2.down * 100);
+        }
+        if (MenuController.power == 3 && transform.localScale.x < 1 && photonView.isMine && size == 0)
+        {
+            transform.localScale += new Vector3(growspeed, growspeed, growspeed);
+            if (gravity == false)
+                rb.AddForce(Vector2.up * 100);
+            if (gravity == true)
+                rb.AddForce(Vector2.down * 100);
         }
     }
     private IEnumerator deadbody()
@@ -158,6 +184,36 @@ public class PlayerController : MonoBehaviour
     void KeyInput()
 
     {
+        if (Input.GetKeyDown(KeyCode.Q) && MenuController.power == 3 && size != 0)
+        {
+            size = 0;
+            stop = false;
+            playerSpeed -= 500;
+            jumpForce -= 1000;
+            positionRadius -= 0.4f;
+            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
+            foreach (Rigidbody2D RBCHILDREN in rbChildren)
+            {
+                RBCHILDREN.mass -= 0.3f;
+            }
+            stop = true;
+        }
+        if (Input.GetKeyDown(KeyCode.E) && MenuController.power == 3 && size != 1)
+        {
+            rb.AddForce(Vector2.up * 6500);
+            size = 1;
+            stop = false;
+            playerSpeed += 500;
+            jumpForce += 1000;
+            positionRadius += 0.4f;
+            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
+            foreach (Rigidbody2D RBCHILDREN in rbChildren)
+            {
+                RBCHILDREN.mass += 0.3f;
+            }
+            stop = true;
+
+        }
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         Balance[] Balances = GetComponentsInChildren<Balance>();
         if (Input.GetKey(KeyCode.UpArrow) && MenuController.power == 4)

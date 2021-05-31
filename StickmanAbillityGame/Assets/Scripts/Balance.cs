@@ -16,7 +16,7 @@ public class Balance : MonoBehaviour
         force = 0;
         Debug.Log("stop");
     }
-    public void Update()
+    public void FixedUpdate()
     {
         if (!Input.GetKey(mousebutton))
         {
@@ -24,7 +24,7 @@ public class Balance : MonoBehaviour
             {
                 if (smoothRotation < 180)
                 {
-                    smoothRotation += 0.5f;
+                    smoothRotation += 2f;
                 }
             }
             else
@@ -32,7 +32,7 @@ public class Balance : MonoBehaviour
                 if (smoothRotation > 1)
                 {
                     
-                    smoothRotation -= 0.5f;
+                    smoothRotation -= 2f;
                 }
             }
 
