@@ -49,4 +49,5 @@ MonoBehaviour:
   - dead
   - UpdateHealthBar
   - GravitationChange
+  - Invisibillity
   DisableAutoOpenWizard: 1

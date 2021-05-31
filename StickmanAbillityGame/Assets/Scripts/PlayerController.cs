@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     [PunRPC]
     public void OponentHealth(float thehealths)
     {
-        Oponenthealthbar.SetHealth(thehealths);;
+        Oponenthealthbar.SetHealth(thehealths); ;
     }
     [PunRPC]
     public void Damage2(float TheDamageAmont)
@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
-        
+
         healthbar = GameObject.FindGameObjectWithTag("OwnHealthBar").GetComponent<HelthBar>();
         Oponenthealthbar = GameObject.FindGameObjectWithTag("OponentsHealthbar").GetComponent<HelthBar>();
         currentHealth = maxHealth;
@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
     private bool stop = true;
     private void Update()
     {
-        
+
 
         if (regenerating == true && currentHealth <= maxHealth)
         {
@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
         {
             KeyInput();
         }
-        
+
     }
     private void FixedUpdate()
     {
@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
     }
     void KeyInput2()
     {
-        
+
         if (MenuController.power == 3 && transform.localScale.x <= 1.5f && photonView.isMine && size == 1)
         {
             transform.localScale += new Vector3(growspeed, growspeed, growspeed);
@@ -174,7 +174,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(4);
         photonView.RPC("dead", PhotonTargets.All);
 
-        
+
     }
     [PunRPC]
     public void GravitationChange(bool theGravitation)
@@ -344,7 +344,27 @@ public class PlayerController : MonoBehaviour
             direction = true;
         }
 
+        if (MenuController.power == 2)
+        {
+            SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer theTransparency in Transparency)
+            {
+                theTransparency.color = new Color(0f, 0f, 0f, 1f);
+            }
 
+            photonView.RPC("Invisibillity", PhotonTargets.Others);
+        }
+
+    }
+    
+    [PunRPC]
+    public void Invisibillity()
+    {
+        SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer theTransparency in Transparency)
+        {
+            theTransparency.color = new Color(1f, 1f, 1f, 0f);
+        }
     }
 
 
