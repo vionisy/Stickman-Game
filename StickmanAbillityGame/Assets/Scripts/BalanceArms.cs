@@ -20,7 +20,7 @@ public class BalanceArms : MonoBehaviour
     {
         if (!Input.GetKey(mousebutton) && photonView.isMine)
         {
-            if (Input.GetKey(KeyCode.Q))
+            if (PlayerController.Gravitation == true)
             {
                 if (smoothRotation < 180)
                 {

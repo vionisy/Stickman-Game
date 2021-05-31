@@ -48,4 +48,5 @@ MonoBehaviour:
   - TaggedPlayer
   - dead
   - UpdateHealthBar
+  - GravitationChange
   DisableAutoOpenWizard: 1

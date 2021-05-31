@@ -20,7 +20,7 @@ public class Balance : MonoBehaviour
     {
         if (!Input.GetKey(mousebutton))
         {
-            if (Input.GetKey(KeyCode.Q) && MenuController.power == 4)
+            if (PlayerController.Gravitation == true)
             {
                 if (smoothRotation < 180)
                 {

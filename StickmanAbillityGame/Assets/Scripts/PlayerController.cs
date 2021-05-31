@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
+    public static bool Gravitation = false;
     public Animator anim;
     public Rigidbody2D rb;
     public float jumpForce;
@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     public float positionRadius;
     public LayerMask ground;
     public Transform playerPos;
-    public KeyCode Key;
     public float GravitationScale = -1.5f;
     private bool direction;
     public PhotonView photonView;
@@ -55,6 +54,17 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        if (MenuController.power == 3 && photonView.isMine)
+        {
+            playerSpeed += 500;
+            jumpForce += 1000;
+            positionRadius = 0.6f;
+            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
+            foreach (Rigidbody2D RBCHILDREN in rbChildren)
+            {
+                RBCHILDREN.mass += 0.3f;
+            }
+        }
         healthbar = GameObject.FindGameObjectWithTag("OwnHealthBar").GetComponent<HelthBar>();
         Oponenthealthbar = GameObject.FindGameObjectWithTag("OponentsHealthbar").GetComponent<HelthBar>();
         currentHealth = maxHealth;
@@ -94,9 +104,14 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
+        if (MenuController.power == 3 && transform.localScale.x <= 1.6f && photonView.isMine)
+        {
+            transform.localScale += new Vector3(0.05f, 0.05f, 0.05f);
+        }
+        
         if (regenerating == true && currentHealth <= maxHealth)
         {
-            currentHealth += 0.2f;
+            currentHealth += 0.02f;
             healthbar.SetHealth(currentHealth);
             photonView.RPC("UpdateHealthBar", PhotonTargets.Others, currentHealth);
 
@@ -135,21 +150,33 @@ public class PlayerController : MonoBehaviour
 
         
     }
-
+    [PunRPC]
+    public void GravitationChange(bool theGravitation)
+    {
+        Gravitation = theGravitation;
+    }
     void KeyInput()
 
     {
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         Balance[] Balances = GetComponentsInChildren<Balance>();
-        if (Input.GetKey(Key) && MenuController.power == 4)
+        if (Input.GetKey(KeyCode.UpArrow) && MenuController.power == 4)
+        {
+            PlayerController.Gravitation = true;
+            photonView.RPC("GravitationChange", PhotonTargets.Others, Gravitation);
+        }
+        if (Input.GetKey(KeyCode.DownArrow) && MenuController.power == 4)
+        {
+            PlayerController.Gravitation = false;
+            photonView.RPC("GravitationChange", PhotonTargets.Others, Gravitation);
+        }
+        if (PlayerController.Gravitation == true)
         {
             foreach (Rigidbody2D gravitation in Gravity01)
             {
                 gravity = true;
                 gravitation.gravityScale = GravitationScale;
             }
-
-
         }
         else
         {
