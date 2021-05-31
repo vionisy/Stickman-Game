@@ -24,7 +24,7 @@ public class Balance : MonoBehaviour
             {
                 if (smoothRotation < 180)
                 {
-                    smoothRotation += 1f;
+                    smoothRotation += 0.5f;
                 }
             }
             else
@@ -32,7 +32,7 @@ public class Balance : MonoBehaviour
                 if (smoothRotation > 1)
                 {
                     
-                    smoothRotation -= 1f;
+                    smoothRotation -= 0.5f;
                 }
             }
 
