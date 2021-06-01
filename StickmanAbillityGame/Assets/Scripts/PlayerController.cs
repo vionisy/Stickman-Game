@@ -32,6 +32,9 @@ public class PlayerController : MonoBehaviour
     private bool regenerating = true;
     private int size = 0;
     public float growspeed = 0.001f;
+    private Camera cam;
+    public LineRenderer lr;
+    public Transform Hand1;
     public PlayerController(float walljumpForce)
     {
         WalljumpForce = walljumpForce;
@@ -56,7 +59,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
-
+        cam = FindObjectOfType<Camera>();
         healthbar = GameObject.FindGameObjectWithTag("OwnHealthBar").GetComponent<HelthBar>();
         Oponenthealthbar = GameObject.FindGameObjectWithTag("OponentsHealthbar").GetComponent<HelthBar>();
         currentHealth = maxHealth;
@@ -97,8 +100,41 @@ public class PlayerController : MonoBehaviour
     private bool stop = true;
     private void Update()
     {
+        if (MenuController.power == 1)
+        {
+            Vector3 mousePosition = new Vector3(cam.ScreenToWorldPoint(Input.mousePosition).x, cam.ScreenToWorldPoint(Input.mousePosition).y, 0);
+            lr.SetPosition(1, Hand1.transform.position);
+            SpringJoint2D springjoint = GetComponentInChildren<SpringJoint2D>();
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                springjoint.connectedAnchor = mousePosition;
+                lr.SetPosition(0, mousePosition);
+            }
 
-
+            if (Input.GetKey(KeyCode.Mouse0))
+            {
+                springjoint.enabled = true;
+                lr.enabled = true;
+                FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
+                foreach (FollowMouse FollowTheMouse in followMouse)
+                {
+                    FollowTheMouse.enabled = false;
+                }
+            }
+            else
+            {
+                lr.enabled = false;
+                springjoint.enabled = false;
+                FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
+                foreach (FollowMouse FollowTheMouse in followMouse)
+                {
+                    FollowTheMouse.enabled = true;
+                }
+            }
+            Vector2 transform2D = new Vector2(Hand1.transform.position.x, Hand1.transform.position.y);
+            //if (Vector2.Distance(springjoint.connectedAnchor, transform2D) <= 5 && !Input.GetKey(KeyCode.Mouse0))
+            //springjoint.enabled = false;
+        }
         if (regenerating == true && currentHealth <= maxHealth)
         {
             currentHealth += 0.02f;
@@ -182,7 +218,6 @@ public class PlayerController : MonoBehaviour
         Gravitation = theGravitation;
     }
     void KeyInput()
-
     {
         if (Input.GetKeyDown(KeyCode.Q) && MenuController.power == 3 && size != 0)
         {
