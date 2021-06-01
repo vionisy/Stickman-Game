@@ -8,6 +8,7 @@ TagManager:
   - OponentsHealthbar
   - Head
   - Chest
+  - LowerArm
   layers:
   - Default
   - TransparentFX

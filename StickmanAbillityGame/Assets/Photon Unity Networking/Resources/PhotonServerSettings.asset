@@ -50,4 +50,6 @@ MonoBehaviour:
   - UpdateHealthBar
   - GravitationChange
   - Invisibillity
+  - startGrapling
+  - stopGrapling
   DisableAutoOpenWizard: 1

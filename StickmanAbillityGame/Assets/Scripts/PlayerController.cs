@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    
     public static bool Gravitation = false;
     public Animator anim;
     public Rigidbody2D rb;
@@ -35,6 +36,9 @@ public class PlayerController : MonoBehaviour
     private Camera cam;
     public LineRenderer lr;
     public Transform Hand1;
+    public GameObject RightHand;
+    public Transform ShootingPoint;
+    private SpringJoint2D springjoint;
     public PlayerController(float walljumpForce)
     {
         WalljumpForce = walljumpForce;
@@ -59,6 +63,12 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
+        foreach (FollowMouse FollowTheMouse in followMouse)
+        {
+            FollowTheMouse.enabled = true;
+        }
+        springjoint = GetComponentInChildren<SpringJoint2D>();
         cam = FindObjectOfType<Camera>();
         healthbar = GameObject.FindGameObjectWithTag("OwnHealthBar").GetComponent<HelthBar>();
         Oponenthealthbar = GameObject.FindGameObjectWithTag("OponentsHealthbar").GetComponent<HelthBar>();
@@ -97,33 +107,54 @@ public class PlayerController : MonoBehaviour
             regenerating = true;
         }
     }
+    public void Line(Vector3 pos)
+    {
+        lr.SetPosition(0, pos);
+    }
+    public void Grapple(Vector3 pos)
+    {
+        if (photonView.isMine)
+        {
+            springjoint.connectedAnchor = pos;
+            springjoint.enabled = true;
+            
+            FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
+            foreach (FollowMouse FollowTheMouse in followMouse)
+            {
+                FollowTheMouse.enabled = false;
+            }
+        }
+    }
+    [PunRPC]
+    public void startGrapling()
+    {
+        lr.enabled = true;
+    }
+    [PunRPC]
+    public void stopGrapling()
+    {
+        lr.enabled = false;
+    }
+    private IEnumerator shoot()
+    {
+        yield return new WaitForSeconds(0.3f);
+        photonView.RPC("startGrapling", PhotonTargets.All);
+        PhotonNetwork.Instantiate(RightHand.name, ShootingPoint.position, ShootingPoint.rotation, 0);
+        //Instantiate(RightHand, ShootingPoint.position, ShootingPoint.rotation);
+    }
     private bool stop = true;
     private void Update()
     {
-        if (MenuController.power == 1)
+        lr.SetPosition(1, Hand1.transform.position);
+        if (MenuController.power == 1 && photonView.isMine)
         {
-            Vector3 mousePosition = new Vector3(cam.ScreenToWorldPoint(Input.mousePosition).x, cam.ScreenToWorldPoint(Input.mousePosition).y, 0);
-            lr.SetPosition(1, Hand1.transform.position);
-            SpringJoint2D springjoint = GetComponentInChildren<SpringJoint2D>();
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                springjoint.connectedAnchor = mousePosition;
-                lr.SetPosition(0, mousePosition);
+                StartCoroutine("shoot");
             }
-
-            if (Input.GetKey(KeyCode.Mouse0))
+            if (Input.GetKeyUp(KeyCode.Mouse0))
             {
-                springjoint.enabled = true;
-                lr.enabled = true;
-                FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
-                foreach (FollowMouse FollowTheMouse in followMouse)
-                {
-                    FollowTheMouse.enabled = false;
-                }
-            }
-            else
-            {
-                lr.enabled = false;
+                photonView.RPC("stopGrapling", PhotonTargets.All);
                 springjoint.enabled = false;
                 FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
                 foreach (FollowMouse FollowTheMouse in followMouse)
@@ -135,13 +166,12 @@ public class PlayerController : MonoBehaviour
             //if (Vector2.Distance(springjoint.connectedAnchor, transform2D) <= 5 && !Input.GetKey(KeyCode.Mouse0))
             //springjoint.enabled = false;
         }
-        if (regenerating == true && currentHealth <= maxHealth)
+        else
         {
-            currentHealth += 0.02f;
-            healthbar.SetHealth(currentHealth);
-            photonView.RPC("UpdateHealthBar", PhotonTargets.Others, currentHealth);
-
+            lr.enabled = false;
+            springjoint.enabled = false;
         }
+        
         if (currentHealth <= 0 && Dead == false)
         {
             GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().StartCoroutine("Respawn");
@@ -163,7 +193,12 @@ public class PlayerController : MonoBehaviour
     }
     void KeyInput2()
     {
-
+        if (regenerating == true && currentHealth <= maxHealth)
+        {
+            currentHealth += 0.02f;
+            healthbar.SetHealth(currentHealth);
+            photonView.RPC("UpdateHealthBar", PhotonTargets.Others, currentHealth);
+        }
         if (MenuController.power == 3 && transform.localScale.x <= 1.5f && photonView.isMine && size == 1)
         {
             transform.localScale += new Vector3(growspeed, growspeed, growspeed);
@@ -226,6 +261,11 @@ public class PlayerController : MonoBehaviour
             playerSpeed -= 500;
             jumpForce -= 1000;
             positionRadius -= 0.4f;
+            FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
+            foreach (FollowMouse FollowTheMouse in followMouse)
+            {
+                FollowTheMouse.Maxspeed -= 30;
+            }
             Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
             foreach (Rigidbody2D RBCHILDREN in rbChildren)
             {
@@ -241,6 +281,11 @@ public class PlayerController : MonoBehaviour
             playerSpeed += 500;
             jumpForce += 1000;
             positionRadius += 0.4f;
+            FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
+            foreach (FollowMouse FollowTheMouse in followMouse)
+            {
+                FollowTheMouse.Maxspeed += 30;
+            }
             Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
             foreach (Rigidbody2D RBCHILDREN in rbChildren)
             {
