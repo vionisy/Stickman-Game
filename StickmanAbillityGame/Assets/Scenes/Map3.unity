@@ -7184,7 +7184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89ea70679aa7ae849b3dc5d183f294fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SceneLoading: MainGame
+  SceneLoading: Map1
 --- !u!4 &1570760867
 Transform:
   m_ObjectHideFlags: 0
