@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
+    
+    public static bool Gravitation = false;
     public Animator anim;
     public Rigidbody2D rb;
     public float jumpForce;
@@ -14,7 +15,6 @@ public class PlayerController : MonoBehaviour
     public float positionRadius;
     public LayerMask ground;
     public Transform playerPos;
-    public KeyCode Key;
     public float GravitationScale = -1.5f;
     private bool direction;
     public PhotonView photonView;
@@ -31,6 +31,14 @@ public class PlayerController : MonoBehaviour
     public bool Dead = false;
     private bool gravity = false;
     private bool regenerating = true;
+    private int size = 0;
+    public float growspeed = 0.001f;
+    private Camera cam;
+    public LineRenderer lr;
+    public Transform Hand1;
+    public GameObject RightHand;
+    public Transform ShootingPoint;
+    private SpringJoint2D springjoint;
     public PlayerController(float walljumpForce)
     {
         WalljumpForce = walljumpForce;
@@ -38,7 +46,7 @@ public class PlayerController : MonoBehaviour
     [PunRPC]
     public void OponentHealth(float thehealths)
     {
-        Oponenthealthbar.SetHealth(thehealths);;
+        Oponenthealthbar.SetHealth(thehealths); ;
     }
     [PunRPC]
     public void Damage2(float TheDamageAmont)
@@ -55,6 +63,13 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
+        foreach (FollowMouse FollowTheMouse in followMouse)
+        {
+            FollowTheMouse.enabled = true;
+        }
+        springjoint = GetComponentInChildren<SpringJoint2D>();
+        cam = FindObjectOfType<Camera>();
         healthbar = GameObject.FindGameObjectWithTag("OwnHealthBar").GetComponent<HelthBar>();
         Oponenthealthbar = GameObject.FindGameObjectWithTag("OponentsHealthbar").GetComponent<HelthBar>();
         currentHealth = maxHealth;
@@ -92,15 +107,71 @@ public class PlayerController : MonoBehaviour
             regenerating = true;
         }
     }
+    public void Line(Vector3 pos)
+    {
+        lr.SetPosition(0, pos);
+    }
+    public void Grapple(Vector3 pos)
+    {
+        if (photonView.isMine)
+        {
+            springjoint.connectedAnchor = pos;
+            springjoint.enabled = true;
+            
+            FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
+            foreach (FollowMouse FollowTheMouse in followMouse)
+            {
+                FollowTheMouse.enabled = false;
+            }
+        }
+    }
+    [PunRPC]
+    public void startGrapling()
+    {
+        lr.enabled = true;
+    }
+    [PunRPC]
+    public void stopGrapling()
+    {
+        lr.enabled = false;
+    }
+    private IEnumerator shoot()
+    {
+        yield return new WaitForSeconds(0.3f);
+        photonView.RPC("startGrapling", PhotonTargets.All);
+        PhotonNetwork.Instantiate(RightHand.name, ShootingPoint.position, ShootingPoint.rotation, 0);
+        //Instantiate(RightHand, ShootingPoint.position, ShootingPoint.rotation);
+    }
+    private bool stop = true;
     private void Update()
     {
-        if (regenerating == true && currentHealth <= maxHealth)
+        lr.SetPosition(1, Hand1.transform.position);
+        if (MenuController.power == 1 && photonView.isMine)
         {
-            currentHealth += 0.2f;
-            healthbar.SetHealth(currentHealth);
-            photonView.RPC("UpdateHealthBar", PhotonTargets.Others, currentHealth);
-
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                StartCoroutine("shoot");
+            }
+            if (Input.GetKeyUp(KeyCode.Mouse0))
+            {
+                photonView.RPC("stopGrapling", PhotonTargets.All);
+                springjoint.enabled = false;
+                FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
+                foreach (FollowMouse FollowTheMouse in followMouse)
+                {
+                    FollowTheMouse.enabled = true;
+                }
+            }
+            Vector2 transform2D = new Vector2(Hand1.transform.position.x, Hand1.transform.position.y);
+            //if (Vector2.Distance(springjoint.connectedAnchor, transform2D) <= 5 && !Input.GetKey(KeyCode.Mouse0))
+            //springjoint.enabled = false;
         }
+        else
+        {
+            lr.enabled = false;
+            springjoint.enabled = false;
+        }
+        
         if (currentHealth <= 0 && Dead == false)
         {
             GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().StartCoroutine("Respawn");
@@ -110,6 +181,47 @@ public class PlayerController : MonoBehaviour
         if (photonView.isMine && Dead == false)
         {
             KeyInput();
+        }
+
+    }
+    private void FixedUpdate()
+    {
+        if (photonView.isMine && Dead == false)
+        {
+            KeyInput2();
+        }
+    }
+    void KeyInput2()
+    {
+        if (regenerating == true && currentHealth <= maxHealth)
+        {
+            currentHealth += 0.02f;
+            healthbar.SetHealth(currentHealth);
+            photonView.RPC("UpdateHealthBar", PhotonTargets.Others, currentHealth);
+        }
+        if (MenuController.power == 3 && transform.localScale.x <= 1.5f && photonView.isMine && size == 1)
+        {
+            transform.localScale += new Vector3(growspeed, growspeed, growspeed);
+            if (gravity == false)
+                rb.AddForce(Vector2.up * 100);
+            if (gravity == true)
+                rb.AddForce(Vector2.down * 100);
+        }
+        if (MenuController.power == 3 && transform.localScale.x > 1 && photonView.isMine && size == 0)
+        {
+            transform.localScale -= new Vector3(growspeed, growspeed, growspeed);
+            if (gravity == false)
+                rb.AddForce(Vector2.up * 100);
+            if (gravity == true)
+                rb.AddForce(Vector2.down * 100);
+        }
+        if (MenuController.power == 3 && transform.localScale.x < 1 && photonView.isMine && size == 0)
+        {
+            transform.localScale += new Vector3(growspeed, growspeed, growspeed);
+            if (gravity == false)
+                rb.AddForce(Vector2.up * 100);
+            if (gravity == true)
+                rb.AddForce(Vector2.down * 100);
         }
     }
     private IEnumerator deadbody()
@@ -133,23 +245,74 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(4);
         photonView.RPC("dead", PhotonTargets.All);
 
-        
+
     }
-
-    void KeyInput()
-
+    [PunRPC]
+    public void GravitationChange(bool theGravitation)
     {
+        Gravitation = theGravitation;
+    }
+    void KeyInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Q) && MenuController.power == 3 && size != 0)
+        {
+            size = 0;
+            stop = false;
+            playerSpeed -= 500;
+            jumpForce -= 1000;
+            positionRadius -= 0.4f;
+            FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
+            foreach (FollowMouse FollowTheMouse in followMouse)
+            {
+                FollowTheMouse.Maxspeed -= 30;
+            }
+            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
+            foreach (Rigidbody2D RBCHILDREN in rbChildren)
+            {
+                RBCHILDREN.mass -= 0.3f;
+            }
+            stop = true;
+        }
+        if (Input.GetKeyDown(KeyCode.E) && MenuController.power == 3 && size != 1)
+        {
+            rb.AddForce(Vector2.up * 6500);
+            size = 1;
+            stop = false;
+            playerSpeed += 500;
+            jumpForce += 1000;
+            positionRadius += 0.4f;
+            FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
+            foreach (FollowMouse FollowTheMouse in followMouse)
+            {
+                FollowTheMouse.Maxspeed += 30;
+            }
+            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
+            foreach (Rigidbody2D RBCHILDREN in rbChildren)
+            {
+                RBCHILDREN.mass += 0.3f;
+            }
+            stop = true;
+
+        }
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         Balance[] Balances = GetComponentsInChildren<Balance>();
-        if (Input.GetKey(Key) && MenuController.power == 4)
+        if (Input.GetKey(KeyCode.UpArrow) && MenuController.power == 4)
+        {
+            PlayerController.Gravitation = true;
+            photonView.RPC("GravitationChange", PhotonTargets.Others, Gravitation);
+        }
+        if (Input.GetKey(KeyCode.DownArrow) && MenuController.power == 4)
+        {
+            PlayerController.Gravitation = false;
+            photonView.RPC("GravitationChange", PhotonTargets.Others, Gravitation);
+        }
+        if (PlayerController.Gravitation == true)
         {
             foreach (Rigidbody2D gravitation in Gravity01)
             {
                 gravity = true;
                 gravitation.gravityScale = GravitationScale;
             }
-
-
         }
         else
         {
@@ -261,7 +424,27 @@ public class PlayerController : MonoBehaviour
             direction = true;
         }
 
+        if (MenuController.power == 2)
+        {
+            SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer theTransparency in Transparency)
+            {
+                theTransparency.color = new Color(0f, 0f, 0f, 1f);
+            }
 
+            photonView.RPC("Invisibillity", PhotonTargets.Others);
+        }
+
+    }
+    
+    [PunRPC]
+    public void Invisibillity()
+    {
+        SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer theTransparency in Transparency)
+        {
+            theTransparency.color = new Color(1f, 1f, 1f, 0f);
+        }
     }
 
 

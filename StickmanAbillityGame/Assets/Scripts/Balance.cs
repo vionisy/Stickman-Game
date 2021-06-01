@@ -16,15 +16,15 @@ public class Balance : MonoBehaviour
         force = 0;
         Debug.Log("stop");
     }
-    public void Update()
+    public void FixedUpdate()
     {
         if (!Input.GetKey(mousebutton))
         {
-            if (Input.GetKey(KeyCode.Q) && MenuController.power == 4)
+            if (PlayerController.Gravitation == true)
             {
                 if (smoothRotation < 180)
                 {
-                    smoothRotation += 1f;
+                    smoothRotation += 2f;
                 }
             }
             else
@@ -32,7 +32,7 @@ public class Balance : MonoBehaviour
                 if (smoothRotation > 1)
                 {
                     
-                    smoothRotation -= 1f;
+                    smoothRotation -= 2f;
                 }
             }
 

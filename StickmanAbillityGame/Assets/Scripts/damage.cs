@@ -13,6 +13,7 @@ public class damage : MonoBehaviour
     public PhotonView photonView;
     private StressReceiver camerashake;
     public Transform Hand;
+    public float multiplyer = 1;
     private void Start()
     {
         camerashake = FindObjectOfType<Camera>().GetComponent<StressReceiver>();
@@ -30,6 +31,7 @@ public class damage : MonoBehaviour
             if (Input.GetKey(mousebutton) && collision.gameObject.tag != "LowerArm" || collision.gameObject.tag != "LowerArm(1)")
             {
                 speed -= 10;
+                speed *= multiplyer;
                 if (speed >= 30 && collision.gameObject.GetComponentInParent<PlayerController>())
                 {
                     Debug.Log("CameraShake");
