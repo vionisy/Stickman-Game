@@ -26,7 +26,12 @@ public class fligh : MonoBehaviour
                 GetComponent<FixedJoint2D>().connectedBody = collision.gameObject.GetComponent<Rigidbody2D>();
                 photonView.RPC("connectRigidbody", PhotonTargets.Others, collision.gameObject.GetComponent<Rigidbody2D>());
             }
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().Grapple(transform.position, GetComponent<Rigidbody2D>());
+            GameObject[] player = GameObject.FindGameObjectsWithTag("Player");
+            foreach(GameObject PLAYER in player)
+            {
+                if (PLAYER.GetComponent<PlayerController>().photonView.isMine)
+                    PLAYER.GetComponent<PlayerController>().Grapple(transform.position, GetComponent<Rigidbody2D>());
+            }
         }
     }
     [PunRPC]
@@ -38,11 +43,6 @@ public class fligh : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         
-    }
-    [PunRPC]
-    public void stopGrapling()
-    {
-        Destroy(gameObject);
     }
     private void Update()
     {
@@ -56,6 +56,6 @@ public class fligh : MonoBehaviour
         //if ()
         //player.Line(transform.position);
         if (Input.GetKeyUp(KeyCode.Mouse0) && MenuController.power == 1)
-            photonView.RPC("stopGrapling", PhotonTargets.All);
+            PhotonNetwork.Destroy(gameObject);
     }
 }

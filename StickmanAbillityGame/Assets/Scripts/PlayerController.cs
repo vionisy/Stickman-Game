@@ -120,16 +120,16 @@ public class PlayerController : MonoBehaviour
     }
     public void Grapple(Vector3 pos, Rigidbody2D RB)
     {
-        if (RB)
-            springjoint.connectedBody = RB;
-        else
-            springjoint.connectedBody = null;
-        if (photonView.isMine)
+        if (MenuController.power == 1 &&  photonView.isMine)
         {
+            springjoint.connectedBody = RB;
             springjoint.connectedAnchor = pos;
             springjoint.enabled = true;
-            GameObject.FindGameObjectWithTag("LowerArm").GetComponent<FollowMouse>().enabled = false;
-            GameObject.FindGameObjectWithTag("UpperArm").GetComponent<FollowMouse>().enabled = false;
+            if (MenuController.power == 1 && photonView.isMine)
+            {
+                GameObject.FindGameObjectWithTag("LowerArm").GetComponent<FollowMouse>().enabled = false;
+                GameObject.FindGameObjectWithTag("UpperArm").GetComponent<FollowMouse>().enabled = false;
+            }
         }
     }
     [PunRPC]
@@ -147,6 +147,7 @@ public class PlayerController : MonoBehaviour
     }
     private IEnumerator shoot()
     {
+
         yield return new WaitForSeconds(0.3f);
         PhotonNetwork.Instantiate(RightHand.name, ShootingPoint.position, ShootingPoint.rotation, 0);
         photonView.RPC("startGrapling", PhotonTargets.All);
@@ -179,7 +180,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             //lr.enabled = false;
-            springjoint.enabled = false;
+            //springjoint.enabled = false;
         }
         
         if (currentHealth <= 0 && Dead == false)

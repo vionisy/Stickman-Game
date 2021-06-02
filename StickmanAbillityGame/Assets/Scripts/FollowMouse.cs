@@ -14,6 +14,7 @@ public class FollowMouse : MonoBehaviour
 
     private void Awake()
     {
+        playerController = GetComponentInParent<PlayerController>();
         cam = FindObjectOfType<Camera>();
     }
 
