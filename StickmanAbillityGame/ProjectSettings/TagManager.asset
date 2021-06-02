@@ -9,6 +9,8 @@ TagManager:
   - Head
   - Chest
   - LowerArm
+  - UpperArm
+  - RightFist
   layers:
   - Default
   - TransparentFX

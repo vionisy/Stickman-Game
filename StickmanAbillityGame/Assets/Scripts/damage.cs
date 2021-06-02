@@ -58,7 +58,6 @@ public class damage : MonoBehaviour
         Collider2D[] objects = Physics2D.OverlapCircleAll(Hand.transform.position, fieldofImpact, LayerToHit);
         foreach (Collider2D obj in objects)
         {
-            Debug.Log("Knockback");
             Vector2 direction = obj.transform.position - Hand.transform.position;
             obj.GetComponent<Rigidbody2D>().AddForce(direction * (speed * 3));
         }
