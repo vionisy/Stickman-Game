@@ -52,4 +52,6 @@ MonoBehaviour:
   - Invisibillity
   - startGrapling
   - stopGrapling
+  - Line2
+  - connectRigidbody
   DisableAutoOpenWizard: 1

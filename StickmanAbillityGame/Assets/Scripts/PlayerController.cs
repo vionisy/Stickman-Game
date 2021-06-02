@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     public Transform Hand1;
     public GameObject RightHand;
     public Transform ShootingPoint;
-    private SpringJoint2D springjoint;
+    public SpringJoint2D springjoint;
     public PlayerController(float walljumpForce)
     {
         WalljumpForce = walljumpForce;
@@ -63,6 +63,8 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        springjoint.enabled = false;
+        lr.enabled = false;
         FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
         foreach (FollowMouse FollowTheMouse in followMouse)
         {
@@ -107,44 +109,55 @@ public class PlayerController : MonoBehaviour
             regenerating = true;
         }
     }
-    public void Line(Vector3 pos)
+    [PunRPC]
+    public void Line2(Vector3 pos)
     {
         lr.SetPosition(0, pos);
     }
-    public void Grapple(Vector3 pos)
+    public void Line(Vector3 pos)
     {
+        photonView.RPC("Line2", PhotonTargets.All, pos);
+    }
+    public void Grapple(Vector3 pos, Rigidbody2D RB)
+    {
+        if (RB)
+            springjoint.connectedBody = RB;
+        else
+            springjoint.connectedBody = null;
         if (photonView.isMine)
         {
             springjoint.connectedAnchor = pos;
             springjoint.enabled = true;
-            
-            FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
-            foreach (FollowMouse FollowTheMouse in followMouse)
-            {
-                FollowTheMouse.enabled = false;
-            }
+            GameObject.FindGameObjectWithTag("LowerArm").GetComponent<FollowMouse>().enabled = false;
+            GameObject.FindGameObjectWithTag("UpperArm").GetComponent<FollowMouse>().enabled = false;
         }
     }
     [PunRPC]
     public void startGrapling()
     {
+        Debug.Log("Start");
         lr.enabled = true;
+        
     }
     [PunRPC]
     public void stopGrapling()
     {
+        Debug.Log("Stop");
         lr.enabled = false;
     }
     private IEnumerator shoot()
     {
         yield return new WaitForSeconds(0.3f);
-        photonView.RPC("startGrapling", PhotonTargets.All);
         PhotonNetwork.Instantiate(RightHand.name, ShootingPoint.position, ShootingPoint.rotation, 0);
+        photonView.RPC("startGrapling", PhotonTargets.All);
         //Instantiate(RightHand, ShootingPoint.position, ShootingPoint.rotation);
     }
     private bool stop = true;
     private void Update()
     {
+        
+        if (lr.enabled == true && GameObject.FindGameObjectWithTag("RightFist"))
+            lr.SetPosition(0, GameObject.FindGameObjectWithTag("RightFist").transform.position);
         lr.SetPosition(1, Hand1.transform.position);
         if (MenuController.power == 1 && photonView.isMine)
         {
@@ -156,11 +169,8 @@ public class PlayerController : MonoBehaviour
             {
                 photonView.RPC("stopGrapling", PhotonTargets.All);
                 springjoint.enabled = false;
-                FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
-                foreach (FollowMouse FollowTheMouse in followMouse)
-                {
-                    FollowTheMouse.enabled = true;
-                }
+                GameObject.FindGameObjectWithTag("LowerArm").GetComponent<FollowMouse>().enabled = true;
+                GameObject.FindGameObjectWithTag("UpperArm").GetComponent<FollowMouse>().enabled = true;
             }
             Vector2 transform2D = new Vector2(Hand1.transform.position.x, Hand1.transform.position.y);
             //if (Vector2.Distance(springjoint.connectedAnchor, transform2D) <= 5 && !Input.GetKey(KeyCode.Mouse0))
@@ -168,7 +178,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            lr.enabled = false;
+            //lr.enabled = false;
             springjoint.enabled = false;
         }
         

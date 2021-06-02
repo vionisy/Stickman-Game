@@ -2088,7 +2088,7 @@ SpringJoint2D:
   m_GameObject: {fileID: 8557466016671340952}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 1
+  m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -2097,8 +2097,8 @@ SpringJoint2D:
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 0
   m_Distance: 0.005
-  m_DampingRatio: 1
-  m_Frequency: 1
+  m_DampingRatio: 0
+  m_Frequency: 2
 --- !u!120 &3761655182834493185
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -2150,7 +2150,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.3773564
+        value: 0.33962142
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -2278,6 +2278,7 @@ MonoBehaviour:
   Hand1: {fileID: 7408628593774938163}
   RightHand: {fileID: 1134203564179881637, guid: fc1c9d4fbbf8cb849a910b101172861d, type: 3}
   ShootingPoint: {fileID: 2325397411218649364}
+  springjoint: {fileID: 1340846660254910250}
 --- !u!114 &11848969078165954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2965,7 +2966,7 @@ GameObject:
   - component: {fileID: 8068613404642404196}
   m_Layer: 11
   m_Name: RightUpperArm
-  m_TagString: Untagged
+  m_TagString: UpperArm
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
