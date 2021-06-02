@@ -2273,7 +2273,8 @@ MonoBehaviour:
   playerPos2: {fileID: 4163200002956640569}
   WalljumpForce: 2000
   maxHealth: 150
-  growspeed: 0.01
+  Dead: 0
+  growspeed: 0.0025
   lr: {fileID: 3761655182834493185}
   Hand1: {fileID: 7408628593774938163}
   RightHand: {fileID: 1134203564179881637, guid: fc1c9d4fbbf8cb849a910b101172861d, type: 3}

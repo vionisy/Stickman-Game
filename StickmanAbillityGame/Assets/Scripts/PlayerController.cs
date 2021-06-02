@@ -213,26 +213,18 @@ public class PlayerController : MonoBehaviour
         if (MenuController.power == 3 && transform.localScale.x <= 1.5f && photonView.isMine && size == 1)
         {
             transform.localScale += new Vector3(growspeed, growspeed, growspeed);
-            if (gravity == false)
-                rb.AddForce(Vector2.up * 100);
-            if (gravity == true)
-                rb.AddForce(Vector2.down * 100);
         }
         if (MenuController.power == 3 && transform.localScale.x > 1 && photonView.isMine && size == 0)
         {
             transform.localScale -= new Vector3(growspeed, growspeed, growspeed);
-            if (gravity == false)
-                rb.AddForce(Vector2.up * 100);
-            if (gravity == true)
-                rb.AddForce(Vector2.down * 100);
         }
         if (MenuController.power == 3 && transform.localScale.x < 1 && photonView.isMine && size == 0)
         {
             transform.localScale += new Vector3(growspeed, growspeed, growspeed);
-            if (gravity == false)
-                rb.AddForce(Vector2.up * 100);
-            if (gravity == true)
-                rb.AddForce(Vector2.down * 100);
+        }
+        if (MenuController.power == 3 && transform.localScale.x > 0.5f && photonView.isMine && size == -1)
+        {
+            transform.localScale -= new Vector3(growspeed, growspeed, growspeed);
         }
     }
     private IEnumerator deadbody()
@@ -267,6 +259,11 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q) && MenuController.power == 3 && size != 0)
         {
+            damage[] dammage = GetComponentsInChildren<damage>();
+            foreach (damage DAMAGE in dammage)
+            {
+                DAMAGE.multiplyer = 1;
+            }
             size = 0;
             stop = false;
             playerSpeed -= 500;
@@ -286,7 +283,11 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.E) && MenuController.power == 3 && size != 1)
         {
-            rb.AddForce(Vector2.up * 6500);
+            damage[] dammage = GetComponentsInChildren<damage>();
+            foreach (damage DAMAGE in dammage)
+            {
+                DAMAGE.multiplyer = 1;
+            }
             size = 1;
             stop = false;
             playerSpeed += 500;
@@ -303,7 +304,18 @@ public class PlayerController : MonoBehaviour
                 RBCHILDREN.mass += 0.3f;
             }
             stop = true;
-
+        }
+        if (Input.GetKeyDown(KeyCode.R) && MenuController.power == 3 && size != -1)
+        {
+            damage[] dammage = GetComponentsInChildren<damage>();
+            foreach (damage DAMAGE in dammage)
+            {
+                DAMAGE.multiplyer = 5;
+            }
+            size = -1;
+            stop = false;
+            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
+            stop = true;
         }
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         Balance[] Balances = GetComponentsInChildren<Balance>();
