@@ -10,6 +10,7 @@ public class FollowMouse : MonoBehaviour
     public Camera cam;
     public KeyCode mousebutton;
     public PhotonView photonView;
+    private PlayerController playerController;
 
     private void Awake()
     {
@@ -43,7 +44,15 @@ public class FollowMouse : MonoBehaviour
             }
         }
     
-        
+        if(playerController.Dead == true)
+        {
+            speed = 0;
+        }
+        else if(playerController.Dead == false)
+        {
+            speed = 300;
+        }
+
     
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class MenuController : MonoBehaviour
 {
     [SerializeField] private string VersionName = "0.1";
@@ -81,6 +82,6 @@ public class MenuController : MonoBehaviour
 
     private void OnJoinedRoom()
     {
-        PhotonNetwork.LoadLevel("MainGame");
+        PhotonNetwork.LoadLevel("Map1");
     }
 }

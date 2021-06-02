@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     private float currentHealth;
     private HelthBar healthbar;
     private HelthBar Oponenthealthbar;
-    private bool Dead = false;
+    public bool Dead = false;
     private bool gravity = false;
     private bool regenerating = true;
     private int size = 0;
