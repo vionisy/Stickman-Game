@@ -15,7 +15,7 @@ public class MapSwitcher : MonoBehaviour
         if (Input.GetKey("p"))
         {
 
-            SceneManager.LoadScene(SceneLoading);
+            PhotonNetwork.LoadLevel(SceneLoading);
 
         }
     }
