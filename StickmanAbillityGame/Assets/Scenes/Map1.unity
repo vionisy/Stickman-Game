@@ -442,7 +442,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b44606d2783ba47970cba0aa8ee0ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  everyoneCanSee: 1
   slider: {fileID: 51187717}
   gradient:
     serializedVersion: 2
@@ -1031,7 +1030,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &353400854
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1407,11 +1406,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6310321030382712480, guid: 81c810f35e02f0f4389e8250a376a781, type: 3}
       propertyPath: m_Name
-      value: HealthBarOponent
+      value: EnergyBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 6310321030382712480, guid: 81c810f35e02f0f4389e8250a376a781, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6310321030382712480, guid: 81c810f35e02f0f4389e8250a376a781, type: 3}
       propertyPath: m_TagString
-      value: OponentsHealthbar
+      value: EnergyBar
       objectReference: {fileID: 0}
     - target: {fileID: 6310321030382712481, guid: 81c810f35e02f0f4389e8250a376a781, type: 3}
       propertyPath: m_Pivot.x
@@ -1521,6 +1524,18 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6310321030934911811, guid: 81c810f35e02f0f4389e8250a376a781, type: 3}
+      propertyPath: m_Color.b
+      value: 0.19922031
+      objectReference: {fileID: 0}
+    - target: {fileID: 6310321030934911811, guid: 81c810f35e02f0f4389e8250a376a781, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6310321030934911811, guid: 81c810f35e02f0f4389e8250a376a781, type: 3}
+      propertyPath: m_Color.r
+      value: 0.31132078
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6310321030382712483, guid: 81c810f35e02f0f4389e8250a376a781, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 81c810f35e02f0f4389e8250a376a781, type: 3}
@@ -1595,12 +1610,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b44606d2783ba47970cba0aa8ee0ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  everyoneCanSee: 1
   slider: {fileID: 542912745}
   gradient:
     serializedVersion: 2
-    key0: {r: 1, g: 0, b: 0, a: 1}
-    key1: {r: 1, g: 0.9957261, b: 0, a: 1}
+    key0: {r: 0.509434, g: 0, b: 0.44321942, a: 1}
+    key1: {r: 0.3962264, g: 0, b: 0.30367032, a: 1}
     key2: {r: 0, g: 1, b: 0.23427343, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -1608,7 +1622,7 @@ MonoBehaviour:
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 31226
+    ctime1: 65535
     ctime2: 65535
     ctime3: 0
     ctime4: 0
@@ -1616,7 +1630,7 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 65535
+    atime1: 65342
     atime2: 0
     atime3: 0
     atime4: 0
@@ -1624,7 +1638,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 3
+    m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   fill: {fileID: 542912743}
   self: {fileID: 542912744}
