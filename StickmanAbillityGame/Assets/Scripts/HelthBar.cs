@@ -24,4 +24,11 @@ public class HelthBar : MonoBehaviour
         slider.value = health;
         fill.color = gradient.Evaluate(slider.normalizedValue);
     }
+    public void Update()
+    {
+        if (MenuController.power == 2)
+        {
+            
+        }
+    }
 }
