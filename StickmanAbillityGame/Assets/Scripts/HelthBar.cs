@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class HelthBar : MonoBehaviour
 {
-    public bool everyoneCanSee = false;
     public Slider slider;
     public Gradient gradient;
     public Image fill;
@@ -13,10 +12,6 @@ public class HelthBar : MonoBehaviour
     public PhotonView photonView;
     private void Start()
     {
-        if (everyoneCanSee == false && !photonView.isMine)
-        {
-            self.SetActive(false);
-        }
     }
     public void SetMaxHealth(float health)
     {

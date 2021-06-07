@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    
+    public float maxEnergy = 100;
+    private float currentEnergy;
     public static bool Gravitation = false;
     public Animator anim;
     public Rigidbody2D rb;
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     public float maxHealth = 100;
     private float currentHealth;
     private HelthBar healthbar;
+    private HelthBar energybar;
     private HelthBar Oponenthealthbar;
     public bool Dead = false;
     private bool gravity = false;
@@ -39,6 +41,10 @@ public class PlayerController : MonoBehaviour
     public GameObject RightHand;
     public Transform ShootingPoint;
     public SpringJoint2D springjoint;
+    public Transform ShootingPoint2;
+    public GameObject GravityBall;
+    public float firerate = 0.2f;
+    private bool readytofire = true;
     public PlayerController(float walljumpForce)
     {
         WalljumpForce = walljumpForce;
@@ -46,7 +52,8 @@ public class PlayerController : MonoBehaviour
     [PunRPC]
     public void OponentHealth(float thehealths)
     {
-        Oponenthealthbar.SetHealth(thehealths); ;
+        if (Oponenthealthbar)
+            Oponenthealthbar.SetHealth(thehealths); ;
     }
     [PunRPC]
     public void Damage2(float TheDamageAmont)
@@ -63,6 +70,8 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        currentEnergy = maxEnergy;
+        readytofire = true;
         springjoint.enabled = false;
         lr.enabled = false;
         FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
@@ -73,10 +82,25 @@ public class PlayerController : MonoBehaviour
         springjoint = GetComponentInChildren<SpringJoint2D>();
         cam = FindObjectOfType<Camera>();
         healthbar = GameObject.FindGameObjectWithTag("OwnHealthBar").GetComponent<HelthBar>();
-        Oponenthealthbar = GameObject.FindGameObjectWithTag("OponentsHealthbar").GetComponent<HelthBar>();
+        energybar = GameObject.FindGameObjectWithTag("EnergyBar").GetComponent<HelthBar>();
+        GameObject[] oponenthealthbars = GameObject.FindGameObjectsWithTag("OponentsHealthbar");
+        energybar.SetMaxHealth(maxEnergy);
+        foreach (GameObject thehealth in oponenthealthbars)
+        {
+            if (!thehealth.GetComponent<PhotonView>().isMine)
+            {
+                Oponenthealthbar = thehealth.GetComponent<HelthBar>();
+                thehealth.SetActive(true);
+            }
+            else
+            {
+                thehealth.SetActive(false);
+            }
+        }
         currentHealth = maxHealth;
         healthbar.SetMaxHealth(maxHealth);
-        Oponenthealthbar.SetMaxHealth(maxHealth);
+        if (Oponenthealthbar)
+            Oponenthealthbar.SetMaxHealth(maxHealth);
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         SaveJumpForce = jumpForce;
         if (!photonView.isMine)
@@ -92,7 +116,8 @@ public class PlayerController : MonoBehaviour
     [PunRPC]
     public void UpdateHealthBar(float theHealth)
     {
-        Oponenthealthbar.SetHealth(theHealth);
+        if (Oponenthealthbar)
+            Oponenthealthbar.SetHealth(theHealth);
     }
     [PunRPC]
     public void dead()
@@ -118,6 +143,11 @@ public class PlayerController : MonoBehaviour
     {
         photonView.RPC("Line2", PhotonTargets.All, pos);
     }
+    public void loseEnergy(float amount)
+    {
+        if (currentEnergy >= 0)
+            currentEnergy -= amount;
+    }
     public void Grapple(Vector3 pos, Rigidbody2D RB)
     {
         if (MenuController.power == 1 &&  photonView.isMine)
@@ -137,7 +167,6 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Start");
         lr.enabled = true;
-        
     }
     [PunRPC]
     public void stopGrapling()
@@ -148,15 +177,26 @@ public class PlayerController : MonoBehaviour
     private IEnumerator shoot()
     {
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.35f);
         PhotonNetwork.Instantiate(RightHand.name, ShootingPoint.position, ShootingPoint.rotation, 0);
         photonView.RPC("startGrapling", PhotonTargets.All);
         //Instantiate(RightHand, ShootingPoint.position, ShootingPoint.rotation);
+    }
+    private void shootGravityBall()
+    {
+        PhotonNetwork.Instantiate(GravityBall.name, ShootingPoint2.position, ShootingPoint.rotation, 0);
+    }
+    
+    private IEnumerator FireRate()
+    {
+        yield return new WaitForSeconds(firerate);
+        readytofire = true;
     }
     private bool stop = true;
     private void Update()
     {
         
+        energybar.SetHealth(currentEnergy);
         if (lr.enabled == true && GameObject.FindGameObjectWithTag("RightFist"))
             lr.SetPosition(0, GameObject.FindGameObjectWithTag("RightFist").transform.position);
         lr.SetPosition(1, Hand1.transform.position);
@@ -204,6 +244,8 @@ public class PlayerController : MonoBehaviour
     }
     void KeyInput2()
     {
+        if (currentEnergy <= maxEnergy)
+            currentEnergy += 0.07f;
         if (regenerating == true && currentHealth <= maxHealth)
         {
             currentHealth += 0.02f;
@@ -222,7 +264,7 @@ public class PlayerController : MonoBehaviour
         {
             transform.localScale += new Vector3(growspeed, growspeed, growspeed);
         }
-        if (MenuController.power == 3 && transform.localScale.x > 0.5f && photonView.isMine && size == -1)
+        if (MenuController.power == 3 && transform.localScale.x > 0.6f && photonView.isMine && size == -1)
         {
             transform.localScale -= new Vector3(growspeed, growspeed, growspeed);
         }
@@ -257,7 +299,7 @@ public class PlayerController : MonoBehaviour
     }
     void KeyInput()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && MenuController.power == 3 && size != 0)
+        if (Input.GetKeyDown(KeyCode.Q) && MenuController.power == 3 && size != 0 && size != -1)
         {
             damage[] dammage = GetComponentsInChildren<damage>();
             foreach (damage DAMAGE in dammage)
@@ -281,7 +323,18 @@ public class PlayerController : MonoBehaviour
             }
             stop = true;
         }
-        if (Input.GetKeyDown(KeyCode.E) && MenuController.power == 3 && size != 1)
+        if (Input.GetKeyDown(KeyCode.Q) && MenuController.power == 3&& size == -1)
+        {
+            damage[] dammage = GetComponentsInChildren<damage>();
+            foreach (damage DAMAGE in dammage)
+            {
+                DAMAGE.multiplyer = 1;
+            }
+            size = 0;
+            stop = false;
+            stop = true;
+        }
+        if (Input.GetKeyDown(KeyCode.E) && MenuController.power == 3 && size != 1 && currentEnergy >= 100)
         {
             damage[] dammage = GetComponentsInChildren<damage>();
             foreach (damage DAMAGE in dammage)
@@ -304,18 +357,20 @@ public class PlayerController : MonoBehaviour
                 RBCHILDREN.mass += 0.3f;
             }
             stop = true;
+            loseEnergy(100);
         }
-        if (Input.GetKeyDown(KeyCode.R) && MenuController.power == 3 && size != -1)
+        if (Input.GetKeyDown(KeyCode.R) && MenuController.power == 3 && size != -1 && currentEnergy >= 100)
         {
             damage[] dammage = GetComponentsInChildren<damage>();
             foreach (damage DAMAGE in dammage)
             {
-                DAMAGE.multiplyer = 5;
+                DAMAGE.multiplyer = 3;
             }
             size = -1;
             stop = false;
             Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
             stop = true;
+            loseEnergy(100);
         }
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         Balance[] Balances = GetComponentsInChildren<Balance>();
@@ -328,6 +383,13 @@ public class PlayerController : MonoBehaviour
         {
             PlayerController.Gravitation = false;
             photonView.RPC("GravitationChange", PhotonTargets.Others, Gravitation);
+        }
+        if (Input.GetKey(KeyCode.E) && MenuController.power == 4 && readytofire == true && currentEnergy >= 50)
+        {
+            loseEnergy(50);
+            shootGravityBall();
+            StartCoroutine("FireRate");
+            readytofire = false;
         }
         if (PlayerController.Gravitation == true)
         {

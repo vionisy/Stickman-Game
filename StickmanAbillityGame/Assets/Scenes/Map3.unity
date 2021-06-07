@@ -5272,6 +5272,10 @@ PrefabInstance:
       value: HealthBarOponent
       objectReference: {fileID: 0}
     - target: {fileID: 6310321030382712480, guid: 81c810f35e02f0f4389e8250a376a781, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6310321030382712480, guid: 81c810f35e02f0f4389e8250a376a781, type: 3}
       propertyPath: m_TagString
       value: OponentsHealthbar
       objectReference: {fileID: 0}
@@ -5373,11 +5377,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6310321030934911810, guid: 81c810f35e02f0f4389e8250a376a781, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6310321030934911810, guid: 81c810f35e02f0f4389e8250a376a781, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6310321030934911810, guid: 81c810f35e02f0f4389e8250a376a781, type: 3}
       propertyPath: m_AnchorMin.x
