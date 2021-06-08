@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 939e025945e150843b4abd9e74c7983f, type: 3}
-  m_Color: {r: 0.16037738, g: 0.02950339, b: 0.1322855, a: 1}
+  m_Color: {r: 0.3301887, g: 0.11681204, b: 0.284927, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -244,3 +244,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 50
   rb: {fileID: 958240765920067217}
+  gravityfield: {fileID: 4152133723385582115, guid: 11b3fce563971cd488d67ecbdbd2d295, type: 3}

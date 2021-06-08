@@ -2282,7 +2282,7 @@ MonoBehaviour:
   mousebutton: 0
   photonView: {fileID: 918374086884013362}
   Hand: {fileID: 7408628593774938163}
-  multiplyer: 1
+  multiplyer: 5
 --- !u!231 &1340846660254910250
 SpringJoint2D:
   m_ObjectHideFlags: 0
@@ -2477,7 +2477,7 @@ MonoBehaviour:
   playerPos1: {fileID: 9174321070184925175}
   playerPos2: {fileID: 4163200002956640569}
   WalljumpForce: 2000
-  maxHealth: 150
+  maxHealth: 1000
   Dead: 0
   growspeed: 0.002
   lr: {fileID: 3761655182834493185}
