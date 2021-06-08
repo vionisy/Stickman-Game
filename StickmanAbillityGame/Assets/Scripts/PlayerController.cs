@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject leftarm;
     public float maxEnergy = 100;
     private float currentEnergy;
     public static bool Gravitation = false;
@@ -45,6 +46,8 @@ public class PlayerController : MonoBehaviour
     public GameObject GravityBall;
     public float firerate = 0.2f;
     private bool readytofire = true;
+    private bool sizeBackToNormal = false;
+    private bool leftarmsize = false;
     public PlayerController(float walljumpForce)
     {
         WalljumpForce = walljumpForce;
@@ -68,8 +71,17 @@ public class PlayerController : MonoBehaviour
         if (!photonView.isMine)
             photonView.RPC("Damage2", PhotonTargets.Others, damageamount);
     }
+    [PunRPC]
+    public void hidehealthbar()
+    {
+        GetComponentInChildren<HelthBar>().gameObject.SetActive(false);
+    }
     private void Start()
     {
+        if (MenuController.power == 3 && photonView.isMine)
+            maxEnergy += 50;
+        if (MenuController.power == 2)
+            photonView.RPC("hidehealthbar", PhotonTargets.Others);
         currentEnergy = maxEnergy;
         readytofire = true;
         springjoint.enabled = false;
@@ -134,6 +146,12 @@ public class PlayerController : MonoBehaviour
             regenerating = true;
         }
     }
+    private IEnumerator leftarmgrow()
+    {
+        leftarmsize = true;
+        yield return new WaitForSeconds(15);
+        leftarmsize = false;
+    }
     [PunRPC]
     public void Line2(Vector3 pos)
     {
@@ -195,7 +213,6 @@ public class PlayerController : MonoBehaviour
     private bool stop = true;
     private void Update()
     {
-        
         energybar.SetHealth(currentEnergy);
         if (lr.enabled == true && GameObject.FindGameObjectWithTag("RightFist"))
             lr.SetPosition(0, GameObject.FindGameObjectWithTag("RightFist").transform.position);
@@ -244,6 +261,18 @@ public class PlayerController : MonoBehaviour
     }
     void KeyInput2()
     {
+        Vector3 Leftarmsscale = leftarm.transform.localScale;
+        if (leftarmsize == false && Leftarmsscale.y >= 0.4871715)
+        {
+            leftarm.transform.localScale -= new Vector3(0, 0.01f, 0);
+            leftarm.GetComponent<damage>().multiplyer = 1;
+        } 
+        if (leftarmsize == true && Leftarmsscale.y <= 1)
+        {
+            leftarm.GetComponent<damage>().multiplyer = 1.5f;
+            leftarm.transform.localScale += new Vector3(0, 0.01f, 0);
+            Debug.Log(Leftarmsscale.y);
+        } 
         if (currentEnergy <= maxEnergy)
             currentEnergy += 0.07f;
         if (regenerating == true && currentHealth <= maxHealth)
@@ -292,6 +321,11 @@ public class PlayerController : MonoBehaviour
 
 
     }
+    private IEnumerator sizeBack()
+    {
+        yield return new WaitForSeconds(20);
+        sizeBackToNormal = true;
+    }
     [PunRPC]
     public void GravitationChange(bool theGravitation)
     {
@@ -299,7 +333,12 @@ public class PlayerController : MonoBehaviour
     }
     void KeyInput()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && MenuController.power == 3 && size != 0 && size != -1)
+        if (MenuController.power == 1 && Input.GetKeyDown(KeyCode.E) && currentEnergy >= maxEnergy)
+        {
+            StartCoroutine("leftarmgrow");
+            currentEnergy = 0;
+        }
+        if (sizeBackToNormal == true && MenuController.power == 3 && size != 0 && size != -1)
         {
             damage[] dammage = GetComponentsInChildren<damage>();
             foreach (damage DAMAGE in dammage)
@@ -322,8 +361,9 @@ public class PlayerController : MonoBehaviour
                 RBCHILDREN.mass -= 0.3f;
             }
             stop = true;
+            sizeBackToNormal = false;
         }
-        if (Input.GetKeyDown(KeyCode.Q) && MenuController.power == 3&& size == -1)
+        if (sizeBackToNormal == true && MenuController.power == 3&& size == -1)
         {
             damage[] dammage = GetComponentsInChildren<damage>();
             foreach (damage DAMAGE in dammage)
@@ -333,8 +373,9 @@ public class PlayerController : MonoBehaviour
             size = 0;
             stop = false;
             stop = true;
+            sizeBackToNormal = false;
         }
-        if (Input.GetKeyDown(KeyCode.E) && MenuController.power == 3 && size != 1 && currentEnergy >= 100)
+        if (Input.GetKeyDown(KeyCode.E) && MenuController.power == 3 && size != 1 && currentEnergy >= maxEnergy)
         {
             damage[] dammage = GetComponentsInChildren<damage>();
             foreach (damage DAMAGE in dammage)
@@ -357,20 +398,22 @@ public class PlayerController : MonoBehaviour
                 RBCHILDREN.mass += 0.3f;
             }
             stop = true;
-            loseEnergy(100);
+            loseEnergy(maxEnergy);
+            StartCoroutine("sizeBack");
         }
-        if (Input.GetKeyDown(KeyCode.R) && MenuController.power == 3 && size != -1 && currentEnergy >= 100)
+        if (Input.GetKeyDown(KeyCode.Q) && MenuController.power == 3 && size != -1 && currentEnergy >= maxEnergy)
         {
             damage[] dammage = GetComponentsInChildren<damage>();
             foreach (damage DAMAGE in dammage)
             {
-                DAMAGE.multiplyer = 3;
+                DAMAGE.multiplyer = 2;
             }
             size = -1;
             stop = false;
             Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
             stop = true;
-            loseEnergy(100);
+            loseEnergy(maxEnergy);
+            StartCoroutine("sizeBack");
         }
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         Balance[] Balances = GetComponentsInChildren<Balance>();

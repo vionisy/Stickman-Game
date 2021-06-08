@@ -23,14 +23,15 @@ public class Gravityfield : MonoBehaviour
         foreach (Collider2D obj in objects)
         {
             if (obj.GetComponentInParent<PlayerController>())
-                obj.GetComponentInParent<PlayerController>().Damage2(0.02f);
+                if (obj.GetComponentInParent<PlayerController>().photonView.isMine)
+                    obj.GetComponentInParent<PlayerController>().Damage2(0.015f);
             Vector2 direction = obj.transform.position - transform.position;
             obj.GetComponent<Rigidbody2D>().AddForce(direction * (speed * -1));
         }
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         gravitate(force);
     }

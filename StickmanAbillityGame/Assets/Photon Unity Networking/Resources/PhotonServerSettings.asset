@@ -54,4 +54,5 @@ MonoBehaviour:
   - stopGrapling
   - Line2
   - connectRigidbody
+  - hidehealthbar
   DisableAutoOpenWizard: 1

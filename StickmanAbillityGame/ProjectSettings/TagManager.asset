@@ -12,6 +12,7 @@ TagManager:
   - UpperArm
   - RightFist
   - EnergyBar
+  - LowerArm2
   layers:
   - Default
   - TransparentFX
