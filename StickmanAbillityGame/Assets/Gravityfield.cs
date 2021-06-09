@@ -24,9 +24,9 @@ public class Gravityfield : MonoBehaviour
         {
             if (obj.GetComponentInParent<PlayerController>())
                 if (obj.GetComponentInParent<PlayerController>().photonView.isMine)
-                    obj.GetComponentInParent<PlayerController>().Damage2(0.015f);
+                    obj.GetComponentInParent<PlayerController>().Damage2(0.008f);
             Vector2 direction = obj.transform.position - transform.position;
-            obj.GetComponent<Rigidbody2D>().AddForce(direction * (speed * -1));
+            obj.GetComponent<Rigidbody2D>().AddForce(direction * (speed * -1 * 0.8f));
         }
     }
 

@@ -61,6 +61,8 @@ public class PlayerController : MonoBehaviour
     [PunRPC]
     public void Damage2(float TheDamageAmont)
     {
+        if (MenuController.power == 2 && photonView.isMine)
+            StartCoroutine("visible");
         currentHealth -= TheDamageAmont;
         healthbar.SetHealth(currentHealth);
         StartCoroutine("WaitForRegenerating");
@@ -78,10 +80,18 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        if (MenuController.power == 2 && photonView.isMine)
+        {
+            SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer theTransparency in Transparency)
+            {
+                theTransparency.color = new Color(0.15f, 0.15f, 0.15f, 1f);
+            }
+            photonView.RPC("Invisibillity", PhotonTargets.OthersBuffered);
+            photonView.RPC("hidehealthbar", PhotonTargets.OthersBuffered);
+        }
         if (MenuController.power == 3 && photonView.isMine)
             maxEnergy += 50;
-        if (MenuController.power == 2)
-            photonView.RPC("hidehealthbar", PhotonTargets.Others);
         currentEnergy = maxEnergy;
         readytofire = true;
         springjoint.enabled = false;
@@ -300,6 +310,8 @@ public class PlayerController : MonoBehaviour
     }
     private IEnumerator deadbody()
     {
+        if(MenuController.power == 2 && photonView.isMine)
+            photonView.RPC("sidebar", PhotonTargets.Others);
         Balance[] balances = GetComponentsInChildren<Balance>();
         foreach (Balance theBalances in balances)
         {
@@ -552,30 +564,38 @@ public class PlayerController : MonoBehaviour
             direction = true;
         }
 
-        if (MenuController.power == 2)
-        {
-            SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
-            foreach (SpriteRenderer theTransparency in Transparency)
-            {
-                theTransparency.color = new Color(0f, 0f, 0f, 1f);
-            }
-
-            photonView.RPC("Invisibillity", PhotonTargets.Others);
-        }
-
+    }
+    private IEnumerator visible()
+    {
+        photonView.RPC("sidebar", PhotonTargets.Others);
+        yield return new WaitForSeconds(1.5f);
+        photonView.RPC("Invisibillity", PhotonTargets.Others);
     }
     
     [PunRPC]
     public void Invisibillity()
     {
-        SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer theTransparency in Transparency)
+        if(!photonView.isMine)
         {
-            theTransparency.color = new Color(1f, 1f, 1f, 0f);
+            SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer theTransparency in Transparency)
+            {
+                theTransparency.color = new Color(1f, 1f, 1f, 0f);
+            }
         }
     }
-
-
+    [PunRPC]
+    public void sidebar()
+    {
+        if (!photonView.isMine)
+        {
+            SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer theTransparency in Transparency)
+            {
+                theTransparency.color = new Color(0.2f, 0.2f, 0.2f, 1f);
+            }
+        }
+    }
 }
 
 

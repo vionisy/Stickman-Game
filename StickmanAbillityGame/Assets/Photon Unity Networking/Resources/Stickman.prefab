@@ -2518,7 +2518,7 @@ MonoBehaviour:
   maxEnergy: 100
   anim: {fileID: 7342628976529560613}
   rb: {fileID: 8557466015949629164}
-  jumpForce: 4500
+  jumpForce: 4000
   playerSpeed: 3000
   JumpHeight: {x: 0, y: 0}
   positionRadius: 0.2
@@ -2531,7 +2531,7 @@ MonoBehaviour:
   playerPos1: {fileID: 9174321070184925175}
   playerPos2: {fileID: 4163200002956640569}
   WalljumpForce: 2000
-  maxHealth: 150
+  maxHealth: 250
   Dead: 0
   growspeed: 0.002
   lr: {fileID: 3761655182834493185}

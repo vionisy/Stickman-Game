@@ -55,4 +55,5 @@ MonoBehaviour:
   - Line2
   - connectRigidbody
   - hidehealthbar
+  - sidebar
   DisableAutoOpenWizard: 1
