@@ -57,9 +57,9 @@ public class MenuController : MonoBehaviour
         power = Power;
     }
 
-    public void ChangeUserNameInput()
+    public void Close()
     {
-        
+        Application.Quit();
     }
 
     public void SetUserName()
@@ -84,4 +84,5 @@ public class MenuController : MonoBehaviour
     {
         PhotonNetwork.LoadLevel("Map1");
     }
+
 }

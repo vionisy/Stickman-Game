@@ -13,6 +13,7 @@ TagManager:
   - RightFist
   - EnergyBar
   - LowerArm2
+  - Joystick
   layers:
   - Default
   - TransparentFX

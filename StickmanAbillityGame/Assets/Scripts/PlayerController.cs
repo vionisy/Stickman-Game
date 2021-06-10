@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private FixedJoystick joystick;
     public GameObject leftarm;
     public float maxEnergy = 100;
     private float currentEnergy;
@@ -80,6 +81,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        //joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<FixedJoystick>();
         if (MenuController.power == 2 && photonView.isMine)
         {
             SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
@@ -204,7 +206,6 @@ public class PlayerController : MonoBehaviour
     }
     private IEnumerator shoot()
     {
-
         yield return new WaitForSeconds(0.35f);
         PhotonNetwork.Instantiate(RightHand.name, ShootingPoint.position, ShootingPoint.rotation, 0);
         photonView.RPC("startGrapling", PhotonTargets.All);
@@ -463,8 +464,6 @@ public class PlayerController : MonoBehaviour
             }
 
         }
-
-
         if (Time.timeScale != 1)
         {
             jumpForce = 15000;
@@ -473,56 +472,51 @@ public class PlayerController : MonoBehaviour
         {
             jumpForce = SaveJumpForce;
         }
-        if (Input.GetAxisRaw("Horizontal") != 0)
+        if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") > 0)) //|| joystick.Horizontal >= 0.5)
         {
-            if (Input.GetAxisRaw("Horizontal") > 0)
+            if (isOnGround == true)
             {
-                if (isOnGround == true)
+                direction = true;
+                anim.Play("Walk");
+                if (gravity == false)
                 {
-                    direction = true;
-                    anim.Play("Walk");
-                    if (gravity == false)
-                    {
-                        rb.AddForce(Vector2.right * playerSpeed * Time.deltaTime);
-                    }
-                    else
-                    {
-                        rb.AddForce(Vector2.left * playerSpeed * Time.deltaTime);
-                    }
+                    rb.AddForce(Vector2.right * playerSpeed * Time.deltaTime);
                 }
                 else
                 {
-                    if (direction == true)
-                        anim.Play("Idle");
-                    if (direction == false)
-                        anim.Play("Idle2");
+                    rb.AddForce(Vector2.left * playerSpeed * Time.deltaTime);
                 }
-
             }
             else
             {
-                if (isOnGround == true)
+                if (direction == true)
+                    anim.Play("Idle");
+                if (direction == false)
+                    anim.Play("Idle2");
+            }
+
+        }
+        else if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") < 0))// || joystick.Horizontal <= 0.5)
+        {
+            if (isOnGround == true)
+            {
+                anim.Play("WalkBack");
+                direction = false;
+                if (gravity == true)
                 {
-                    anim.Play("WalkBack");
-                    direction = false;
-                    if (gravity == true)
-                    {
-                        rb.AddForce(Vector2.right * playerSpeed * Time.deltaTime);
-                    }
-                    else
-                    {
-                        rb.AddForce(Vector2.left * playerSpeed * Time.deltaTime);
-                    }
+                    rb.AddForce(Vector2.right * playerSpeed * Time.deltaTime);
                 }
                 else
                 {
-                    if (direction == true)
-                        anim.Play("Idle");
-                    if (direction == false)
-                        anim.Play("Idle2");
+                    rb.AddForce(Vector2.left * playerSpeed * Time.deltaTime);
                 }
-
-
+            }
+            else
+            {
+                if (direction == true)
+                    anim.Play("Idle");
+                if (direction == false)
+                    anim.Play("Idle2");
             }
         }
         else
