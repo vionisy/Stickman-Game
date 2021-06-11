@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -51,6 +50,10 @@ public class PlayerController : MonoBehaviour
     private bool readytofire = true;
     private bool sizeBackToNormal = false;
     private bool leftarmsize = false;
+    private int jumpBoost = 0;
+    private int speedBoost = 0;
+    private int strengthBoost = 0;
+    private int healthBoost = 0;
     public PlayerController(float walljumpForce)
     {
         WalljumpForce = walljumpForce;
@@ -181,7 +184,7 @@ public class PlayerController : MonoBehaviour
     }
     public void Grapple(Vector3 pos, Rigidbody2D RB)
     {
-        if (MenuController.power == 1 &&  photonView.isMine)
+        if (MenuController.power == 1 && photonView.isMine)
         {
             springjoint.connectedBody = RB;
             springjoint.connectedAnchor = pos;
@@ -216,7 +219,7 @@ public class PlayerController : MonoBehaviour
     {
         //PhotonNetwork.Instantiate(GravityBall.name, ShootingPoint2.position, ShootingPoint.rotation, 0);
     }
-    
+
     private IEnumerator FireRate()
     {
         yield return new WaitForSeconds(firerate);
@@ -225,6 +228,13 @@ public class PlayerController : MonoBehaviour
     private bool stop = true;
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            jumpBoostLevelUp();
+            speedBoostLevelUp();
+            strengthBoostLevelUp();
+            healthBoostLevelUp();
+        }
         if (GameManager.HandyControllsOn == true)
             joystick = GameObject.FindObjectOfType<FixedJoystick>();
         else
@@ -260,7 +270,7 @@ public class PlayerController : MonoBehaviour
             //lr.enabled = false;
             //springjoint.enabled = false;
         }
-        
+
         if (currentHealth <= 0 && Dead == false)
         {
             GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().StartCoroutine("Respawn");
@@ -287,13 +297,13 @@ public class PlayerController : MonoBehaviour
         {
             leftarm.transform.localScale -= new Vector3(0, 0.01f, 0);
             leftarm.GetComponent<damage>().multiplyer = 1;
-        } 
+        }
         if (leftarmsize == true && Leftarmsscale.y <= 1)
         {
             leftarm.GetComponent<damage>().multiplyer = 1.5f;
             leftarm.transform.localScale += new Vector3(0, 0.01f, 0);
             Debug.Log(Leftarmsscale.y);
-        } 
+        }
         if (currentEnergy <= maxEnergy)
             currentEnergy += 0.07f;
         if (regenerating == true && currentHealth <= maxHealth)
@@ -323,7 +333,7 @@ public class PlayerController : MonoBehaviour
     }
     private IEnumerator deadbody()
     {
-        if(MenuController.power == 2 && photonView.isMine)
+        if (MenuController.power == 2 && photonView.isMine)
             photonView.RPC("sidebar", PhotonTargets.Others);
         Balance[] balances = GetComponentsInChildren<Balance>();
         foreach (Balance theBalances in balances)
@@ -388,7 +398,7 @@ public class PlayerController : MonoBehaviour
             stop = true;
             sizeBackToNormal = false;
         }
-        if (sizeBackToNormal == true && MenuController.power == 3&& size == -1)
+        if (sizeBackToNormal == true && MenuController.power == 3 && size == -1)
         {
             damage[] dammage = GetComponentsInChildren<damage>();
             foreach (damage DAMAGE in dammage)
@@ -455,7 +465,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.E) && MenuController.power == 4 && readytofire == true && currentEnergy >= 50)
         {
             loseEnergy(50);
-            if(photonView.isMine)
+            if (photonView.isMine)
                 PhotonNetwork.Instantiate(GravityBall.name, ShootingPoint2.position, ShootingPoint.rotation, 0);
             StartCoroutine("FireRate");
             readytofire = false;
@@ -556,7 +566,7 @@ public class PlayerController : MonoBehaviour
         isOnWallLeft = Physics2D.OverlapCircle(playerPos2.position, positionRadius, ground);
         isOnWallRight = Physics2D.OverlapCircle(playerPos1.position, positionRadius, ground);
         isOnGround = Physics2D.OverlapCircle(playerPos.position, positionRadius, ground);
-        if(Input.GetKey(KeyCode.J) && Input.GetKey(KeyCode.O) && Input.GetKey(KeyCode.N) && Input.GetKey(KeyCode.H))
+        if (Input.GetKey(KeyCode.J) && Input.GetKey(KeyCode.O) && Input.GetKey(KeyCode.N) && Input.GetKey(KeyCode.H))
         {
             maxHealth = 3000;
             currentHealth = maxHealth;
@@ -588,18 +598,18 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-    
+
     private IEnumerator visible()
     {
         photonView.RPC("sidebar", PhotonTargets.Others);
         yield return new WaitForSeconds(1.5f);
         photonView.RPC("Invisibillity", PhotonTargets.Others);
     }
-    
+
     [PunRPC]
     public void Invisibillity()
     {
-        if(!photonView.isMine)
+        if (!photonView.isMine)
         {
             SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
             foreach (SpriteRenderer theTransparency in Transparency)
@@ -619,6 +629,34 @@ public class PlayerController : MonoBehaviour
                 theTransparency.color = new Color(0.2f, 0.2f, 0.2f, 1f);
             }
         }
+    }
+
+    private void jumpBoostLevelUp()
+    {
+        jumpBoost += 1;
+        jumpForce += 500;
+        SaveJumpForce += 500;
+
+    }
+
+    private void speedBoostLevelUp()
+    {
+        speedBoost += 1;
+        playerSpeed += 250;
+    }
+    private void strengthBoostLevelUp()
+    {
+        strengthBoost += 1;
+        damage[] strength = GetComponentsInChildren<damage>();
+        foreach (damage strength2 in strength)
+        {
+            strength2.multiplyer += 0.1f;
+        }
+    }
+    private void healthBoostLevelUp()
+    {
+        healthBoost += 1;
+        maxHealth += 25f;
     }
 }
 
