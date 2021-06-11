@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject HandyCanvas;
     public GameObject PlayerPreafab;
     public GameObject GameCanvas;
     public GameObject SceneCamera;
     public GameObject MenuScreen;
     public float respwanTime = 5;
+    public static bool HandyControllsOn = false;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && MenuScreen.active == false)
@@ -46,5 +48,15 @@ public class GameManager : MonoBehaviour
     {
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.LoadLevel("MainMenu");
+    }
+    public void HandyControlls()
+    {
+        HandyControllsOn = true;
+        HandyCanvas.SetActive(true);
+    }
+    public void ComputerControlls()
+    {
+        HandyControllsOn = false;
+        HandyCanvas.SetActive(false);
     }
 }

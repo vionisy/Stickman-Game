@@ -2355,7 +2355,7 @@ SpringJoint2D:
   m_AutoConfigureDistance: 0
   m_Distance: 0.005
   m_DampingRatio: 0
-  m_Frequency: 2
+  m_Frequency: 1.7
 --- !u!120 &3761655182834493185
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -2521,7 +2521,7 @@ MonoBehaviour:
   jumpForce: 4000
   playerSpeed: 3000
   JumpHeight: {x: 0, y: 0}
-  positionRadius: 0.2
+  positionRadius: 0.3
   ground:
     serializedVersion: 2
     m_Bits: 8

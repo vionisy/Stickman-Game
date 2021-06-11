@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Gravityfield : MonoBehaviour
 {
+    public PhotonView photonView;
     public float fieldofImpact;
     public float force;
     public LayerMask LayerToHit;
@@ -11,27 +12,39 @@ public class Gravityfield : MonoBehaviour
     private IEnumerator delete()
     {
         yield return new WaitForSeconds(2.5f);
-        PhotonNetwork.Destroy(gameObject);
+        if (photonView.isMine)
+        {
+            Debug.Log("Destroy");
+            //PhotonNetwork.Destroy(gameObject);
+        }
     }
     void Start()
     {
-        StartCoroutine("delete");
+        if (photonView.isMine)
+        {
+            StartCoroutine("delete");
+        }
     }
     public void gravitate(float speed)
     {
         Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, fieldofImpact, LayerToHit);
         foreach (Collider2D obj in objects)
         {
-            if (obj.GetComponentInParent<PlayerController>())
-                if (obj.GetComponentInParent<PlayerController>().photonView.isMine)
-                    obj.GetComponentInParent<PlayerController>().Damage2(0.008f);
-            Vector2 direction = obj.transform.position - transform.position;
-            obj.GetComponent<Rigidbody2D>().AddForce(direction * (speed * -1 * 0.8f));
+            PlayerController player = obj.GetComponentInParent<PlayerController>();
+            if (player && !photonView.isMine)
+            { 
+                if (player.photonView.isMine)
+                {
+                    player.Damage2(0.008f);
+                    Vector2 direction = obj.transform.position - transform.position;
+                    obj.GetComponent<Rigidbody2D>().AddForce(direction * (speed * -1));
+                }
+            }
         }
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         gravitate(force);
     }
