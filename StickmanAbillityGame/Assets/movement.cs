@@ -57,7 +57,7 @@ public class movement : MonoBehaviour
             {
                 if (player.photonView.isMine)
                 {
-                    player.Damage2(0.008f);
+                    //player.Damage2(0.008f);
                     Vector2 direction = obj.transform.position - transform.position;
                     obj.GetComponent<Rigidbody2D>().AddForce(direction * (speed * -1));
                 }

@@ -248,8 +248,8 @@ MonoBehaviour:
   rb: {fileID: 958240765920067217}
   gravityfield: {fileID: 4152133723385582115, guid: 11b3fce563971cd488d67ecbdbd2d295, type: 3}
   photonView: {fileID: 4414973190073737471}
-  fieldofImpact: 10
-  force: 1.6
+  fieldofImpact: 15
+  force: 2
   LayerToHit:
     serializedVersion: 2
     m_Bits: 131008
