@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private bool once = true;
+    private bool Onlyonce = true;
     private bool JohnCena = false;
     private FixedJoystick joystick;
     public GameObject leftarm;
@@ -550,17 +550,17 @@ public class PlayerController : MonoBehaviour
                 anim.Play("Idle2");
         }
 
-        if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.5 && isOnGround == true) && once == true)
+        if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.5 && isOnGround == true) && Onlyonce == true)
         {
-            once = false;
+            Onlyonce = false;
             if (gravity == false)
                 rb.AddForce(Vector2.up * jumpForce);
             else
                 rb.AddForce(Vector2.down * jumpForce);
         }
-        else
+        else if (joystick != null && joystick.Vertical <= 0.5)
         {
-            once = true;
+            Onlyonce = true;
         }
 
         isOnWallLeft = Physics2D.OverlapCircle(playerPos2.position, positionRadius, ground);
@@ -578,8 +578,9 @@ public class PlayerController : MonoBehaviour
             playerSpeed = 5000;
             jumpForce = 7000;
         }
-        if (isOnGround == false && isOnWallRight == true && Input.GetKeyDown(KeyCode.Space))// || (joystick != null && joystick.Vertical >= 0.8))
+        if (isOnGround == false && isOnWallRight == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.5) && Onlyonce == true&& isOnGround == false && isOnWallLeft == true)
         {
+            Onlyonce = false;
             rb.AddForce(Vector2.left * WalljumpForce);
             if (gravity == false)
                 rb.AddForce(Vector2.up * WalljumpForce);
@@ -587,8 +588,9 @@ public class PlayerController : MonoBehaviour
                 rb.AddForce(Vector2.down * WalljumpForce);
             direction = false;
         }
-        if (isOnGround == false && isOnWallLeft == true && Input.GetKeyDown(KeyCode.Space))// || (joystick != null && joystick.Vertical >= 0.8))
+        if (isOnGround == false && isOnWallLeft == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.5) && Onlyonce == true&& isOnGround == false && isOnWallLeft == true)
         {
+            Onlyonce = false;
             rb.AddForce(Vector2.right * WalljumpForce);
             if (gravity == false)
                 rb.AddForce(Vector2.up * WalljumpForce);
