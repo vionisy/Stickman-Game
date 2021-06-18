@@ -14,6 +14,7 @@ public class damage : MonoBehaviour
     private StressReceiver camerashake;
     public Transform Hand;
     public float multiplyer = 1;
+    public ParticleSystem ps;
     private void Start()
     {
         camerashake = FindObjectOfType<Camera>().GetComponent<StressReceiver>();
@@ -43,6 +44,7 @@ public class damage : MonoBehaviour
                     playerHit.Damage(speed * 0.4f);
                 //collision.gameObject.GetComponentInParent<PlayerController>().Damage(speed * 0.4f);
                 photonView.RPC("knockback", PhotonTargets.Others, speed);
+                ps.Play();
             }
         }
     }
@@ -55,6 +57,7 @@ public class damage : MonoBehaviour
     [PunRPC]
     public void knockback(float speed)
     {
+        ps.Play();
         Collider2D[] objects = Physics2D.OverlapCircleAll(Hand.transform.position, fieldofImpact, LayerToHit);
         foreach (Collider2D obj in objects)
         {

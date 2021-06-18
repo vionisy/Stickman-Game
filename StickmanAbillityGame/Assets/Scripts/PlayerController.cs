@@ -235,8 +235,15 @@ public class PlayerController : MonoBehaviour
             strengthBoostLevelUp();
             healthBoostLevelUp();
         }
+        FixedJoystick[] fixedJoysticks = FindObjectsOfType<FixedJoystick>();
         if (GameManager.HandyControllsOn == true)
-            joystick = GameObject.FindObjectOfType<FixedJoystick>();
+            foreach (FixedJoystick joysticks in fixedJoysticks)
+            {
+                if (joysticks.tag == "Joystick")
+                {
+                    joystick = joysticks;
+                }
+            }
         else
             joystick = null;
         if (Input.GetKeyDown(KeyCode.UpArrow) && Input.GetKeyDown(KeyCode.B))
