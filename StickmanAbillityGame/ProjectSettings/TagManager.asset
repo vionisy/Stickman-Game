@@ -15,6 +15,7 @@ TagManager:
   - LowerArm2
   - Joystick
   - Joystick2
+  - ButtonE
   layers:
   - Default
   - TransparentFX

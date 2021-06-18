@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public GameObject MenuScreen;
     public float respwanTime = 5;
     public static bool HandyControllsOn = false;
+    static public bool E_pressed;
+    static public bool Q_pressed;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && MenuScreen.active == false)
@@ -58,5 +60,13 @@ public class GameManager : MonoBehaviour
     {
         HandyControllsOn = false;
         HandyCanvas.SetActive(false);
+    }
+    public void Epressed()
+    {
+        E_pressed = true;
+    }
+    public void Qpressed()
+    {
+        Q_pressed = true;
     }
 }
