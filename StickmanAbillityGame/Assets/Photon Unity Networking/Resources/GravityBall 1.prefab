@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5391937968917545500}
   - component: {fileID: 7060712101512172631}
   m_Layer: 12
-  m_Name: GravityBall
+  m_Name: GravityBall 1
   m_TagString: RightFist
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -249,7 +249,7 @@ MonoBehaviour:
   gravityfield: {fileID: 4152133723385582115, guid: 11b3fce563971cd488d67ecbdbd2d295, type: 3}
   photonView: {fileID: 4414973190073737471}
   fieldofImpact: 25
-  force: 2
+  force: 1.8
   LayerToHit:
     serializedVersion: 2
     m_Bits: 131008
@@ -272,6 +272,14 @@ PrefabInstance:
     - target: {fileID: 8622037458238248711, guid: a14176083337d3e4a94b2b7698832221, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8622037458238248711, guid: a14176083337d3e4a94b2b7698832221, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8622037458238248711, guid: a14176083337d3e4a94b2b7698832221, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8622037458238248711, guid: a14176083337d3e4a94b2b7698832221, type: 3}
       propertyPath: m_LocalPosition.x
