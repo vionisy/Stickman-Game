@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public Rigidbody2D Headrb;
+    public Rigidbody2D LeftLowLeg;
+    public Rigidbody2D RightLowLeg;
+    private bool isFrozen = false;
     private bool Onlyonce = true;
     private bool Onlyonce2 = true;
     private bool JohnCena = false;
@@ -48,6 +52,7 @@ public class PlayerController : MonoBehaviour
     public SpringJoint2D springjoint;
     public Transform ShootingPoint2;
     public GameObject GravityBall;
+    public GameObject IceBall;
     public float firerate = 0.2f;
     private bool readytofire = true;
     private bool sizeBackToNormal = false;
@@ -228,8 +233,85 @@ public class PlayerController : MonoBehaviour
         readytofire = true;
     }
     private bool stop = true;
+    public void Freeze1()
+    {
+        if (!photonView.isMine)
+        {
+            photonView.RPC("Freeze2", PhotonTargets.Others);
+            Debug.Log("Freeze1");
+        }
+    }
+    [PunRPC]
+    public void Freeze2()
+    {
+        StartCoroutine("YourFrozen");
+    }
+    private IEnumerator YourFrozen()
+    {
+        isFrozen = true;
+        yield return new WaitForSeconds(5);
+        isFrozen = false;
+    }
     private void Update()
     {
+        if(isFrozen == false)
+        {
+            Headrb.mass = 0.5f;
+            LeftLowLeg.mass = 1f;
+            RightLowLeg.mass = 1f;
+            FixedJoint2D[] freeze = GetComponentsInChildren<FixedJoint2D>();
+            foreach (FixedJoint2D frozen in freeze)
+            {
+                if (frozen.gameObject.name != "Chest" && frozen.gameObject.name != "Neck")
+                {
+                    frozen.enabled = false;
+                }
+            }
+            Balance[] balance = GetComponentsInChildren<Balance>();
+            foreach (Balance theBalance in balance)
+            {
+                theBalance.enabled = true;
+            }
+            FollowMouse[] mouse = GetComponentsInChildren<FollowMouse>();
+            foreach (FollowMouse follow in mouse)
+            {
+                follow.enabled = true;
+            }
+            BalanceArms[] balancearms = GetComponentsInChildren<BalanceArms>();
+            foreach (BalanceArms theBalance in balancearms)
+            {
+                theBalance.enabled = true;
+            }
+        }
+        else
+        {
+            LeftLowLeg.mass = 0.5f;
+            RightLowLeg.mass = 0.5f;
+            Headrb.mass = 10f;
+            FixedJoint2D[] freeze = GetComponentsInChildren<FixedJoint2D>();
+            foreach (FixedJoint2D frozen in freeze)
+            {
+                if (frozen.gameObject.name != "Chest" && frozen.gameObject.name != "Neck")
+                {
+                    frozen.enabled = true;
+                }
+            }
+            Balance[] balance = GetComponentsInChildren<Balance>();
+            foreach (Balance theBalance in balance)
+            {
+                theBalance.enabled = false;
+            }
+            BalanceArms[] balancearms = GetComponentsInChildren<BalanceArms>();
+            foreach (BalanceArms theBalance in balancearms)
+            {
+                theBalance.enabled = false;
+            }
+            FollowMouse[] mouse = GetComponentsInChildren<FollowMouse>();
+            foreach (FollowMouse follow in mouse)
+            {
+                follow.enabled = false;
+            }
+        }
         if (Input.GetKeyDown(KeyCode.G))
         {
             jumpBoostLevelUp();
@@ -300,7 +382,7 @@ public class PlayerController : MonoBehaviour
             Dead = true;
             StartCoroutine("deadbody");
         }
-        if (photonView.isMine && Dead == false)
+        if (photonView.isMine && Dead == false && isFrozen == false)
         {
             KeyInput();
         }
@@ -308,7 +390,7 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (photonView.isMine && Dead == false)
+        if (photonView.isMine && Dead == false && isFrozen == false)
         {
             KeyInput2();
         }
@@ -494,6 +576,15 @@ public class PlayerController : MonoBehaviour
             loseEnergy(50);
             if (photonView.isMine)
                 PhotonNetwork.Instantiate(GravityBall.name, ShootingPoint2.position, ShootingPoint.rotation, 0);
+            StartCoroutine("FireRate");
+            readytofire = false;
+        }
+        if ((Input.GetKey(KeyCode.E) || (GameManager.E_pressed == true && photonView.isMine)) && MenuController.power == 5 && readytofire == true && currentEnergy >= 50)
+        {
+            GameManager.E_pressed = false;
+            loseEnergy(50);
+            if (photonView.isMine)
+                PhotonNetwork.Instantiate(IceBall.name, ShootingPoint2.position, ShootingPoint.rotation, 0);
             StartCoroutine("FireRate");
             readytofire = false;
         }

@@ -56,4 +56,5 @@ MonoBehaviour:
   - connectRigidbody
   - hidehealthbar
   - sidebar
+  - Freeze2
   DisableAutoOpenWizard: 1
