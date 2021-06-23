@@ -61,9 +61,54 @@ public class PlayerController : MonoBehaviour
     private int speedBoost = 0;
     private int strengthBoost = 0;
     private int healthBoost = 0;
+    public LayerMask LayerToFreeze;
+    public float IcefieldofImpact;
+    public PhysicsMaterial2D HighFriction;
+    public PhysicsMaterial2D IceFriction;
+    public ParticleSystem psIce;
     public PlayerController(float walljumpForce)
     {
         WalljumpForce = walljumpForce;
+    }
+    [PunRPC]
+    public void psIce2()
+    {
+        psIce.Play();
+    }
+    private void iceField()
+    {
+        photonView.RPC("psIce2", PhotonTargets.All);
+        Collider2D[] objects = Physics2D.OverlapCircleAll(rb.transform.position, IcefieldofImpact, LayerToFreeze);
+        foreach (Collider2D obj in objects)
+        {
+            Vector2 direction = obj.transform.position - rb.transform.position;
+            if (obj.GetComponentInParent<PlayerController>())
+            {
+                obj.GetComponentInParent<PlayerController>().FreezeFeet1();
+                obj.GetComponentInParent<PlayerController>().Damage(1);
+            }
+        }
+    }
+    public void FreezeFeet1()
+    {
+        if (!photonView.isMine)
+            photonView.RPC("FreezeFeet2", PhotonTargets.Others);
+    }
+    [PunRPC]
+    public void FreezeFeet2()
+    {
+        
+        StartCoroutine("FrozenFeet");
+    }
+    private IEnumerator FrozenFeet()
+    {
+        Debug.Log("FreezeFeet");
+        RightLowLeg.sharedMaterial = IceFriction;
+        LeftLowLeg.sharedMaterial = IceFriction;
+        yield return new WaitForSeconds(15);
+        RightLowLeg.sharedMaterial = HighFriction;
+        LeftLowLeg.sharedMaterial = HighFriction;
+        Debug.Log("FreezeFeetStop");
     }
     [PunRPC]
     public void OponentHealth(float thehealths)
@@ -86,6 +131,10 @@ public class PlayerController : MonoBehaviour
         if (!photonView.isMine)
             photonView.RPC("Damage2", PhotonTargets.Others, damageamount);
     }
+    public void delete()
+    {
+        PhotonNetwork.Destroy(gameObject);
+    }
     [PunRPC]
     public void hidehealthbar()
     {
@@ -93,6 +142,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        psIce.Stop();
         if (MenuController.power == 2 && photonView.isMine)
         {
             SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
@@ -582,11 +632,19 @@ public class PlayerController : MonoBehaviour
         if ((Input.GetKey(KeyCode.E) || (GameManager.E_pressed == true && photonView.isMine)) && MenuController.power == 5 && readytofire == true && currentEnergy >= 50)
         {
             GameManager.E_pressed = false;
-            loseEnergy(50);
             if (photonView.isMine)
+            {
+                loseEnergy(50);
                 PhotonNetwork.Instantiate(IceBall.name, ShootingPoint2.position, ShootingPoint.rotation, 0);
+            }
             StartCoroutine("FireRate");
             readytofire = false;
+        }
+        if ((Input.GetKey(KeyCode.Q) || (GameManager.Q_pressed == true && photonView.isMine)) && MenuController.power == 5 && readytofire == true && currentEnergy >= 50)
+        {
+            GameManager.Q_pressed = false;
+            loseEnergy(50);
+            iceField();   
         }
         if (PlayerController.Gravitation == true)
         {

@@ -38,6 +38,19 @@ public class GameManager : MonoBehaviour
         float randomValue = Random.Range(-1f, 1f);
         PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(this.transform.position.x * randomValue, this.transform.position.y), Quaternion.identity, 0);
     }
+    public void reset()
+    {
+        GameObject[] player = GameObject.FindGameObjectsWithTag("Player");
+        foreach(GameObject thePlayer in player)
+        {
+            if (thePlayer.GetComponent<PhotonView>().isMine)
+            {
+                thePlayer.GetComponent<PlayerController>().delete();
+            }
+        }
+        float randomValue = Random.Range(-1f, 1f);
+        PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(this.transform.position.x * randomValue, this.transform.position.y), Quaternion.identity, 0);
+    }
     public void OpenMenu()
     {
         MenuScreen.SetActive(true);

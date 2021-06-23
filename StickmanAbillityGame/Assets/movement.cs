@@ -20,7 +20,7 @@ public class movement : MonoBehaviour
     }
     private IEnumerator delete()
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(3f);
         if (photonView.isMine)
         {
             Debug.Log("Destroy");
@@ -44,6 +44,7 @@ public class movement : MonoBehaviour
         if (gravitation == true)
         {
             gravitate(force);
+            rb.velocity = new Vector3(0, 0, 0);
         }
             
     }
