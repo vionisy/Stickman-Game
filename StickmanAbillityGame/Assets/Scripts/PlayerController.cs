@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject FireDamage;
+    public ParticleSystem FireParticles;
+    private bool fireOn = false;
     public Rigidbody2D Headrb;
     public Rigidbody2D LeftLowLeg;
     public Rigidbody2D RightLowLeg;
@@ -142,6 +145,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        FireParticles.Stop();
         psIce.Stop();
         if (MenuController.power == 2 && photonView.isMine)
         {
@@ -645,6 +649,34 @@ public class PlayerController : MonoBehaviour
             GameManager.Q_pressed = false;
             loseEnergy(50);
             iceField();   
+        }
+        //Debug.Log(fireOn);
+        if ((Input.GetKeyDown(KeyCode.E) || (GameManager.E_pressed == true && photonView.isMine)) && MenuController.power == 6 && currentEnergy >= 1)
+        {
+            Debug.Log("1");
+            if (fireOn == false)
+            {
+                Debug.Log("1");
+                fireOn = true;
+                FireParticles.Play();
+                FireDamage.SetActive(true);
+            }
+            else if (fireOn == true)
+            {
+                Debug.Log("2");
+                FireParticles.Stop();
+                fireOn = false;
+                FireDamage.SetActive(false);
+            }
+            GameManager.E_pressed = false;
+        }
+        if (fireOn == true)
+            loseEnergy(0.2f);
+        if (currentEnergy <= 1)
+        {
+            fireOn = false;
+            FireParticles.Stop();
+            FireDamage.SetActive(false);
         }
         if (PlayerController.Gravitation == true)
         {
