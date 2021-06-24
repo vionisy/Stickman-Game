@@ -306,10 +306,29 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(5);
         isFrozen = false;
     }
+    [PunRPC]
+    public void Frooozen1()
+    {
+        SpriteRenderer[] Transparency2 = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer theTransparency in Transparency2)
+        {
+            theTransparency.color = new Color(0.7f, 1f, 1f, 0.9f);
+        }
+    }
+    [PunRPC]
+    public void Frooozen2()
+    {
+        SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer theTransparency in Transparency)
+        {
+            theTransparency.color = new Color(1f, 1f, 1f, 1f);
+        }
+    }
     private void Update()
     {
-        if(isFrozen == false)
+        if (isFrozen == false)
         {
+            //photonView.RPC("Frooozen2", PhotonTargets.All);
             Headrb.mass = 0.5f;
             LeftLowLeg.mass = 1f;
             RightLowLeg.mass = 1f;
@@ -339,6 +358,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            //photonView.RPC("Frooozen1", PhotonTargets.All);
             LeftLowLeg.mass = 0.5f;
             RightLowLeg.mass = 0.5f;
             Headrb.mass = 10f;
@@ -451,6 +471,8 @@ public class PlayerController : MonoBehaviour
     }
     void KeyInput2()
     {
+        if (fireOn == true)
+            loseEnergy(0.4f);
         Vector3 Leftarmsscale = leftarm.transform.localScale;
         if (leftarmsize == false && Leftarmsscale.y >= 0.4871715)
         {
@@ -644,7 +666,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine("FireRate");
             readytofire = false;
         }
-        if ((Input.GetKey(KeyCode.Q) || (GameManager.Q_pressed == true && photonView.isMine)) && MenuController.power == 5 && readytofire == true && currentEnergy >= 50)
+        if ((Input.GetKeyDown(KeyCode.Q) || (GameManager.Q_pressed == true && photonView.isMine)) && MenuController.power == 5 && readytofire == true && currentEnergy >= 50)
         {
             GameManager.Q_pressed = false;
             loseEnergy(50);
@@ -658,24 +680,23 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("1");
                 fireOn = true;
-                FireParticles.Play();
+                photonView.RPC("firestart", PhotonTargets.All);
                 FireDamage.SetActive(true);
             }
             else if (fireOn == true)
             {
+                photonView.RPC("firestop", PhotonTargets.All);
                 Debug.Log("2");
-                FireParticles.Stop();
                 fireOn = false;
                 FireDamage.SetActive(false);
             }
             GameManager.E_pressed = false;
         }
-        if (fireOn == true)
-            loseEnergy(0.2f);
+        
         if (currentEnergy <= 1)
         {
             fireOn = false;
-            FireParticles.Stop();
+            photonView.RPC("firestop", PhotonTargets.All);
             FireDamage.SetActive(false);
         }
         if (PlayerController.Gravitation == true)
@@ -867,6 +888,16 @@ public class PlayerController : MonoBehaviour
     {
         healthBoost += 1;
         maxHealth += 25f;
+    }
+    [PunRPC]
+    public void firestart()
+    {
+        FireParticles.Play();
+    }
+    [PunRPC]
+    public void firestop()
+    {
+        FireParticles.Stop();
     }
 }
 

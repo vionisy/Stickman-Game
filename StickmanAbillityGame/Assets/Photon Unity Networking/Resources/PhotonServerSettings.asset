@@ -59,4 +59,8 @@ MonoBehaviour:
   - Freeze2
   - FreezeFeet2
   - psIce2
+  - firestart
+  - firestop
+  - Frooozen1
+  - Frooozen2
   DisableAutoOpenWizard: 1
