@@ -63,4 +63,10 @@ MonoBehaviour:
   - firestop
   - Frooozen1
   - Frooozen2
+  - FireOn
+  - psFire2
+  - ThisGuyIsOnFire
+  - FireOff
+  - IceFeetStart
+  - IceFeetStop
   DisableAutoOpenWizard: 1

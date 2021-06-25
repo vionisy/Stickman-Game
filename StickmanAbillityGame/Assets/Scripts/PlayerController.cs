@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject IceFoot1;
+    public GameObject IceFoot2;
     public GameObject FireDamage;
     public ParticleSystem FireParticles;
+    public ParticleSystem OnFireParticles;
     private bool fireOn = false;
     public Rigidbody2D Headrb;
     public Rigidbody2D LeftLowLeg;
@@ -69,6 +72,8 @@ public class PlayerController : MonoBehaviour
     public PhysicsMaterial2D HighFriction;
     public PhysicsMaterial2D IceFriction;
     public ParticleSystem psIce;
+    public ParticleSystem psFire;
+    private bool HeadOnFire = false;
     public PlayerController(float walljumpForce)
     {
         WalljumpForce = walljumpForce;
@@ -77,6 +82,52 @@ public class PlayerController : MonoBehaviour
     public void psIce2()
     {
         psIce.Play();
+    }
+    [PunRPC]
+    public void psFire2()
+    {
+        psFire.Play();
+    }
+    public void Fireattack()
+    {
+        if(!photonView.isMine)
+            photonView.RPC("ThisGuyIsOnFire", PhotonTargets.Others);
+    }
+    [PunRPC]
+    public void ThisGuyIsOnFire()
+    {
+        StartCoroutine("FireHead");
+    }
+    private IEnumerator FireHead()
+    {
+        HeadOnFire = true;
+        photonView.RPC("FireOn", PhotonTargets.All);
+        yield return new WaitForSeconds(9);
+        photonView.RPC("FireOff", PhotonTargets.All);
+        HeadOnFire = false;
+    }
+    [PunRPC]
+    public void FireOn()
+    {
+        OnFireParticles.Play();
+    }
+    [PunRPC]
+    public void FireOff()
+    {
+        OnFireParticles.Stop();
+    }
+    private void FireAttack()
+    {
+        photonView.RPC("psFire2", PhotonTargets.All);
+        Collider2D[] objects = Physics2D.OverlapCircleAll(rb.transform.position, IcefieldofImpact, LayerToFreeze);
+        foreach (Collider2D obj in objects)
+        {
+            Vector2 direction = obj.transform.position - rb.transform.position;
+            if (obj.GetComponentInParent<PlayerController>())
+            {
+                obj.GetComponentInParent<PlayerController>().Fireattack();
+            }
+        }
     }
     private void iceField()
     {
@@ -88,7 +139,7 @@ public class PlayerController : MonoBehaviour
             if (obj.GetComponentInParent<PlayerController>())
             {
                 obj.GetComponentInParent<PlayerController>().FreezeFeet1();
-                obj.GetComponentInParent<PlayerController>().Damage(1);
+                obj.GetComponentInParent<PlayerController>().Damage(3);
             }
         }
     }
@@ -103,15 +154,28 @@ public class PlayerController : MonoBehaviour
         
         StartCoroutine("FrozenFeet");
     }
+    [PunRPC]
+    public void IceFeetStart()
+    {
+        IceFoot1.SetActive(true);
+        IceFoot2.SetActive(true);
+    }
+    [PunRPC]
+    public void IceFeetStop()
+    {
+        IceFoot1.SetActive(false);
+        IceFoot2.SetActive(false);
+    }
     private IEnumerator FrozenFeet()
     {
-        Debug.Log("FreezeFeet");
+        photonView.RPC("IceFeetStart", PhotonTargets.AllBuffered);
         RightLowLeg.sharedMaterial = IceFriction;
         LeftLowLeg.sharedMaterial = IceFriction;
-        yield return new WaitForSeconds(15);
+        yield return new WaitForSeconds(20);
         RightLowLeg.sharedMaterial = HighFriction;
         LeftLowLeg.sharedMaterial = HighFriction;
-        Debug.Log("FreezeFeetStop");
+        photonView.RPC("IceFeetStop", PhotonTargets.AllBuffered);
+
     }
     [PunRPC]
     public void OponentHealth(float thehealths)
@@ -145,6 +209,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        OnFireParticles.Stop();
         FireParticles.Stop();
         psIce.Stop();
         if (MenuController.power == 2 && photonView.isMine)
@@ -217,7 +282,7 @@ public class PlayerController : MonoBehaviour
     {
         regenerating = false;
         float HealthBeforeWaiting = currentHealth;
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(10);
         if (currentHealth == HealthBeforeWaiting)
         {
             regenerating = true;
@@ -471,8 +536,10 @@ public class PlayerController : MonoBehaviour
     }
     void KeyInput2()
     {
+        if (HeadOnFire == true)
+            Damage2(0.1f);
         if (fireOn == true)
-            loseEnergy(0.4f);
+            loseEnergy(0.6f);
         Vector3 Leftarmsscale = leftarm.transform.localScale;
         if (leftarmsize == false && Leftarmsscale.y >= 0.4871715)
         {
@@ -489,7 +556,7 @@ public class PlayerController : MonoBehaviour
             currentEnergy += 0.07f;
         if (regenerating == true && currentHealth <= maxHealth)
         {
-            currentHealth += 0.02f;
+            currentHealth += 0.1f;
             healthbar.SetHealth(currentHealth);
             photonView.RPC("UpdateHealthBar", PhotonTargets.Others, currentHealth);
         }
@@ -671,6 +738,12 @@ public class PlayerController : MonoBehaviour
             GameManager.Q_pressed = false;
             loseEnergy(50);
             iceField();   
+        }
+        if ((Input.GetKeyDown(KeyCode.Q) || (GameManager.Q_pressed == true && photonView.isMine)) && MenuController.power == 6 && readytofire == true && currentEnergy >= 50)
+        {
+            GameManager.Q_pressed = false;
+            loseEnergy(50);
+            FireAttack();
         }
         //Debug.Log(fireOn);
         if ((Input.GetKeyDown(KeyCode.E) || (GameManager.E_pressed == true && photonView.isMine)) && MenuController.power == 6 && currentEnergy >= 1)
