@@ -69,4 +69,6 @@ MonoBehaviour:
   - FireOff
   - IceFeetStart
   - IceFeetStop
+  - UnCameraShake
+  - StompDamage
   DisableAutoOpenWizard: 1

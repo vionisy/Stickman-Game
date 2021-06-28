@@ -895,7 +895,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 130
+      scalar: 150
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1333,8 +1333,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.9433962, g: 0.39631534, b: 0.031149892, a: 1}
-        key1: {r: 0.2924528, g: 0.06951748, b: 0, a: 1}
+        key0: {r: 0.94509804, g: 0.67797846, b: 0.031372547, a: 1}
+        key1: {r: 0.5943396, g: 0.016770806, b: 0, a: 1}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -21039,7 +21039,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetRotation: 10
   rb: {fileID: 8557466016387921322}
-  force: 100
+  force: 4
   stop: 0
   mousebutton: 324
   photonView: {fileID: 6923915807836418976}
@@ -22323,7 +22323,7 @@ MonoBehaviour:
   jumpForce: 4000
   playerSpeed: 3000
   JumpHeight: {x: 0, y: 0}
-  positionRadius: 0.3
+  positionRadius: 1
   ground:
     serializedVersion: 2
     m_Bits: 8
@@ -24314,11 +24314,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4667284521980139493, guid: a14176083337d3e4a94b2b7698832221, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key0.b
-      value: 0.16509432
+      value: 0.16470587
       objectReference: {fileID: 0}
     - target: {fileID: 4667284521980139493, guid: a14176083337d3e4a94b2b7698832221, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key0.g
-      value: 0.64079744
+      value: 0.8494371
       objectReference: {fileID: 0}
     - target: {fileID: 4667284521980139493, guid: a14176083337d3e4a94b2b7698832221, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key0.r

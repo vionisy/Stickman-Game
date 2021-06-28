@@ -20,7 +20,7 @@ public class FastCollisionsDamage : MonoBehaviour
                 speed -= 10;
                 if (!collision.gameObject.GetComponentInParent<PlayerController>())
                 {
-                    GetComponentInParent<PlayerController>().Damage2(speed * 0.6f);
+                    GetComponentInParent<PlayerController>().Damage2(speed * 0.45f);
                 }
                 //collision.gameObject.GetComponentInParent<PlayerController>().Damage(speed * 0.4f);
             }

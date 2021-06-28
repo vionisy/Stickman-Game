@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private StressReceiver camerashake;
+    private bool stomp = false;
+    private bool DoubleJump;
     public GameObject IceFoot1;
     public GameObject IceFoot2;
     public GameObject FireDamage;
@@ -209,6 +212,24 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        camerashake = FindObjectOfType<Camera>().GetComponent<StressReceiver>();
+        if (MenuController.power == 3 && photonView.isMine)
+        {
+            transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            maxHealth += 50;
+            SaveJumpForce += 1000;
+            jumpForce += 1000;
+            FollowMouse[] thefollowMouse = GetComponentsInChildren<FollowMouse>();
+            foreach (FollowMouse FollowTheMouse in thefollowMouse)
+            {
+                FollowTheMouse.Maxspeed += 10;
+            }
+            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
+            foreach (Rigidbody2D RBCHILDREN in rbChildren)
+            {
+                RBCHILDREN.mass += 0.1f;
+            }
+        }
         OnFireParticles.Stop();
         FireParticles.Stop();
         psIce.Stop();
@@ -223,7 +244,7 @@ public class PlayerController : MonoBehaviour
             photonView.RPC("hidehealthbar", PhotonTargets.OthersBuffered);
         }
         if (MenuController.power == 3 && photonView.isMine)
-            maxEnergy += 50;
+            maxEnergy -= 50;
         currentEnergy = maxEnergy;
         readytofire = true;
         springjoint.enabled = false;
@@ -360,6 +381,27 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Freeze1");
         }
     }
+    private IEnumerator stamping()
+    {
+        
+        direction = true;
+        anim.Play("Stomp");
+        stomp = true;
+        yield return new WaitForSeconds(1);
+        stomp = false;
+        photonView.RPC("UnCameraShake", PhotonTargets.All);
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach(GameObject theplayers in players)
+        {
+            if (!theplayers.GetComponent<PlayerController>().photonView.isMine)
+                theplayers.GetComponent<PlayerController>().Damage(40);
+        }
+    }
+    [PunRPC]
+    public void UnCameraShake()
+    {
+        StartCoroutine("CameraShakeStomp");
+    }
     [PunRPC]
     public void Freeze2()
     {
@@ -391,7 +433,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        if (isFrozen == false)
+        if (isFrozen == false && Dead == false)
         {
             //photonView.RPC("Frooozen2", PhotonTargets.All);
             Headrb.mass = 0.5f;
@@ -421,7 +463,7 @@ public class PlayerController : MonoBehaviour
                 theBalance.enabled = true;
             }
         }
-        else
+        else if (isFrozen == true && Dead == false)
         {
             //photonView.RPC("Frooozen1", PhotonTargets.All);
             LeftLowLeg.mass = 0.5f;
@@ -562,22 +604,7 @@ public class PlayerController : MonoBehaviour
         }
         if (JohnCena == true)
             Debug.Log("Hast Du schon Gehofft?");
-        if (MenuController.power == 3 && transform.localScale.x <= 1.5f && photonView.isMine && size == 1)
-        {
-            transform.localScale += new Vector3(growspeed, growspeed, growspeed);
-        }
-        if (MenuController.power == 3 && transform.localScale.x > 1 && photonView.isMine && size == 0)
-        {
-            transform.localScale -= new Vector3(growspeed, growspeed, growspeed);
-        }
-        if (MenuController.power == 3 && transform.localScale.x < 1 && photonView.isMine && size == 0)
-        {
-            transform.localScale += new Vector3(growspeed, growspeed, growspeed);
-        }
-        if (MenuController.power == 3 && transform.localScale.x > 0.6f && photonView.isMine && size == -1)
-        {
-            transform.localScale -= new Vector3(growspeed, growspeed, growspeed);
-        }
+        
     }
     private IEnumerator deadbody()
     {
@@ -622,97 +649,9 @@ public class PlayerController : MonoBehaviour
             StartCoroutine("leftarmgrow");
             currentEnergy = 0;
         }
-        if (sizeBackToNormal == true && MenuController.power == 3 && size != 0 && size != -1)
-        {
-            damage[] dammage = GetComponentsInChildren<damage>();
-            foreach (damage DAMAGE in dammage)
-            {
-                DAMAGE.multiplyer = 1;
-            }
-            size = 0;
-            stop = false;
-            playerSpeed -= 500;
-            jumpForce -= 1000;
-            positionRadius -= 0.4f;
-            FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
-            foreach (FollowMouse FollowTheMouse in followMouse)
-            {
-                FollowTheMouse.Maxspeed -= 30;
-            }
-            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
-            foreach (Rigidbody2D RBCHILDREN in rbChildren)
-            {
-                RBCHILDREN.mass -= 0.3f;
-            }
-            stop = true;
-            sizeBackToNormal = false;
-        }
-        if (sizeBackToNormal == true && MenuController.power == 3 && size == -1)
-        {
-            damage[] dammage = GetComponentsInChildren<damage>();
-            foreach (damage DAMAGE in dammage)
-            {
-                DAMAGE.multiplyer = 1;
-            }
-            size = 0;
-            stop = false;
-            stop = true;
-            sizeBackToNormal = false;
-        }
-        if ((Input.GetKey(KeyCode.E) || (GameManager.E_pressed == true && photonView.isMine)) && MenuController.power == 3 && size != 1 && currentEnergy >= maxEnergy)
-        {
-            GameManager.E_pressed = false;
-            damage[] dammage = GetComponentsInChildren<damage>();
-            foreach (damage DAMAGE in dammage)
-            {
-                DAMAGE.multiplyer = 1;
-            }
-            size = 1;
-            stop = false;
-            playerSpeed += 500;
-            jumpForce += 1000;
-            positionRadius += 0.4f;
-            FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
-            foreach (FollowMouse FollowTheMouse in followMouse)
-            {
-                FollowTheMouse.Maxspeed += 30;
-            }
-            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
-            foreach (Rigidbody2D RBCHILDREN in rbChildren)
-            {
-                RBCHILDREN.mass += 0.3f;
-            }
-            stop = true;
-            loseEnergy(maxEnergy);
-            StartCoroutine("sizeBack");
-        }
-        if ((Input.GetKey(KeyCode.Q) || (GameManager.Q_pressed == true && photonView.isMine)) && MenuController.power == 3 && size != -1 && currentEnergy >= maxEnergy)
-        {
-            GameManager.Q_pressed = false;
-            damage[] dammage = GetComponentsInChildren<damage>();
-            foreach (damage DAMAGE in dammage)
-            {
-                DAMAGE.multiplyer = 2;
-            }
-            size = -1;
-            stop = false;
-            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
-            stop = true;
-            loseEnergy(maxEnergy);
-            StartCoroutine("sizeBack");
-        }
+        
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
-        Balance[] Balances = GetComponentsInChildren<Balance>();
-        if (Input.GetKey(KeyCode.UpArrow) && MenuController.power == 4)
-        {
-            PlayerController.Gravitation = true;
-            photonView.RPC("GravitationChange", PhotonTargets.Others, Gravitation);
-        }
-        if (Input.GetKey(KeyCode.DownArrow) && MenuController.power == 4)
-        {
-            PlayerController.Gravitation = false;
-            photonView.RPC("GravitationChange", PhotonTargets.Others, Gravitation);
-        }
+        Balance[] Balances = GetComponentsInChildren<Balance>();        
         if ((Input.GetKey(KeyCode.E) || (GameManager.E_pressed == true && photonView.isMine)) && MenuController.power == 4 && readytofire == true && currentEnergy >= 50)
         {
             GameManager.E_pressed = false;
@@ -732,6 +671,12 @@ public class PlayerController : MonoBehaviour
             }
             StartCoroutine("FireRate");
             readytofire = false;
+        }
+        if ((Input.GetKeyDown(KeyCode.E) || (GameManager.E_pressed == true && photonView.isMine)) && MenuController.power == 3 && readytofire == true && currentEnergy >= 50 && isOnGround == true)
+        {
+            StartCoroutine("stamping");
+            GameManager.E_pressed = false;
+            loseEnergy(50);
         }
         if ((Input.GetKeyDown(KeyCode.Q) || (GameManager.Q_pressed == true && photonView.isMine)) && MenuController.power == 5 && readytofire == true && currentEnergy >= 50)
         {
@@ -772,6 +717,12 @@ public class PlayerController : MonoBehaviour
             photonView.RPC("firestop", PhotonTargets.All);
             FireDamage.SetActive(false);
         }
+        if ((Input.GetKeyDown(KeyCode.Q) || (GameManager.Q_pressed == true && photonView.isMine)) && MenuController.power == 4 && readytofire == true && currentEnergy >= 100)
+        {
+            GameManager.Q_pressed = false;
+            loseEnergy(100);
+            StartCoroutine("changetheGravity");
+        }
         if (PlayerController.Gravitation == true)
         {
             foreach (Rigidbody2D gravitation in Gravity01)
@@ -797,7 +748,7 @@ public class PlayerController : MonoBehaviour
         {
             jumpForce = SaveJumpForce;
         }
-        if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") > 0) || (joystick != null && joystick.Horizontal >= 0.1))
+        if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") > 0) || (joystick != null && joystick.Horizontal >= 0.1) && stomp == false)
         {
             if (isOnGround == true)
             {
@@ -814,14 +765,14 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                if (direction == true)
+                if (direction == true && stomp == false)
                     anim.Play("Idle");
-                if (direction == false)
+                if (direction == false && stomp == false)
                     anim.Play("Idle2");
             }
 
         }
-        else if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") < 0) || (joystick != null && joystick.Horizontal <= -0.1))
+        else if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") < 0) || (joystick != null && joystick.Horizontal <= -0.1) && stomp == false)
         {
             if (isOnGround == true)
             {
@@ -838,17 +789,17 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                if (direction == true)
+                if (direction == true && stomp == false)
                     anim.Play("Idle");
-                if (direction == false)
+                if (direction == false && stomp == false)
                     anim.Play("Idle2");
             }
         }
         else
         {
-            if (direction == true)
+            if (direction == true && stomp == false)
                 anim.Play("Idle");
-            if (direction == false)
+            if (direction == false && stomp == false)
                 anim.Play("Idle2");
         }
 
@@ -864,7 +815,18 @@ public class PlayerController : MonoBehaviour
         {
             Onlyonce = true;
         }
-
+        Debug.Log(DoubleJump);
+        if ((isOnGround == false && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == false) && Onlyonce == true) && DoubleJump == true && MenuController.power == 2)
+        {
+            DoubleJump = false;
+            Onlyonce = false;
+            if (gravity == false)
+                rb.AddForce(Vector2.up * jumpForce);
+            else
+                rb.AddForce(Vector2.down * jumpForce);
+        }
+        if (isOnGround == true)
+            DoubleJump = true;
         isOnWallLeft = Physics2D.OverlapCircle(playerPos2.position, positionRadius, ground);
         isOnWallRight = Physics2D.OverlapCircle(playerPos1.position, positionRadius, ground);
         isOnGround = Physics2D.OverlapCircle(playerPos.position, positionRadius, ground);
@@ -972,6 +934,117 @@ public class PlayerController : MonoBehaviour
     {
         FireParticles.Stop();
     }
+    private IEnumerator changetheGravity()
+    {
+        if (MenuController.power == 4)
+        {
+            PlayerController.Gravitation = true;
+            yield return new WaitForSeconds(15);
+            PlayerController.Gravitation = false;
+        }
+    }
+    private void dontdestroyjet()
+    {
+        if (sizeBackToNormal == true && MenuController.power == 3 && size != 0 && size != -1)
+        {
+            damage[] dammage = GetComponentsInChildren<damage>();
+            foreach (damage DAMAGE in dammage)
+            {
+                DAMAGE.multiplyer = 1;
+            }
+            size = 0;
+            stop = false;
+            playerSpeed -= 500;
+            jumpForce -= 1000;
+            positionRadius -= 0.4f;
+            FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
+            foreach (FollowMouse FollowTheMouse in followMouse)
+            {
+                FollowTheMouse.Maxspeed -= 30;
+            }
+            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
+            foreach (Rigidbody2D RBCHILDREN in rbChildren)
+            {
+                RBCHILDREN.mass -= 0.3f;
+            }
+            stop = true;
+            sizeBackToNormal = false;
+        }
+        if (sizeBackToNormal == true && MenuController.power == 3 && size == -1)
+        {
+            damage[] dammage = GetComponentsInChildren<damage>();
+            foreach (damage DAMAGE in dammage)
+            {
+                DAMAGE.multiplyer = 1;
+            }
+            size = 0;
+            stop = false;
+            stop = true;
+            sizeBackToNormal = false;
+        }
+        if ((Input.GetKey(KeyCode.E) || (GameManager.E_pressed == true && photonView.isMine)) && MenuController.power == 3 && size != 1 && currentEnergy >= maxEnergy)
+        {
+            GameManager.E_pressed = false;
+            damage[] dammage = GetComponentsInChildren<damage>();
+            foreach (damage DAMAGE in dammage)
+            {
+                DAMAGE.multiplyer = 1;
+            }
+            size = 1;
+            stop = false;
+            playerSpeed += 500;
+            jumpForce += 1000;
+            positionRadius += 0.4f;
+            FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
+            foreach (FollowMouse FollowTheMouse in followMouse)
+            {
+                FollowTheMouse.Maxspeed += 30;
+            }
+            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
+            foreach (Rigidbody2D RBCHILDREN in rbChildren)
+            {
+                RBCHILDREN.mass += 0.3f;
+            }
+            stop = true;
+            loseEnergy(maxEnergy);
+            StartCoroutine("sizeBack");
+        }
+        if ((Input.GetKey(KeyCode.Q) || (GameManager.Q_pressed == true && photonView.isMine)) && MenuController.power == 3 && size != -1 && currentEnergy >= maxEnergy)
+        {
+            GameManager.Q_pressed = false;
+            damage[] dammage = GetComponentsInChildren<damage>();
+            foreach (damage DAMAGE in dammage)
+            {
+                DAMAGE.multiplyer = 2;
+            }
+            size = -1;
+            stop = false;
+            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
+            stop = true;
+            loseEnergy(maxEnergy);
+            StartCoroutine("sizeBack");
+            if (MenuController.power == 3 && transform.localScale.x <= 1.5f && photonView.isMine && size == 1)
+            {
+                transform.localScale += new Vector3(growspeed, growspeed, growspeed);
+            }
+            if (MenuController.power == 3 && transform.localScale.x > 1 && photonView.isMine && size == 0)
+            {
+                transform.localScale -= new Vector3(growspeed, growspeed, growspeed);
+            }
+            if (MenuController.power == 3 && transform.localScale.x < 1 && photonView.isMine && size == 0)
+            {
+                transform.localScale += new Vector3(growspeed, growspeed, growspeed);
+            }
+            if (MenuController.power == 3 && transform.localScale.x > 0.6f && photonView.isMine && size == -1)
+            {
+                transform.localScale -= new Vector3(growspeed, growspeed, growspeed);
+            }
+        }
+    }
+    private IEnumerator CameraShakeStomp()
+    {
+        camerashake.InduceStress(1.1f);
+        yield return new WaitForSeconds(0.14f);
+        camerashake.InduceStress(0);
+    }
 }
-
-

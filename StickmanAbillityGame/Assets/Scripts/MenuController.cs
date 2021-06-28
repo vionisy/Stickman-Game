@@ -13,7 +13,6 @@ public class MenuController : MonoBehaviour
     [SerializeField] private GameObject StartButton;
 
     [SerializeField] private InputField UsernameInput;
-    [SerializeField] private InputField CreateGameInput;
     [SerializeField] private InputField JoinGameInput;
 
     public static float power = 0;
@@ -70,7 +69,7 @@ public class MenuController : MonoBehaviour
 
     public void CreateGame()
     {
-        PhotonNetwork.CreateRoom(CreateGameInput.text, new RoomOptions() {maxPlayers = 10}, null);
+        PhotonNetwork.JoinRandomRoom();
     }
 
     public void JoinGame()
