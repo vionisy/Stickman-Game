@@ -30,45 +30,44 @@ MonoBehaviour:
   RpcList:
   - Chat
   - ColorRpc
+  - connectRigidbody
   - Damage2
+  - dead
   - DestroyRpc
   - DoJump
+  - FireOff
+  - FireOn
+  - firestart
+  - firestop
   - Flash
+  - Freeze2
+  - FreezeFeet2
+  - Frooozen1
+  - Frooozen2
+  - GravitationChange
+  - hidehealthbar
+  - IceFeetStart
+  - IceFeetStop
   - InstantiateRpc
+  - Invisibillity
   - knockback
+  - Line2
   - Marco
   - OponentHealth
   - PickupItemInit
   - Polo
+  - psFire2
+  - psIce2
   - PunPickup
   - PunPickupSimple
   - PunRespawn
   - RequestForPickupItems
   - RequestForPickupTimes
-  - TaggedPlayer
-  - dead
-  - UpdateHealthBar
-  - GravitationChange
-  - Invisibillity
+  - sidebar
   - startGrapling
   - stopGrapling
-  - Line2
-  - connectRigidbody
-  - hidehealthbar
-  - sidebar
-  - Freeze2
-  - FreezeFeet2
-  - psIce2
-  - firestart
-  - firestop
-  - Frooozen1
-  - Frooozen2
-  - FireOn
-  - psFire2
+  - TaggedPlayer
   - ThisGuyIsOnFire
-  - FireOff
-  - IceFeetStart
-  - IceFeetStop
   - UnCameraShake
-  - StompDamage
+  - UpdateHealthBar
   DisableAutoOpenWizard: 1

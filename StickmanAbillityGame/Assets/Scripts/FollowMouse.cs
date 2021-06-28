@@ -80,10 +80,12 @@ public class FollowMouse : MonoBehaviour
         if(playerController.Dead == true)
         {
             speed = 0;
+            Maxspeed = 0;
         }
         else if(playerController.Dead == false)
         {
-            speed = 300;
+            speed = 35;
+            Maxspeed = 35;
         }
 
     
