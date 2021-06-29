@@ -70,4 +70,5 @@ MonoBehaviour:
   - ThisGuyIsOnFire
   - UnCameraShake
   - UpdateHealthBar
+  - changeCountdown
   DisableAutoOpenWizard: 1

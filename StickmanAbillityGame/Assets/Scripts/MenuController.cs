@@ -16,7 +16,7 @@ public class MenuController : MonoBehaviour
     [SerializeField] private InputField JoinGameInput;
 
     public static float power = 0;
-
+    public static float gamemode = 0;
     private bool username = false;
     
 
@@ -31,7 +31,7 @@ public class MenuController : MonoBehaviour
     }
     private void Update()
     {
-        if (power != 0)
+        if (power != 0 && gamemode != 0)
         {
             if (UsernameInput.text.Length >= 1)
             {
@@ -42,6 +42,7 @@ public class MenuController : MonoBehaviour
                 StartButton.SetActive(false);
             }
         }
+       
       
     }
 
@@ -54,6 +55,10 @@ public class MenuController : MonoBehaviour
     public void setPower(float Power)
     {
         power = Power;
+    }
+    public void setGamemode(float Gamemode)
+    {
+        gamemode = Gamemode;
     }
 
     public void Close()
@@ -69,19 +74,25 @@ public class MenuController : MonoBehaviour
 
     public void CreateGame()
     {
-        PhotonNetwork.JoinRandomRoom();
+        PhotonNetwork.JoinRandomRoom(null, 10, MatchmakingMode.FillRoom, new TypedLobby(gamemode.ToString(), default), null);
+        
     }
+    
 
     public void JoinGame()
     {
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.maxPlayers = 10;
-        PhotonNetwork.JoinOrCreateRoom(JoinGameInput.text, roomOptions, TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom(JoinGameInput.text, roomOptions, new TypedLobby(gamemode.ToString(), default), null);
     }
 
     private void OnJoinedRoom()
     {
-        PhotonNetwork.LoadLevel("Map1");
+        if (gamemode == 2)
+            PhotonNetwork.LoadLevel("MenuRoyale");
+        else if (gamemode == 1)
+            PhotonNetwork.LoadLevel("Map1");
+        Debug.Log("joyning");
     }
 
 }

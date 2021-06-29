@@ -815,7 +815,6 @@ public class PlayerController : MonoBehaviour
         {
             Onlyonce = true;
         }
-        Debug.Log(DoubleJump);
         if ((isOnGround == false && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == false) && Onlyonce == true) && DoubleJump == true && MenuController.power == 2)
         {
             DoubleJump = false;
