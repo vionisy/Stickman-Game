@@ -215,7 +215,7 @@ public class PlayerController : MonoBehaviour
         camerashake = FindObjectOfType<Camera>().GetComponent<StressReceiver>();
         if (MenuController.power == 3 && photonView.isMine)
         {
-            transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            
             maxHealth += 50;
             SaveJumpForce += 1000;
             jumpForce += 1000;
@@ -433,6 +433,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
+
         if (isFrozen == false && Dead == false)
         {
             //photonView.RPC("Frooozen2", PhotonTargets.All);
@@ -571,6 +572,12 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (MenuController.power == 3 && photonView.isMine && transform.localScale.x <= 1.5f)
+        {
+            transform.localScale += new Vector3(0.01f, 0.01f, 0.01f);
+
+
+        }
         if (photonView.isMine && Dead == false && isFrozen == false)
         {
             KeyInput2();
@@ -817,6 +824,8 @@ public class PlayerController : MonoBehaviour
         }
         if ((isOnGround == false && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == false) && Onlyonce == true) && DoubleJump == true && MenuController.power == 2)
         {
+            DBCoolDown = true;
+            StartCoroutine("DoubleJumpCooldown");
             DoubleJump = false;
             Onlyonce = false;
             if (gravity == false)
@@ -824,7 +833,7 @@ public class PlayerController : MonoBehaviour
             else
                 rb.AddForce(Vector2.down * jumpForce);
         }
-        if (isOnGround == true)
+        if (isOnGround == true && DBCoolDown == false)
             DoubleJump = true;
         isOnWallLeft = Physics2D.OverlapCircle(playerPos2.position, positionRadius, ground);
         isOnWallRight = Physics2D.OverlapCircle(playerPos1.position, positionRadius, ground);
@@ -863,7 +872,12 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-
+    private IEnumerator DoubleJumpCooldown()
+    {
+        yield return new WaitForSeconds(5);
+        DBCoolDown = false;
+    }
+    private bool DBCoolDown = false;
     private IEnumerator visible()
     {
         photonView.RPC("sidebar", PhotonTargets.Others);
