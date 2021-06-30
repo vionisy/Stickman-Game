@@ -15,8 +15,4 @@ public class CamerFollow : MonoBehaviour
     {
         
     }
-    public void setPostition(Vector3 pos)
-    {
-        transform.position = pos;
-    }
 }

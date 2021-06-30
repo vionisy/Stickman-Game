@@ -21,7 +21,7 @@ public class BattleRoyaleManager : MonoBehaviour
         {
             GameObject Head = player.GetComponentInChildren<CircleCollider2D>().gameObject;
             if (player.GetComponent<PhotonView>() && player.GetComponent<PhotonView>().isMine)
-                SceneCamera.transform.position = new Vector3(Head.transform.position.x, Head.transform.position.y, -1);
+                SceneCamera.transform.position = new Vector3(Head.transform.position.x, Head.transform.position.y, -10);
         }
         if (Input.GetKeyDown(KeyCode.Escape) && MenuScreen.active == false)
             MenuScreen.SetActive(true);
@@ -34,7 +34,7 @@ public class BattleRoyaleManager : MonoBehaviour
 
     public void SpawnPlayer()
     {
-        float randomValue = Random.Range(-100000f, 100000f);
+        float randomValue = Random.Range(-50f, 50f);
         PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(this.transform.position.x + randomValue, this.transform.position.y), Quaternion.identity, 0);
         SceneCamera.SetActive(true);
     }
@@ -42,7 +42,7 @@ public class BattleRoyaleManager : MonoBehaviour
     {
         Debug.Log("Respawn");
         yield return new WaitForSeconds(respwanTime);
-        float randomValue = Random.Range(-100000f, 100000f);
+        float randomValue = Random.Range(-50f, 50f);
         PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(this.transform.position.x + randomValue, this.transform.position.y), Quaternion.identity, 0);
     }
     public void reset()
