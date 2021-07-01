@@ -92,6 +92,8 @@ public class MenuController : MonoBehaviour
             PhotonNetwork.LoadLevel("MenuRoyale");
         else if (gamemode == 1)
             PhotonNetwork.LoadLevel("Map1");
+        else if (gamemode == 3)
+            PhotonNetwork.LoadLevel("KI_Test");
         Debug.Log("joyning");
     }
 

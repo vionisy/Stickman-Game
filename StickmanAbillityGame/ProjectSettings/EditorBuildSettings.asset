@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BattleRoyale.unity
     guid: 22f0f74455d804c4294a54cf3fa08540
+  - enabled: 1
+    path: Assets/Scenes/KI_Test.unity
+    guid: d92a7a87d4a8df84899350404fff9887
   m_configObjects: {}
