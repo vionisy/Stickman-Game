@@ -22327,6 +22327,9 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 8
+  water:
+    serializedVersion: 2
+    m_Bits: 16
   playerPos: {fileID: 8557466017464957268}
   GravitationScale: -1
   photonView: {fileID: 11848969078165954}

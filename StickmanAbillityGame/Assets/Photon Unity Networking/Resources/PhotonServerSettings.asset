@@ -71,4 +71,6 @@ MonoBehaviour:
   - UnCameraShake
   - UpdateHealthBar
   - changeCountdown
+  - spawn2
+  - spawned
   DisableAutoOpenWizard: 1

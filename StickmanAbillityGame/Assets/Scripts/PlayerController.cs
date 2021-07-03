@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     private bool isOnGround;
     public float positionRadius;
     public LayerMask ground;
+    public LayerMask water;
     public Transform playerPos;
     public float GravitationScale = -1.5f;
     private bool direction;
@@ -41,6 +42,7 @@ public class PlayerController : MonoBehaviour
     public Transform playerPos1;
     public Transform playerPos2;
     private bool isOnWallLeft;
+    private bool isInWater;
     private bool isOnWallRight;
     public float WalljumpForce;
     public float maxHealth = 100;
@@ -809,6 +811,35 @@ public class PlayerController : MonoBehaviour
             if (direction == false && stomp == false)
                 anim.Play("Idle2");
         }
+        if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") > 0) || (joystick != null && joystick.Horizontal >= 0.1) && stomp == false)
+        {
+            if (isInWater == true)
+            {
+                rb.AddForce(Vector2.right * 8000 * Time.deltaTime);
+            }
+
+        }
+        else if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") < 0) || (joystick != null && joystick.Horizontal <= -0.1) && stomp == false)
+        {
+            if (isInWater == true)
+            {
+                rb.AddForce(Vector2.left * 8000 * Time.deltaTime);
+            }
+        }
+        if ((Input.GetAxisRaw("Vertical") != 0 && Input.GetAxisRaw("Vertical") < 0) || (joystick != null && joystick.Vertical <= -0.1) && stomp == false)
+        {
+            if (isInWater == true)
+            {
+                rb.AddForce(Vector2.down * 6000 * Time.deltaTime);
+            }
+        }
+        else if ((Input.GetAxisRaw("Vertical") != 0 && Input.GetAxisRaw("Vertical") > 0) || (joystick != null && joystick.Vertical >= -0.1) && stomp == false)
+        {
+            if (isInWater == true)
+            {
+                rb.AddForce(Vector2.up * 6000 * Time.deltaTime);
+            }
+        }
 
         if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == true) && Onlyonce == true)
         {
@@ -838,6 +869,7 @@ public class PlayerController : MonoBehaviour
         isOnWallLeft = Physics2D.OverlapCircle(playerPos2.position, positionRadius, ground);
         isOnWallRight = Physics2D.OverlapCircle(playerPos1.position, positionRadius, ground);
         isOnGround = Physics2D.OverlapCircle(playerPos.position, positionRadius, ground);
+        isInWater = Physics2D.OverlapCircle(playerPos.position, positionRadius, water);
         if (Input.GetKey(KeyCode.J) && Input.GetKey(KeyCode.O) && Input.GetKey(KeyCode.N) && Input.GetKey(KeyCode.H))
         {
             maxHealth = 3000;
