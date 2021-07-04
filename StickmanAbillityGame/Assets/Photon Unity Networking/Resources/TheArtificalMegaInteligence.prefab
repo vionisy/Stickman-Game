@@ -21027,6 +21027,7 @@ MonoBehaviour:
   stop: 0
   mousebutton: 324
   photonView: {fileID: 6923915807836418976}
+  disabled: 0
 --- !u!114 &6923915807836418976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21360,6 +21361,7 @@ MonoBehaviour:
   stop: 0
   mousebutton: 324
   photonView: {fileID: 7606066323379941388}
+  disabled: 0
 --- !u!114 &7606066323379941388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21970,6 +21972,7 @@ MonoBehaviour:
   stop: 0
   mousebutton: 323
   photonView: {fileID: 918374086884013362}
+  disabled: 0
 --- !u!114 &918374086884013362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23217,6 +23220,7 @@ MonoBehaviour:
   stop: 0
   mousebutton: 323
   photonView: {fileID: 2884624430679803952}
+  disabled: 0
 --- !u!114 &2884624430679803952
 MonoBehaviour:
   m_ObjectHideFlags: 0

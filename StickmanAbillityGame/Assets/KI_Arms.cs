@@ -73,11 +73,9 @@ public class KI_Arms : MonoBehaviour
     public void SetActiveState(bool state)
     {
         active = state;
-        Debug.Log("LOL");
     }
     public void SetRotationState(float angle)
     {
         rotationZ = angle;
-        Debug.Log("LOL");
     }
 }

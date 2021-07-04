@@ -14,7 +14,7 @@ public class BalanceArms : MonoBehaviour
     public PhotonView photonView;
     float smoothRotation;
     private bool stopit = false;
-    public float disabled;
+    public float disabled = 1;
     public void disable()
     {
         force = 0;
@@ -26,6 +26,7 @@ public class BalanceArms : MonoBehaviour
         if (Input.GetKey(mousebutton) && DisableOnMouseClick == true && disabled == 1)
         {
             stopit = true;
+            Debug.Log("lol");
         }
         else
             stopit = false;
@@ -40,6 +41,9 @@ public class BalanceArms : MonoBehaviour
             }
         else
             joystick = null;
+        disabled = 1;
+        if (GetComponentInParent<PlayerController>())
+            disabled = 1;
         if (stopit == false && photonView.isMine && joystick == null)
         {
             if (PlayerController.Gravitation == true)

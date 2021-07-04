@@ -844,7 +844,7 @@ public class TheBraaiiinnn : MonoBehaviour
         armsActive = true;
         armRotation = 220;
         yield return new WaitForSeconds(0.6f);
-        armRotation = 50;
+        armRotation = 70;
         Debug.Log("LOL");
         yield return new WaitForSeconds(0.3f);
         armsActive = false;
