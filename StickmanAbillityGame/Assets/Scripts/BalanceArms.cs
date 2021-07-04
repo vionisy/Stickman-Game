@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BalanceArms : MonoBehaviour
 {
+    public bool DisableOnMouseClick = true;
     private FixedJoystick joystick;
     public float targetRotation;
     public Rigidbody2D rb;
@@ -12,13 +13,22 @@ public class BalanceArms : MonoBehaviour
     public KeyCode mousebutton;
     public PhotonView photonView;
     float smoothRotation;
+    private bool stopit = false;
+    public float disabled;
     public void disable()
     {
         force = 0;
         Debug.Log("stop");
     }
+    
     public void FixedUpdate()
     {
+        if (Input.GetKey(mousebutton) && DisableOnMouseClick == true && disabled == 1)
+        {
+            stopit = true;
+        }
+        else
+            stopit = false;
         FixedJoystick[] fixedJoysticks = FindObjectsOfType<FixedJoystick>();
         if (GameManager.HandyControllsOn == true)
             foreach (FixedJoystick joysticks in fixedJoysticks)
@@ -30,7 +40,7 @@ public class BalanceArms : MonoBehaviour
             }
         else
             joystick = null;
-        if (!Input.GetKey(mousebutton) && photonView.isMine && joystick == null)
+        if (stopit == false && photonView.isMine && joystick == null)
         {
             if (PlayerController.Gravitation == true)
             {

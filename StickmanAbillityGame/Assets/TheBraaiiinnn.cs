@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class TheBraaiiinnn : MonoBehaviour
 {
+    private bool armsActive;
+    private float armRotation;
     private bool GoRight = false;
     private bool GoLeft = false;
     private StressReceiver camerashake;
@@ -215,6 +217,7 @@ public class TheBraaiiinnn : MonoBehaviour
     }
     private void Start()
     {
+        
         camerashake = FindObjectOfType<Camera>().GetComponent<StressReceiver>();
         OnFireParticles.Stop();
         FireParticles.Stop();
@@ -561,6 +564,11 @@ public class TheBraaiiinnn : MonoBehaviour
     }
     void KeyInput()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            StartCoroutine("ArmHit");
+            Debug.Log("R");
+        }
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         Balance[] Balances = GetComponentsInChildren<Balance>();
         if (PlayerController.Gravitation == true)
@@ -807,23 +815,40 @@ public class TheBraaiiinnn : MonoBehaviour
         }
     }
     public GameObject FindClosestEnemy()
-    {
+    { 
         GameObject[] gos;
         gos = GameObject.FindGameObjectsWithTag("Head");
-        GameObject closest = null;
-        float distance = Mathf.Infinity;
-        Vector3 position = transform.position;
-        foreach (GameObject go in gos)
+        if (gos != null)
         {
-            Vector3 diff = go.transform.position - position;
-            float curDistance = diff.sqrMagnitude;
-            if (curDistance < distance)
+            GameObject closest = null;
+            float distance = Mathf.Infinity;
+            Vector3 position = transform.position;
+            foreach (GameObject go in gos)
             {
-                closest = go;
-                distance = curDistance;
+                Vector3 diff = go.transform.position - position;
+                float curDistance = diff.sqrMagnitude;
+                if (curDistance < distance)
+                {
+                    closest = go;
+                    distance = curDistance;
+                }
             }
+            return closest;
         }
-        return closest;
+        else
+            return null;
+    }
+    private IEnumerator ArmHit()
+    {
+        Debug.Log("LOL");
+        armsActive = true;
+        armRotation = 220;
+        yield return new WaitForSeconds(0.6f);
+        armRotation = 50;
+        Debug.Log("LOL");
+        yield return new WaitForSeconds(0.3f);
+        armsActive = false;
+        Debug.Log("LOL");
     }
 
     private void Brain()
@@ -837,6 +862,12 @@ public class TheBraaiiinnn : MonoBehaviour
         {
             GoLeft = false;
             GoRight = true;
+        }
+        KI_Arms[] arms = GetComponentsInChildren<KI_Arms>();
+        foreach(KI_Arms thearms in arms)
+        {
+            thearms.SetRotationState(armRotation);
+            thearms.SetActiveState(armsActive);
         }
     }
 }
