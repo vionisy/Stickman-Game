@@ -20,7 +20,16 @@ public class BalanceArms : MonoBehaviour
         force = 0;
         Debug.Log("stop");
     }
-    
+    public void stopittrue()
+    {
+        stopit = true;
+        Debug.Log("stopit");
+    }
+    public void stopitfalse()
+    {
+        stopit = false;
+        Debug.Log("Dontstopit");
+    }
     public void FixedUpdate()
     {
         if (Input.GetKey(mousebutton) && DisableOnMouseClick == true && disabled == 1)
@@ -28,7 +37,7 @@ public class BalanceArms : MonoBehaviour
             stopit = true;
             Debug.Log("lol");
         }
-        else
+        else if (disabled == 1)
             stopit = false;
         FixedJoystick[] fixedJoysticks = FindObjectsOfType<FixedJoystick>();
         if (GameManager.HandyControllsOn == true)
@@ -41,9 +50,10 @@ public class BalanceArms : MonoBehaviour
             }
         else
             joystick = null;
-        disabled = 1;
         if (GetComponentInParent<PlayerController>())
             disabled = 1;
+        else
+            disabled = 0;
         if (stopit == false && photonView.isMine && joystick == null)
         {
             if (PlayerController.Gravitation == true)

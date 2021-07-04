@@ -73,6 +73,11 @@ public class KI_Arms : MonoBehaviour
     public void SetActiveState(bool state)
     {
         active = state;
+        if (state == true)
+            gameObject.GetComponent<BalanceArms>().stopittrue();
+        else
+            gameObject.GetComponent<BalanceArms>().stopitfalse();
+        Debug.Log("stopit1");
     }
     public void SetRotationState(float angle)
     {

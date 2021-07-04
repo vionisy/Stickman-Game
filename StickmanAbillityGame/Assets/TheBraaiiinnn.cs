@@ -866,7 +866,10 @@ public class TheBraaiiinnn : MonoBehaviour
         KI_Arms[] arms = GetComponentsInChildren<KI_Arms>();
         foreach(KI_Arms thearms in arms)
         {
-            thearms.SetRotationState(armRotation);
+            if (direction == false)
+                thearms.SetRotationState(armRotation * -1);
+            else
+                thearms.SetRotationState(armRotation);
             thearms.SetActiveState(armsActive);
         }
     }
