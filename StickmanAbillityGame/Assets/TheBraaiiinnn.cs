@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class TheBraaiiinnn : MonoBehaviour
 {
+    private bool jump = false;
     private bool armsActive;
     private float armRotation;
     private bool GoRight = false;
@@ -20,13 +21,13 @@ public class TheBraaiiinnn : MonoBehaviour
     public Rigidbody2D LeftLowLeg;
     public Rigidbody2D RightLowLeg;
     private bool isFrozen = false;
-    private bool Onlyonce = true;
+    private bool Onlyonce1 = true;
     private bool Onlyonce2 = true;
     private bool JohnCena = false;
     private FixedJoystick joystick;
     private FixedJoystick joystick2;
     public GameObject leftarm;
-    public float maxEnergy = 100;
+    public float maxEnergy = 100;  
     private float currentEnergy;
     public static bool Gravitation = false;
     public Animator anim;
@@ -191,12 +192,12 @@ public class TheBraaiiinnn : MonoBehaviour
     public void OponentHealth(float thehealths)
     {
         if (Oponenthealthbar)
-            Oponenthealthbar.SetHealth(thehealths); ;
+            Oponenthealthbar.SetHealth(thehealths);
     }
     [PunRPC]
     public void Damage2(float TheDamageAmont)
     {
-        currentHealth -= TheDamageAmont;
+        currentHealth -= TheDamageAmont * 0.5f;
         healthbar.SetHealth(currentHealth);
         StartCoroutine("WaitForRegenerating");
         photonView.RPC("OponentHealth", PhotonTargets.Others, currentHealth);
@@ -217,7 +218,8 @@ public class TheBraaiiinnn : MonoBehaviour
     }
     private void Start()
     {
-        
+        foreach (damage Damagemultiplyer in GetComponentsInChildren<damage>())
+            Damagemultiplyer.multiplyer = 0.5f;
         camerashake = FindObjectOfType<Camera>().GetComponent<StressReceiver>();
         OnFireParticles.Stop();
         FireParticles.Stop();
@@ -232,26 +234,21 @@ public class TheBraaiiinnn : MonoBehaviour
         }
         springjoint = GetComponentInChildren<SpringJoint2D>();
         cam = FindObjectOfType<Camera>();
-        healthbar = GameObject.FindGameObjectWithTag("OwnHealthBar").GetComponent<HelthBar>();
+        //healthbar = GameObject.FindGameObjectWithTag("OwnHealthBar").GetComponent<HelthBar>();
         energybar = GameObject.FindGameObjectWithTag("EnergyBar").GetComponent<HelthBar>();
         GameObject[] oponenthealthbars = GameObject.FindGameObjectsWithTag("OponentsHealthbar");
-        energybar.SetMaxHealth(maxEnergy);
         foreach (GameObject thehealth in oponenthealthbars)
         {
-            if (!thehealth.GetComponent<PhotonView>().isMine)
-            {
-                Oponenthealthbar = thehealth.GetComponent<HelthBar>();
-                thehealth.SetActive(true);
-            }
-            else
-            {
-                thehealth.SetActive(false);
-            }
+            thehealth.SetActive(true);
+            healthbar = thehealth.GetComponentInChildren<HelthBar>();
         }
+        energybar.SetMaxHealth(maxEnergy);
         currentHealth = maxHealth;
         healthbar.SetMaxHealth(maxHealth);
         if (Oponenthealthbar)
+        {
             Oponenthealthbar.SetMaxHealth(maxHealth);
+        }
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         SaveJumpForce = jumpForce;
         if (!photonView.isMine)
@@ -409,6 +406,13 @@ public class TheBraaiiinnn : MonoBehaviour
     }
     private void Update()
     {
+        HelthBar[] oponenthealthbars = GetComponentsInChildren<HelthBar>();
+        foreach (HelthBar thehealth in oponenthealthbars)
+        {
+            thehealth.gameObject.SetActive(true);
+            thehealth.transform.parent.gameObject.SetActive(true);
+            healthbar = thehealth;
+        }
         Brain();
         if (isFrozen == false && Dead == false)
         {
@@ -482,7 +486,6 @@ public class TheBraaiiinnn : MonoBehaviour
 
         if (currentHealth <= 0 && Dead == false)
         {
-            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().StartCoroutine("Respawn");
             Dead = true;
             StartCoroutine("deadbody");
         }
@@ -506,27 +509,13 @@ public class TheBraaiiinnn : MonoBehaviour
         if (fireOn == true)
             loseEnergy(0.6f);
         Vector3 Leftarmsscale = leftarm.transform.localScale;
-        if (leftarmsize == false && Leftarmsscale.y >= 0.4871715)
-        {
-            leftarm.transform.localScale -= new Vector3(0, 0.01f, 0);
-            leftarm.GetComponent<damage>().multiplyer = 1;
-        }
-        if (leftarmsize == true && Leftarmsscale.y <= 1)
-        {
-            leftarm.GetComponent<damage>().multiplyer = 1.5f;
-            leftarm.transform.localScale += new Vector3(0, 0.01f, 0);
-            Debug.Log(Leftarmsscale.y);
-        }
         if (currentEnergy <= maxEnergy)
             currentEnergy += 0.07f;
         if (regenerating == true && currentHealth <= maxHealth)
         {
             currentHealth += 0.1f;
-            healthbar.SetHealth(currentHealth);
             photonView.RPC("UpdateHealthBar", PhotonTargets.Others, currentHealth);
         }
-        if (JohnCena == true)
-            Debug.Log("Hast Du schon Gehofft?");
 
     }
     private IEnumerator deadbody()
@@ -564,11 +553,6 @@ public class TheBraaiiinnn : MonoBehaviour
     }
     void KeyInput()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            StartCoroutine("ArmHit");
-            Debug.Log("R");
-        }
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         Balance[] Balances = GetComponentsInChildren<Balance>();
         if (PlayerController.Gravitation == true)
@@ -680,17 +664,13 @@ public class TheBraaiiinnn : MonoBehaviour
             }
         }
 
-        if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == true) && Onlyonce == true)
+        if (isOnGround == true && jump == true)
         {
-            Onlyonce = false;
+            jump = false;
             if (gravity == false)
                 rb.AddForce(Vector2.up * jumpForce);
             else
                 rb.AddForce(Vector2.down * jumpForce);
-        }
-        else if (joystick != null && joystick.Vertical <= 0.3)
-        {
-            Onlyonce = true;
         }
         isOnWallLeft = Physics2D.OverlapCircle(playerPos2.position, positionRadius, ground);
         isOnWallRight = Physics2D.OverlapCircle(playerPos1.position, positionRadius, ground);
@@ -708,9 +688,9 @@ public class TheBraaiiinnn : MonoBehaviour
             playerSpeed = 5000;
             jumpForce = 7000;
         }
-        if (isOnGround == false && isOnWallRight == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3) && Onlyonce == true && isOnGround == false && isOnWallLeft == true)
+        if (isOnGround == false && isOnWallRight == true && jump == true)
         {
-            Onlyonce = false;
+            jump = false;
             rb.AddForce(Vector2.left * WalljumpForce);
             if (gravity == false)
                 rb.AddForce(Vector2.up * WalljumpForce);
@@ -718,9 +698,9 @@ public class TheBraaiiinnn : MonoBehaviour
                 rb.AddForce(Vector2.down * WalljumpForce);
             direction = false;
         }
-        if (isOnGround == false && isOnWallLeft == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3) && Onlyonce == true && isOnGround == false && isOnWallLeft == true)
+        if (isOnGround == false && isOnWallLeft == true && jump == true)
         {
-            Onlyonce = false;
+            jump = false;
             rb.AddForce(Vector2.right * WalljumpForce);
             if (gravity == false)
                 rb.AddForce(Vector2.up * WalljumpForce);
@@ -815,7 +795,7 @@ public class TheBraaiiinnn : MonoBehaviour
         }
     }
     public GameObject FindClosestEnemy()
-    { 
+    {
         GameObject[] gos;
         gos = GameObject.FindGameObjectsWithTag("Head");
         if (gos != null)
@@ -838,22 +818,32 @@ public class TheBraaiiinnn : MonoBehaviour
         else
             return null;
     }
-    private IEnumerator ArmHit()
+    private IEnumerator ArmHit1()
     {
-        Debug.Log("LOL");
         armsActive = true;
         armRotation = 220;
         yield return new WaitForSeconds(0.6f);
         armRotation = 70;
-        Debug.Log("LOL");
         yield return new WaitForSeconds(0.3f);
         armsActive = false;
-        Debug.Log("LOL");
+        yield return new WaitForSeconds(0.3f);
+        Onlyonce1 = true;
+    }
+    private IEnumerator ArmHit2()
+    {
+        armsActive = true;
+        armRotation = 10;
+        yield return new WaitForSeconds(0.6f);
+        armRotation = 170;
+        yield return new WaitForSeconds(0.3f);
+        armsActive = false;
+        yield return new WaitForSeconds(0.2f);
+        Onlyonce1 = true;
     }
 
     private void Brain()
-    {
-        if (!(FindClosestEnemy().transform.position.x > rb.transform.position.x))
+    {        
+        if (FindClosestEnemy() != null && !(FindClosestEnemy().transform.position.x > rb.transform.position.x))
         {
             GoLeft = true;
             GoRight = false;
@@ -867,10 +857,22 @@ public class TheBraaiiinnn : MonoBehaviour
         foreach(KI_Arms thearms in arms)
         {
             if (direction == false)
+            {
                 thearms.SetRotationState(armRotation * -1);
+            }
             else
+            {
                 thearms.SetRotationState(armRotation);
+            }
             thearms.SetActiveState(armsActive);
+        }
+        if (FindClosestEnemy() != null && Vector3.Distance(FindClosestEnemy().transform.position, rb.transform.position) <= 7f && Onlyonce1 == true)
+        {
+            if (Random.value <= 0.7)
+                StartCoroutine("ArmHit1");
+            else
+                StartCoroutine("ArmHit2");
+            Onlyonce1 = false;
         }
     }
 }

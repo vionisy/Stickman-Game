@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public GameObject HandyCanvas;
     public GameObject PlayerPreafab;
+    public GameObject KI;
     public GameObject GameCanvas;
     public GameObject SceneCamera;
     public GameObject MenuScreen;
@@ -14,8 +15,11 @@ public class GameManager : MonoBehaviour
     public static bool HandyControllsOn = false;
     static public bool E_pressed;
     static public bool Q_pressed;
+    public bool KITest = false;
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.K) && KITest == true)
+            StartCoroutine("spawnKI");
         if (Input.GetKeyDown(KeyCode.Escape) && MenuScreen.active == false)
             MenuScreen.SetActive(true);
     }
@@ -33,10 +37,15 @@ public class GameManager : MonoBehaviour
     }
     public IEnumerator Respawn()
     {
-        Debug.Log("Respawn");
         yield return new WaitForSeconds(respwanTime);
-        float randomValue = Random.Range(-1f, 1f);
+        float randomValue = Random.Range(-10f, 10f);
         PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(this.transform.position.x * randomValue, this.transform.position.y), Quaternion.identity, 0);
+    }
+    public IEnumerator spawnKI()
+    {
+        yield return new WaitForSeconds(0.3f);
+        float randomValue = Random.Range(-10f, 10f);
+        PhotonNetwork.Instantiate(KI.name, new Vector2(this.transform.position.x * randomValue, this.transform.position.y), Quaternion.identity, 0);
     }
     public void reset()
     {

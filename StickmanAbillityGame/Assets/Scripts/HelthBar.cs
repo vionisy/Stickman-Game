@@ -26,9 +26,5 @@ public class HelthBar : MonoBehaviour
     }
     public void Update()
     {
-        if (MenuController.power == 2)
-        {
-            
-        }
     }
 }

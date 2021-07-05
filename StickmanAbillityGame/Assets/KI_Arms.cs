@@ -77,7 +77,6 @@ public class KI_Arms : MonoBehaviour
             gameObject.GetComponent<BalanceArms>().stopittrue();
         else
             gameObject.GetComponent<BalanceArms>().stopitfalse();
-        Debug.Log("stopit1");
     }
     public void SetRotationState(float angle)
     {

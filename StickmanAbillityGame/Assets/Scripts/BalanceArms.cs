@@ -23,12 +23,10 @@ public class BalanceArms : MonoBehaviour
     public void stopittrue()
     {
         stopit = true;
-        Debug.Log("stopit");
     }
     public void stopitfalse()
     {
         stopit = false;
-        Debug.Log("Dontstopit");
     }
     public void FixedUpdate()
     {

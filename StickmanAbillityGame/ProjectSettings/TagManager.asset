@@ -16,6 +16,7 @@ TagManager:
   - Joystick
   - Joystick2
   - ButtonE
+  - Head2
   layers:
   - Default
   - TransparentFX

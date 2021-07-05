@@ -3286,10 +3286,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HandyCanvas: {fileID: 1566691326}
   PlayerPreafab: {fileID: 8557466016732343683, guid: ef456f4534c7d134da44cca73530f5bf, type: 3}
+  KI: {fileID: 8557466016732343683, guid: 074d9ce823c48c84ebbbe790f28f8c62, type: 3}
   GameCanvas: {fileID: 257633953}
   SceneCamera: {fileID: 519420028}
   MenuScreen: {fileID: 1981897088}
   respwanTime: 5
+  KITest: 1
 --- !u!1 &749611580
 GameObject:
   m_ObjectHideFlags: 0

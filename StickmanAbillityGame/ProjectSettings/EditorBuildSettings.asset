@@ -17,9 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Map3.unity
     guid: 60ffbb2b314c38f43961a00d37629693
-  - enabled: 1
-    path: Assets/Scenes/BattleRoyaleMap.unity
-    guid: ba36f9aaecfe4a046a9f791d79f9f189
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/MenuRoyale.unity
     guid: 1401dbd65870d1841aac6c9523e3aa49
