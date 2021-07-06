@@ -21037,12 +21037,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisableOnMouseClick: 1
   targetRotation: 10
   rb: {fileID: 8557466016387921322}
   force: 4
   stop: 0
   mousebutton: 324
   photonView: {fileID: 6923915807836418976}
+  disabled: 1
 --- !u!114 &6923915807836418976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21369,12 +21371,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisableOnMouseClick: 1
   targetRotation: 0
   rb: {fileID: 8557466016490787417}
   force: 100
   stop: 0
   mousebutton: 324
   photonView: {fileID: 7606066323379941388}
+  disabled: 1
 --- !u!114 &7606066323379941388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21978,12 +21982,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisableOnMouseClick: 1
   targetRotation: 1
   rb: {fileID: 8557466016671340956}
   force: 0
   stop: 0
   mousebutton: 323
   photonView: {fileID: 918374086884013362}
+  disabled: 1
 --- !u!114 &918374086884013362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23224,12 +23230,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d95950137c46045b0bcdc6c2a15927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisableOnMouseClick: 1
   targetRotation: 0
   rb: {fileID: 8557466016885711718}
   force: 0
   stop: 0
   mousebutton: 323
   photonView: {fileID: 2884624430679803952}
+  disabled: 1
 --- !u!114 &2884624430679803952
 MonoBehaviour:
   m_ObjectHideFlags: 0
