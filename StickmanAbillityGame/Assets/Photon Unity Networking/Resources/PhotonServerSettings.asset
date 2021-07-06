@@ -28,6 +28,7 @@ MonoBehaviour:
   NetworkLogging: 1
   RunInBackground: 1
   RpcList:
+  - changeCountdown
   - Chat
   - ColorRpc
   - connectRigidbody
@@ -64,13 +65,12 @@ MonoBehaviour:
   - RequestForPickupItems
   - RequestForPickupTimes
   - sidebar
+  - spawn2
+  - spawned
   - startGrapling
   - stopGrapling
   - TaggedPlayer
   - ThisGuyIsOnFire
   - UnCameraShake
   - UpdateHealthBar
-  - changeCountdown
-  - spawn2
-  - spawned
   DisableAutoOpenWizard: 1
