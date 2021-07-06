@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public ParticleSystem Bubles;
     private StressReceiver camerashake;
     private bool stomp = false;
     private bool DoubleJump;
@@ -652,6 +653,10 @@ public class PlayerController : MonoBehaviour
     }
     void KeyInput()
     {
+        if (isInWater == true && Bubles.isPlaying == false)
+            Bubles.Play();
+        else if (isInWater == false && Bubles.isPlaying == true)
+            Bubles.Stop();
         if (MenuController.power == 1 && (Input.GetKey(KeyCode.E) || (GameManager.E_pressed == true && photonView.isMine)) && currentEnergy >= maxEnergy)
         {
             GameManager.E_pressed = false;

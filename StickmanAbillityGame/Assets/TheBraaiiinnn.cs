@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class TheBraaiiinnn : MonoBehaviour
 {
+    public ParticleSystem Bubles;
     private bool jump = false;
     private bool armsActive;
     private float armRotation;
@@ -197,7 +198,7 @@ public class TheBraaiiinnn : MonoBehaviour
     [PunRPC]
     public void Damage2(float TheDamageAmont)
     {
-        currentHealth -= TheDamageAmont * 0.5f;
+        currentHealth -= TheDamageAmont;
         healthbar.SetHealth(currentHealth);
         StartCoroutine("WaitForRegenerating");
         photonView.RPC("OponentHealth", PhotonTargets.Others, currentHealth);
@@ -555,6 +556,11 @@ public class TheBraaiiinnn : MonoBehaviour
     }
     void KeyInput()
     {
+        if (isInWater == true && Bubles.isPlaying == false)
+            Bubles.Play();
+        else if (isInWater == false && Bubles.isPlaying == true)
+                Bubles.Stop();
+
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         Balance[] Balances = GetComponentsInChildren<Balance>();
         if (PlayerController.Gravitation == true)
@@ -847,18 +853,30 @@ public class TheBraaiiinnn : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(0.1f, 1f));
         Onlyonce1 = true;
     }
-
+    private bool AttackPlayer = false;
     private void Brain()
-    {        
-        if (FindClosestEnemy() != null && !(FindClosestEnemy().transform.position.x > rb.transform.position.x))
+    {
+        float decision = Random.Range(1, 2);
+        if (decision == 1)
         {
-            GoLeft = true;
-            GoRight = false;
+
         }
-        else
+        else if (decision == 2)
         {
-            GoLeft = false;
-            GoRight = true;
+
+        }
+        if (AttackPlayer == true)
+        {
+            if (FindClosestEnemy() != null && !(FindClosestEnemy().transform.position.x > rb.transform.position.x))
+            {
+                GoLeft = true;
+                GoRight = false;
+            }
+            else
+            {
+                GoLeft = false;
+                GoRight = true;
+            }
         }
         KI_Arms[] arms = GetComponentsInChildren<KI_Arms>();
         foreach(KI_Arms thearms in arms)
