@@ -218,6 +218,14 @@ public class TheBraaiiinnn : MonoBehaviour
     }
     private void Start()
     {
+        HelthBar[] oponenthealthbars1 = GetComponentsInChildren<HelthBar>();
+        foreach (HelthBar thehealth in oponenthealthbars1)
+        {
+            thehealth.SetMaxHealth(maxHealth);
+            thehealth.gameObject.SetActive(true);
+            thehealth.transform.parent.gameObject.SetActive(true);
+            healthbar = thehealth;
+        }
         foreach (damage Damagemultiplyer in GetComponentsInChildren<damage>())
             Damagemultiplyer.multiplyer = 0.5f;
         camerashake = FindObjectOfType<Camera>().GetComponent<StressReceiver>();
@@ -406,13 +414,7 @@ public class TheBraaiiinnn : MonoBehaviour
     }
     private void Update()
     {
-        HelthBar[] oponenthealthbars = GetComponentsInChildren<HelthBar>();
-        foreach (HelthBar thehealth in oponenthealthbars)
-        {
-            thehealth.gameObject.SetActive(true);
-            thehealth.transform.parent.gameObject.SetActive(true);
-            healthbar = thehealth;
-        }
+        //healthbar.SetMaxHealth(maxHealth);
         Brain();
         if (isFrozen == false && Dead == false)
         {
@@ -820,24 +822,29 @@ public class TheBraaiiinnn : MonoBehaviour
     }
     private IEnumerator ArmHit1()
     {
+
         armsActive = true;
-        armRotation = 220;
-        yield return new WaitForSeconds(0.6f);
-        armRotation = 70;
-        yield return new WaitForSeconds(0.3f);
+        //armRotation = 220;
+        StartCoroutine(ChangeSpeed(armRotation, Random.Range(180f, 230f), 0.3f));
+        yield return new WaitForSeconds(Random.Range(0.5f, 1f));
+        //armRotation = 70;
+        StartCoroutine(ChangeSpeed(armRotation, Random.Range(80f, 50f), 0.2f));
+        yield return new WaitForSeconds(Random.Range(0.2f, 0.4f));
         armsActive = false;
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(Random.Range(0.1f, 1f));
         Onlyonce1 = true;
     }
     private IEnumerator ArmHit2()
     {
         armsActive = true;
-        armRotation = 10;
-        yield return new WaitForSeconds(0.6f);
-        armRotation = 170;
-        yield return new WaitForSeconds(0.3f);
+        //armRotation = 10;
+        StartCoroutine(ChangeSpeed(armRotation, Random.Range(20f, 0f), 0.3f));
+        yield return new WaitForSeconds(Random.Range(0.5f, 1f));
+        //armRotation = 170;
+        StartCoroutine(ChangeSpeed(armRotation, Random.Range(160f, 190f), 0.2f));
+        yield return new WaitForSeconds(Random.Range(0.2f, 0.4f));
         armsActive = false;
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(Random.Range(0.1f, 1f));
         Onlyonce1 = true;
     }
 
@@ -866,13 +873,24 @@ public class TheBraaiiinnn : MonoBehaviour
             }
             thearms.SetActiveState(armsActive);
         }
-        if (FindClosestEnemy() != null && Vector3.Distance(FindClosestEnemy().transform.position, rb.transform.position) <= 7f && Onlyonce1 == true)
+        if (FindClosestEnemy() != null && Vector3.Distance(FindClosestEnemy().transform.position, rb.transform.position) <= 10f && Onlyonce1 == true)
         {
-            if (Random.value <= 0.7)
+            if (Random.value <= 0.65)
                 StartCoroutine("ArmHit1");
             else
                 StartCoroutine("ArmHit2");
             Onlyonce1 = false;
         }
+    }
+    IEnumerator ChangeSpeed(float v_start, float v_end, float duration)
+    {
+        float elapsed = 0.0f;
+        while (elapsed < duration)
+        {
+            armRotation = Mathf.Lerp(v_start, v_end, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        armRotation = v_end;
     }
 }
