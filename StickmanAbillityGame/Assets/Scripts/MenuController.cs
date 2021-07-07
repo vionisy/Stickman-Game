@@ -2,18 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 
 public class MenuController : MonoBehaviour
 {
+    private bool start = false;
     [SerializeField] private string VersionName = "0.1";
-    [SerializeField] private GameObject UsernameMenu;
-    [SerializeField] private GameObject ConnectPanel;
-
+    [SerializeField] private TMP_InputField JoinGameInput;
+    [SerializeField] private TMP_InputField UserNameInput;
     [SerializeField] private GameObject StartButton;
-
-    [SerializeField] private InputField UsernameInput;
-    [SerializeField] private InputField JoinGameInput;
+    private float MenuNumber = 1;
+    [SerializeField] private GameObject MainMenuCanvas;
+    [SerializeField] private GameObject GamemodeCanvas;
+    [SerializeField] private GameObject PickPowerCanvas;
+    [SerializeField] private GameObject JoinServerCanvas;
 
     public static float power = 0;
     public static float gamemode = 0;
@@ -24,29 +26,61 @@ public class MenuController : MonoBehaviour
     {
         PhotonNetwork.ConnectUsingSettings(VersionName);
     }
-
-    private void Start()
+    public void Play()
     {
-        UsernameMenu.SetActive(true);
+        start = true;
     }
     private void Update()
     {
-        if (power != 0 && gamemode != 0)
+        if (MenuNumber == 1)
         {
-            if (UsernameInput.text.Length >= 1)
+            if (start == true)
             {
-                StartButton.SetActive(true);
+                start = false;
+                MenuNumber = 2;
             }
-            else
-            {
-                StartButton.SetActive(false);
-            }
+            MainMenuCanvas.SetActive(true);
+            GamemodeCanvas.SetActive(false);
+            PickPowerCanvas.SetActive(false);
+            JoinServerCanvas.SetActive(false);
         }
-       
-      
+        else if (MenuNumber == 2)
+        {
+            if (gamemode != 0 && start == true)
+            {
+                start = false;
+                MenuNumber = 3;
+            }
+            MainMenuCanvas.SetActive(false);
+            GamemodeCanvas.SetActive(true);
+            PickPowerCanvas.SetActive(false);
+            JoinServerCanvas.SetActive(false);
+        }
+        else if (MenuNumber == 3)
+        {
+            if (power != 0 && start == true)
+            {
+                start = false;
+                MenuNumber = 4;
+            }
+            MainMenuCanvas.SetActive(false);
+            GamemodeCanvas.SetActive(false);
+            PickPowerCanvas.SetActive(true);
+            JoinServerCanvas.SetActive(false);
+        }
+        else if (MenuNumber == 4)
+        {
+            MainMenuCanvas.SetActive(false);
+            GamemodeCanvas.SetActive(false);
+            PickPowerCanvas.SetActive(false);
+            JoinServerCanvas.SetActive(true);
+        }
+    }
+    public void Quit()
+    {
+        Application.Quit();
     }
 
-    
     public void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby(TypedLobby.Default);
@@ -68,8 +102,7 @@ public class MenuController : MonoBehaviour
 
     public void SetUserName()
     {
-        UsernameMenu.SetActive(false);
-        PhotonNetwork.playerName = UsernameInput.text;
+        PhotonNetwork.playerName = UserNameInput.text;
     }
 
     public void CreateGame()
