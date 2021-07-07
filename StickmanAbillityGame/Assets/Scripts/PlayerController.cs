@@ -80,6 +80,7 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem psIce;
     public ParticleSystem psFire;
     private bool HeadOnFire = false;
+
     public PlayerController(float walljumpForce)
     {
         WalljumpForce = walljumpForce;
@@ -96,7 +97,7 @@ public class PlayerController : MonoBehaviour
     }
     public void Fireattack()
     {
-        if(!photonView.isMine)
+        if (!photonView.isMine)
             photonView.RPC("ThisGuyIsOnFire", PhotonTargets.Others);
     }
     [PunRPC]
@@ -157,7 +158,7 @@ public class PlayerController : MonoBehaviour
     [PunRPC]
     public void FreezeFeet2()
     {
-        
+
         StartCoroutine("FrozenFeet");
     }
     [PunRPC]
@@ -215,10 +216,11 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+
         camerashake = FindObjectOfType<Camera>().GetComponent<StressReceiver>();
         if (MenuController.power == 3 && photonView.isMine)
         {
-            
+
             maxHealth += 50;
             SaveJumpForce += 1000;
             jumpForce += 1000;
@@ -386,7 +388,7 @@ public class PlayerController : MonoBehaviour
     }
     private IEnumerator stamping()
     {
-        
+
         direction = true;
         anim.Play("Stomp");
         stomp = true;
@@ -394,7 +396,7 @@ public class PlayerController : MonoBehaviour
         stomp = false;
         photonView.RPC("UnCameraShake", PhotonTargets.All);
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        foreach(GameObject theplayers in players)
+        foreach (GameObject theplayers in players)
         {
             if (!theplayers.GetComponent<PlayerController>().photonView.isMine)
                 theplayers.GetComponent<PlayerController>().Damage(40);
@@ -436,7 +438,8 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-
+        
+        
         if (isFrozen == false && Dead == false)
         {
             //photonView.RPC("Frooozen2", PhotonTargets.All);
@@ -614,7 +617,7 @@ public class PlayerController : MonoBehaviour
         }
         if (JohnCena == true)
             Debug.Log("Hast Du schon Gehofft?");
-        
+
     }
     private IEnumerator deadbody()
     {
@@ -663,9 +666,9 @@ public class PlayerController : MonoBehaviour
             StartCoroutine("leftarmgrow");
             currentEnergy = 0;
         }
-        
+
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
-        Balance[] Balances = GetComponentsInChildren<Balance>();        
+        Balance[] Balances = GetComponentsInChildren<Balance>();
         if ((Input.GetKey(KeyCode.E) || (GameManager.E_pressed == true && photonView.isMine)) && MenuController.power == 4 && readytofire == true && currentEnergy >= 50)
         {
             GameManager.E_pressed = false;
@@ -696,7 +699,7 @@ public class PlayerController : MonoBehaviour
         {
             GameManager.Q_pressed = false;
             loseEnergy(50);
-            iceField();   
+            iceField();
         }
         if ((Input.GetKeyDown(KeyCode.Q) || (GameManager.Q_pressed == true && photonView.isMine)) && MenuController.power == 6 && readytofire == true && currentEnergy >= 50)
         {
@@ -724,7 +727,7 @@ public class PlayerController : MonoBehaviour
             }
             GameManager.E_pressed = false;
         }
-        
+
         if (currentEnergy <= 1)
         {
             fireOn = false;
@@ -887,7 +890,7 @@ public class PlayerController : MonoBehaviour
             playerSpeed = 5000;
             jumpForce = 7000;
         }
-        if (isOnGround == false && isOnWallRight == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3) && Onlyonce == true&& isOnGround == false && isOnWallLeft == true)
+        if (isOnGround == false && isOnWallRight == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3) && Onlyonce == true && isOnGround == false && isOnWallLeft == true)
         {
             Onlyonce = false;
             rb.AddForce(Vector2.left * WalljumpForce);
@@ -897,7 +900,7 @@ public class PlayerController : MonoBehaviour
                 rb.AddForce(Vector2.down * WalljumpForce);
             direction = false;
         }
-        if (isOnGround == false && isOnWallLeft == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3) && Onlyonce == true&& isOnGround == false && isOnWallLeft == true)
+        if (isOnGround == false && isOnWallLeft == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3) && Onlyonce == true && isOnGround == false && isOnWallLeft == true)
         {
             Onlyonce = false;
             rb.AddForce(Vector2.right * WalljumpForce);
