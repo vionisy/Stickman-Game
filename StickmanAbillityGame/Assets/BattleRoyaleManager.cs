@@ -32,6 +32,7 @@ public class BattleRoyaleManager : MonoBehaviour
     }
     private void Awake()
     {
+        PhotonNetwork.room.IsOpen = false;
         //SceneCamera.SetActive(false);
         SpawnPlayer();
     }

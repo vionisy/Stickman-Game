@@ -14,6 +14,7 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        PhotonNetwork.room.IsOpen = true;
         Debug.Log("joyned");
     }
 
@@ -53,6 +54,7 @@ public class MenuManager : MonoBehaviour
 
         }
     }
+
     [PunRPC]
     public void changeCountdown(float countdown)
     {
