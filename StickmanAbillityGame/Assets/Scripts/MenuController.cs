@@ -7,6 +7,7 @@ using TMPro;
 public class MenuController : MonoBehaviour
 {
     private bool start = false;
+    private bool back = false;
     [SerializeField] private string VersionName = "0.1";
     [SerializeField] private TMP_InputField JoinGameInput;
     [SerializeField] private TMP_InputField UserNameInput;
@@ -79,6 +80,11 @@ public class MenuController : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+    public void Back()
+    {
+        if (MenuNumber >= 1)
+            MenuNumber -= 1;
     }
 
     public void OnConnectedToMaster()
