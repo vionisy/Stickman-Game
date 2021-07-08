@@ -302,7 +302,8 @@ public class PlayerController : MonoBehaviour
     [PunRPC]
     public void dead()
     {
-        Destroy(gameObject);
+        
+        Destroy(gameObject); 
     }
     private IEnumerator WaitForRegenerating()
     {
@@ -559,7 +560,8 @@ public class PlayerController : MonoBehaviour
 
         if (currentHealth <= 0 && Dead == false)
         {
-            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().StartCoroutine("Respawn");
+            if (MenuController.gamemode != 2)
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().StartCoroutine("Respawn");
             Dead = true;
             StartCoroutine("deadbody");
         }
@@ -633,9 +635,9 @@ public class PlayerController : MonoBehaviour
         }
 
         yield return new WaitForSeconds(4);
+        if (MenuController.gamemode == 2)
+            GameObject.FindGameObjectWithTag("YourDead").SetActive(true);
         photonView.RPC("dead", PhotonTargets.All);
-
-
     }
     private IEnumerator sizeBack()
     {

@@ -236,7 +236,7 @@ MonoBehaviour:
   countdownstarted: 0
   playernumber: {fileID: 1959566542}
   TimeUntillStart: {fileID: 1877452320}
-  minplayers: 2
+  minplayers: 1
   maxplayers: 5
 --- !u!114 &430825386
 MonoBehaviour:

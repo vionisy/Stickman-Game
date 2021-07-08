@@ -17,6 +17,7 @@ TagManager:
   - Joystick2
   - ButtonE
   - Head2
+  - YourDead
   layers:
   - Default
   - TransparentFX
