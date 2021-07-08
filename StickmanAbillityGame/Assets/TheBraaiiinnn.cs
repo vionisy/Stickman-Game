@@ -853,7 +853,7 @@ public class TheBraaiiinnn : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(0.1f, 1f));
         Onlyonce1 = true;
     }
-    private bool AttackPlayer = false;
+    private bool AttackPlayer = true;
     private void Brain()
     {
         float decision = Random.Range(1, 2);

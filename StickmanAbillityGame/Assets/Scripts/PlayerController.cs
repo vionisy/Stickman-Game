@@ -500,13 +500,6 @@ public class PlayerController : MonoBehaviour
                 follow.enabled = false;
             }
         }
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            jumpBoostLevelUp();
-            speedBoostLevelUp();
-            strengthBoostLevelUp();
-            healthBoostLevelUp();
-        }
         FixedJoystick[] fixedJoysticks = FindObjectsOfType<FixedJoystick>();
         if (GameManager.HandyControllsOn == true)
             foreach (FixedJoystick joysticks in fixedJoysticks)
