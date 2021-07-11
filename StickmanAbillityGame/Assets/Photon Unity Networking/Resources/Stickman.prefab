@@ -28399,8 +28399,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2d3c4d0a6dde11478d039e08bdc8e12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldofImpact: 10
-  force: 100
+  fieldofImpact: 3.5
+  force: 240
   LayerToHit:
     serializedVersion: 2
     m_Bits: 131008
@@ -29339,8 +29339,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2d3c4d0a6dde11478d039e08bdc8e12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldofImpact: 10
-  force: 100
+  fieldofImpact: 3.5
+  force: 240
   LayerToHit:
     serializedVersion: 2
     m_Bits: 131008
