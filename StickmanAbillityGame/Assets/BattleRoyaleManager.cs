@@ -18,6 +18,7 @@ public class BattleRoyaleManager : MonoBehaviour
     static public bool E_pressed;
     static public bool Q_pressed;
     public PhotonView photonView;
+    public Canvas deadScreen;
     private void Update()
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
@@ -36,7 +37,10 @@ public class BattleRoyaleManager : MonoBehaviour
         //SceneCamera.SetActive(false);
         SpawnPlayer();
     }
-
+    public void dead_screen()
+    {
+        deadScreen.enabled = true;
+    }
     public void SpawnPlayer()
     {
         int randmOne = Random.Range(0, Spawnpoints.Count);

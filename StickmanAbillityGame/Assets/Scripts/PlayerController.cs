@@ -636,7 +636,10 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(4);
         if (MenuController.gamemode == 2)
-            GameObject.FindGameObjectWithTag("YourDead").SetActive(true);
+        {
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<BattleRoyaleManager>().dead_screen();
+            Debug.Log("DeadScreen");
+        }
         photonView.RPC("dead", PhotonTargets.All);
     }
     private IEnumerator sizeBack()

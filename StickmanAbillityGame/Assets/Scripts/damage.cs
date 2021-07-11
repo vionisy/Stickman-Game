@@ -35,24 +35,27 @@ public class damage : MonoBehaviour
                 speed *= multiplyer;
                 if (speed >= 30 && (collision.gameObject.GetComponentInParent<PlayerController>() || collision.gameObject.GetComponentInParent<TheBraaiiinnn>()))
                 {
+                    photonView.RPC("knockback", PhotonTargets.Others, speed);
                     Debug.Log("CameraShake");
                     StartCoroutine("CameraShake");
                     speed += 10;
                 }
                 PlayerController playerHit = collision.gameObject.GetComponentInParent<PlayerController>();
                 if (playerHit)
-                    if(!playerHit.photonView.isMine)
+                    photonView.RPC("knockback", PhotonTargets.Others, speed);
+                    if (!playerHit.photonView.isMine)
                         playerHit.Damage(speed * 0.4f);
                     else
                         playerHit.Damage2(speed * 0.4f);
                 TheBraaiiinnn KI = collision.gameObject.GetComponentInParent<TheBraaiiinnn>();
                 if (KI)
+                    photonView.RPC("knockback", PhotonTargets.Others, speed);
                     if (!KI.photonView.isMine)
                         KI.Damage(speed * 0.4f);
                     else
                         KI.Damage2(speed * 0.4f);
                 //collision.gameObject.GetComponentInParent<PlayerController>().Damage(speed * 0.4f);
-                photonView.RPC("knockback", PhotonTargets.Others, speed);
+                
                 ps.Play();
             }
         }
