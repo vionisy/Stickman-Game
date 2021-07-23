@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private float num;
+    private bool DBCoolDown = false;
+    public bool waitforRotation = false;
     public ParticleSystem Bubles;
     private StressReceiver camerashake;
     private bool stomp = false;
@@ -27,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private float currentEnergy;
     public static bool Gravitation = false;
     public Animator anim;
+    public float swimmanim;
     public Rigidbody2D rb;
     public float jumpForce;
     public float playerSpeed;
@@ -763,7 +767,7 @@ public class PlayerController : MonoBehaviour
         {
             jumpForce = SaveJumpForce;
         }
-        if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") > 0) || (joystick != null && joystick.Horizontal >= 0.1) && stomp == false)
+        if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") > 0) || (joystick != null && joystick.Horizontal >= 0.1) && stomp == false && isInWater == false)
         {
             if (isOnGround == true)
             {
@@ -787,7 +791,7 @@ public class PlayerController : MonoBehaviour
             }
 
         }
-        else if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") < 0) || (joystick != null && joystick.Horizontal <= -0.1) && stomp == false)
+        else if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") < 0) || (joystick != null && joystick.Horizontal <= -0.1) && isInWater == false)
         {
             if (isOnGround == true)
             {
@@ -812,110 +816,159 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (direction == true && stomp == false)
+            if (direction == true && stomp == false && isInWater == false)
                 anim.Play("Idle");
-            if (direction == false && stomp == false)
+            if (direction == false && stomp == false && isInWater == false)
                 anim.Play("Idle2");
         }
+        if (SwimRotation > 360)
+            SwimRotation = 1;
+        else if (SwimRotation < 0)
+            SwimRotation = 359;
         if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") > 0) || (joystick != null && joystick.Horizontal >= 0.1) && stomp == false)
         {
             if (isInWater == true)
             {
-                rb.AddForce(Vector2.right * 8000 * Time.deltaTime);
+                if (SwimRotation != 270)
+                {
+                    if (SwimRotation >= 90 && SwimRotation < 270)
+                        SwimRotation += 0.5f;
+                    else
+                        SwimRotation += -0.5f;
+                }
+                rb.AddForce(rb.transform.up * 10000 * Time.deltaTime);
             }
 
         }
         else if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") < 0) || (joystick != null && joystick.Horizontal <= -0.1) && stomp == false)
         {
+
             if (isInWater == true)
             {
-                rb.AddForce(Vector2.left * 8000 * Time.deltaTime);
+                
+                if (SwimRotation != 90)
+                {
+                    if (SwimRotation >= 270 && SwimRotation < 90)
+                        SwimRotation += 0.5f;
+                    else
+                        SwimRotation += -0.5f;
+                }
+                rb.AddForce(rb.transform.up * 10000 * Time.deltaTime);
             }
         }
-        if ((Input.GetAxisRaw("Vertical") != 0 && Input.GetAxisRaw("Vertical") < 0) || (joystick != null && joystick.Vertical <= -0.1) && stomp == false)
+        else if ((Input.GetAxisRaw("Vertical") != 0 && Input.GetAxisRaw("Vertical") < 0) || (joystick != null && joystick.Vertical <= -0.1) && stomp == false)
         {
             if (isInWater == true)
             {
-                rb.AddForce(Vector2.down * 6000 * Time.deltaTime);
+                if (SwimRotation != 180)
+                {
+                    if (SwimRotation < 180)
+                        SwimRotation += 0.5f;
+                    else
+                        SwimRotation += -0.5f;
+                }
+                rb.AddForce(rb.transform.up * 10000 * Time.deltaTime);
             }
         }
         else if ((Input.GetAxisRaw("Vertical") != 0 && Input.GetAxisRaw("Vertical") > 0) || (joystick != null && joystick.Vertical >= -0.1) && stomp == false)
         {
+
             if (isInWater == true)
             {
-                rb.AddForce(Vector2.up * 6000 * Time.deltaTime);
+
+                if (SwimRotation != 0)
+                {
+                    if (SwimRotation >= 180)
+                        SwimRotation += 0.5f;
+                    else
+                        SwimRotation += -0.5f;
+                }
+                rb.AddForce(rb.transform.up * 10000 * Time.deltaTime);
             }
         }
-
-        if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == true) && Onlyonce == true)
-        {
-            Onlyonce = false;
-            if (gravity == false)
-                rb.AddForce(Vector2.up * jumpForce);
-            else
-                rb.AddForce(Vector2.down * jumpForce);
-        }
-        else if (joystick != null && joystick.Vertical <= 0.3)
-        {
-            Onlyonce = true;
-        }
-        if ((isOnGround == false && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == false) && Onlyonce == true) && DoubleJump == true && MenuController.power == 2)
-        {
-            DBCoolDown = true;
-            StartCoroutine("DoubleJumpCooldown");
-            DoubleJump = false;
-            Onlyonce = false;
-            if (gravity == false)
-                rb.AddForce(Vector2.up * jumpForce);
-            else
-                rb.AddForce(Vector2.down * jumpForce);
-        }
-        if (isOnGround == true && DBCoolDown == false)
-            DoubleJump = true;
-        isOnWallLeft = Physics2D.OverlapCircle(playerPos2.position, positionRadius, ground);
-        isOnWallRight = Physics2D.OverlapCircle(playerPos1.position, positionRadius, ground);
-        isOnGround = Physics2D.OverlapCircle(playerPos.position, positionRadius, ground);
-        isInWater = Physics2D.OverlapCircle(playerPos.position, positionRadius, water);
-        if (Input.GetKey(KeyCode.J) && Input.GetKey(KeyCode.O) && Input.GetKey(KeyCode.N) && Input.GetKey(KeyCode.H))
-        {
-            maxHealth = 3000;
-            currentHealth = maxHealth;
-            damage[] dammage = GetComponentsInChildren<damage>();
-            foreach (damage DAMAGE in dammage)
+            if (isInWater == true)
             {
-                DAMAGE.multiplyer = 5;
+                
+                anim.enabled = false;
+                foreach (Balance swimming in GetComponentsInChildren<Balance>())
+                {
+                    swimming.targetRotation = SwimRotation;
+                }
+                foreach (BalanceArms swimming in GetComponentsInChildren<BalanceArms>())
+                {
+                    swimming.force = 20;
+                    swimming.targetRotation = SwimRotation + swimmanim;
+                }
             }
-            playerSpeed = 5000;
-            jumpForce = 7000;
-        }
-        if (isOnGround == false && isOnWallRight == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3) && Onlyonce == true && isOnGround == false && isOnWallLeft == true)
-        {
-            Onlyonce = false;
-            rb.AddForce(Vector2.left * WalljumpForce);
-            if (gravity == false)
-                rb.AddForce(Vector2.up * WalljumpForce);
             else
-                rb.AddForce(Vector2.down * WalljumpForce);
-            direction = false;
-        }
-        if (isOnGround == false && isOnWallLeft == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3) && Onlyonce == true && isOnGround == false && isOnWallLeft == true)
-        {
-            Onlyonce = false;
-            rb.AddForce(Vector2.right * WalljumpForce);
-            if (gravity == false)
-                rb.AddForce(Vector2.up * WalljumpForce);
-            else
-                rb.AddForce(Vector2.down * WalljumpForce);
-            direction = true;
-        }
-
+                anim.enabled = true;
+            if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == true) && Onlyonce == true)
+            {
+                Onlyonce = false;
+                if (gravity == false)
+                    rb.AddForce(Vector2.up * jumpForce);
+                else
+                    rb.AddForce(Vector2.down * jumpForce);
+            }
+            else if (joystick != null && joystick.Vertical <= 0.3)
+            {
+                Onlyonce = true;
+            }
+            if ((isOnGround == false && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == false) && Onlyonce == true) && DoubleJump == true && MenuController.power == 2)
+            {
+                DBCoolDown = true;
+                StartCoroutine("DoubleJumpCooldown");
+                DoubleJump = false;
+                Onlyonce = false;
+                if (gravity == false)
+                    rb.AddForce(Vector2.up * jumpForce);
+                else
+                    rb.AddForce(Vector2.down * jumpForce);
+            }
+            if (isOnGround == true && DBCoolDown == false)
+                DoubleJump = true;
+            isOnWallLeft = Physics2D.OverlapCircle(playerPos2.position, positionRadius, ground);
+            isOnWallRight = Physics2D.OverlapCircle(playerPos1.position, positionRadius, ground);
+            isOnGround = Physics2D.OverlapCircle(playerPos.position, positionRadius, ground);
+            isInWater = Physics2D.OverlapCircle(playerPos.position, positionRadius, water);
+            if (Input.GetKey(KeyCode.J) && Input.GetKey(KeyCode.O) && Input.GetKey(KeyCode.N) && Input.GetKey(KeyCode.H))
+            {
+                maxHealth = 3000;
+                currentHealth = maxHealth;
+                damage[] dammage = GetComponentsInChildren<damage>();
+                foreach (damage DAMAGE in dammage)
+                {
+                    DAMAGE.multiplyer = 5;
+                }
+                playerSpeed = 5000;
+                jumpForce = 7000;
+            }
+            if (isOnGround == false && isOnWallRight == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3) && Onlyonce == true && isOnGround == false && isOnWallLeft == true)
+            {
+                Onlyonce = false;
+                rb.AddForce(Vector2.left * WalljumpForce);
+                if (gravity == false)
+                    rb.AddForce(Vector2.up * WalljumpForce);
+                else
+                    rb.AddForce(Vector2.down * WalljumpForce);
+                direction = false;
+            }
+            if (isOnGround == false && isOnWallLeft == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3) && Onlyonce == true && isOnGround == false && isOnWallLeft == true)
+            {
+                Onlyonce = false;
+                rb.AddForce(Vector2.right * WalljumpForce);
+                if (gravity == false)
+                    rb.AddForce(Vector2.up * WalljumpForce);
+                else
+                    rb.AddForce(Vector2.down * WalljumpForce);
+                direction = true;
+            }
     }
     private IEnumerator DoubleJumpCooldown()
     {
         yield return new WaitForSeconds(5);
         DBCoolDown = false;
     }
-    private bool DBCoolDown = false;
     private IEnumerator visible()
     {
         photonView.RPC("sidebar", PhotonTargets.Others);
@@ -948,7 +1001,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void jumpBoostLevelUp()
+    public void jumpBoostLevelUp()
     {
         jumpBoost += 1;
         jumpForce += 500;
@@ -956,12 +1009,12 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void speedBoostLevelUp()
+    public void speedBoostLevelUp()
     {
         speedBoost += 1;
         playerSpeed += 250;
     }
-    private void strengthBoostLevelUp()
+    public void strengthBoostLevelUp()
     {
         strengthBoost += 1;
         damage[] strength = GetComponentsInChildren<damage>();
@@ -970,7 +1023,7 @@ public class PlayerController : MonoBehaviour
             strength2.multiplyer += 0.1f;
         }
     }
-    private void healthBoostLevelUp()
+    public void healthBoostLevelUp()
     {
         healthBoost += 1;
         maxHealth += 25f;
@@ -1092,10 +1145,23 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    public float SwimRotation;
     private IEnumerator CameraShakeStomp()
     {
         camerashake.InduceStress(1.1f);
         yield return new WaitForSeconds(0.14f);
         camerashake.InduceStress(0);
+    }
+    IEnumerator ChangeSwimRotation(float v_start, float v_end, float duration)
+    {
+        float elapsed = 0.0f;
+        while (elapsed < duration)
+        {
+            SwimRotation = Mathf.Lerp(v_start, v_end, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        SwimRotation = v_end;
+        waitforRotation = false;
     }
 }

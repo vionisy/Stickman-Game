@@ -29545,6 +29545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2676b83b8d122a145a6d1c043fb4f0bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waitforRotation: 0
   Bubles: {fileID: 556070368732795991}
   IceFoot1: {fileID: 5938165330848864800}
   IceFoot2: {fileID: 7451351163723761043}
@@ -29594,6 +29595,7 @@ MonoBehaviour:
   IceFriction: {fileID: 6200000, guid: 55f72246b2a4ccd4ca2a49490ddf99ee, type: 2}
   psIce: {fileID: 3480749070544969346}
   psFire: {fileID: 8005451539431332015}
+  SwimRotation: 0
 --- !u!114 &11848969078165954
 MonoBehaviour:
   m_ObjectHideFlags: 0

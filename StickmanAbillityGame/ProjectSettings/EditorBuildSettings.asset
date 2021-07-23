@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/KI_Test.unity
     guid: d92a7a87d4a8df84899350404fff9887
+  - enabled: 1
+    path: Assets/Scenes/DungeonRoyaleWater.unity
+    guid: 3b782e43ec0ae17448b70d83dce01204
   m_configObjects: {}

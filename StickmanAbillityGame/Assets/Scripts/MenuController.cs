@@ -133,7 +133,8 @@ public class MenuController : MonoBehaviour
             PhotonNetwork.LoadLevel("Map1");
         else if (gamemode == 3)
             PhotonNetwork.LoadLevel("KI_Test");
-        Debug.Log("joyning");
+        else if (gamemode == 4)
+            PhotonNetwork.LoadLevel("DungeonRoyaleWater");
     }
 
 }

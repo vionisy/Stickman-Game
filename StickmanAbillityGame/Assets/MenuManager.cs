@@ -11,9 +11,11 @@ public class MenuManager : MonoBehaviour
     private bool starting = false;
     public float minplayers;
     public float maxplayers;
+    static public int ownPlayerNumber;
     // Start is called before the first frame update
     void Start()
     {
+        ownPlayerNumber = PhotonNetwork.playerList.Length;
         PhotonNetwork.room.IsOpen = true;
         Debug.Log("joyned");
     }

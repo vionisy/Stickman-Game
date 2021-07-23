@@ -33,7 +33,6 @@ public class BalanceArms : MonoBehaviour
         if (Input.GetKey(mousebutton) && DisableOnMouseClick == true && disabled == 1)
         {
             stopit = true;
-            Debug.Log("lol");
         }
         else if (disabled == 1)
             stopit = false;
