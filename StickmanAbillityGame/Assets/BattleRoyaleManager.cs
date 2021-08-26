@@ -27,6 +27,10 @@ public class BattleRoyaleManager : MonoBehaviour
     int myNumberInRoom;
     private void Update()
     {
+        if (PhotonNetwork.playerList.Length == 1)
+        {
+            PhotonNetwork.LoadLevel("YouWon");
+        }
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject player in players)
         {

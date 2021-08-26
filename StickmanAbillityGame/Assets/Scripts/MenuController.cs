@@ -6,6 +6,7 @@ using TMPro;
 
 public class MenuController : MonoBehaviour
 {
+    public static float money;
     private bool start = false;
     private bool back = false;
     [SerializeField] private string VersionName = "0.1";
@@ -19,7 +20,7 @@ public class MenuController : MonoBehaviour
     [SerializeField] private GameObject JoinServerCanvas;
 
     public static float power = 0;
-    public static float gamemode = 0;
+    public static float selectedgamemode = 0;
     private bool username = false;
     
 
@@ -47,7 +48,7 @@ public class MenuController : MonoBehaviour
         }
         else if (MenuNumber == 2)
         {
-            if (gamemode != 0 && start == true)
+            if (selectedgamemode != 0 && start == true)
             {
                 start = false;
                 MenuNumber = 3;
@@ -98,7 +99,7 @@ public class MenuController : MonoBehaviour
     }
     public void setGamemode(float Gamemode)
     {
-        gamemode = Gamemode;
+        selectedgamemode = Gamemode;
     }
 
     public void Close()
@@ -113,7 +114,7 @@ public class MenuController : MonoBehaviour
 
     public void CreateGame()
     {
-        PhotonNetwork.JoinRandomRoom(null, 10, MatchmakingMode.FillRoom, new TypedLobby(gamemode.ToString(), default), null);
+        PhotonNetwork.JoinRandomRoom(null, 10, MatchmakingMode.FillRoom, new TypedLobby(selectedgamemode.ToString(), default), null);
         
     }
     
@@ -122,18 +123,18 @@ public class MenuController : MonoBehaviour
     {
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.maxPlayers = 10;
-        PhotonNetwork.JoinOrCreateRoom(JoinGameInput.text, roomOptions, new TypedLobby(gamemode.ToString(), default), null);
+        PhotonNetwork.JoinOrCreateRoom(JoinGameInput.text, roomOptions, new TypedLobby(selectedgamemode.ToString(), default), null);
     }
 
     private void OnJoinedRoom()
     {
-        if (gamemode == 2)
+        if (selectedgamemode == 2)
             PhotonNetwork.LoadLevel("MenuRoyale");
-        else if (gamemode == 1)
-            PhotonNetwork.LoadLevel("Map1");
-        else if (gamemode == 3)
+        else if (selectedgamemode == 1)
+            PhotonNetwork.LoadLevel("DuellMenu");
+        else if (selectedgamemode == 3)
             PhotonNetwork.LoadLevel("KI_Test");
-        else if (gamemode == 4)
+        else if (selectedgamemode == 4)
             PhotonNetwork.LoadLevel("DungeonRoyaleWater");
     }
 

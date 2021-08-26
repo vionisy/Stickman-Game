@@ -3,31 +3,59 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    #region variables
+    #region private
     private float num;
-    private bool DBCoolDown = false;
-    public bool waitforRotation = false;
-    public ParticleSystem Bubles;
     private StressReceiver camerashake;
     private bool stomp = false;
     private bool DoubleJump;
-    public GameObject IceFoot1;
-    public GameObject IceFoot2;
-    public GameObject FireDamage;
-    public ParticleSystem FireParticles;
-    public ParticleSystem OnFireParticles;
+    private bool DBCoolDown = false;
     private bool fireOn = false;
-    public Rigidbody2D Headrb;
-    public Rigidbody2D LeftLowLeg;
-    public Rigidbody2D RightLowLeg;
+    private float SaveJumpForce;
     private bool isFrozen = false;
     private bool Onlyonce = true;
     private bool Onlyonce2 = true;
     private bool JohnCena = false;
     private FixedJoystick joystick;
     private FixedJoystick joystick2;
+    private bool direction;
+    private float currentEnergy;
+    private bool isOnGround;
+    private float currentHealth;
+    private HelthBar healthbar;
+    private HelthBar energybar;
+    private HelthBar Oponenthealthbar;
+    private bool isOnWallLeft;
+    private bool isInWater;
+    private bool isOnWallRight;
+    private bool gravity = false;
+    private bool regenerating = true;
+    private int size = 0;
+    private Camera cam;
+    private bool readytofire = true;
+    private bool sizeBackToNormal = false;
+    private bool leftarmsize = false;
+    private int jumpBoost = 0;
+    private int speedBoost = 0;
+    private int strengthBoost = 0;
+    private int healthBoost = 0;
+    private bool HeadOnFire = false;
+    private bool stop = true;
+    #endregion
+    #region public
+    public float SwimRotation;
+    public bool waitforRotation = false;
+    public ParticleSystem Bubles;
+    public GameObject IceFoot1;
+    public GameObject IceFoot2;
+    public GameObject FireDamage;
+    public ParticleSystem FireParticles;
+    public ParticleSystem OnFireParticles;
+    public Rigidbody2D Headrb;
+    public Rigidbody2D LeftLowLeg;
+    public Rigidbody2D RightLowLeg;
     public GameObject leftarm;
     public float maxEnergy = 100;
-    private float currentEnergy;
     public static bool Gravitation = false;
     public Animator anim;
     public float swimmanim;
@@ -35,32 +63,18 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public float playerSpeed;
     public Vector2 JumpHeight;
-    private bool isOnGround;
     public float positionRadius;
     public LayerMask ground;
     public LayerMask water;
     public Transform playerPos;
     public float GravitationScale = -1.5f;
-    private bool direction;
     public PhotonView photonView;
-    private float SaveJumpForce;
     public Transform playerPos1;
     public Transform playerPos2;
-    private bool isOnWallLeft;
-    private bool isInWater;
-    private bool isOnWallRight;
     public float WalljumpForce;
     public float maxHealth = 100;
-    private float currentHealth;
-    private HelthBar healthbar;
-    private HelthBar energybar;
-    private HelthBar Oponenthealthbar;
     public bool Dead = false;
-    private bool gravity = false;
-    private bool regenerating = true;
-    private int size = 0;
     public float growspeed = 0.001f;
-    private Camera cam;
     public LineRenderer lr;
     public Transform Hand1;
     public GameObject RightHand;
@@ -70,44 +84,65 @@ public class PlayerController : MonoBehaviour
     public GameObject GravityBall;
     public GameObject IceBall;
     public float firerate = 0.2f;
-    private bool readytofire = true;
-    private bool sizeBackToNormal = false;
-    private bool leftarmsize = false;
-    private int jumpBoost = 0;
-    private int speedBoost = 0;
-    private int strengthBoost = 0;
-    private int healthBoost = 0;
     public LayerMask LayerToFreeze;
     public float IcefieldofImpact;
     public PhysicsMaterial2D HighFriction;
     public PhysicsMaterial2D IceFriction;
     public ParticleSystem psIce;
     public ParticleSystem psFire;
-    private bool HeadOnFire = false;
+    #endregion
+    #endregion
 
-    public PlayerController(float walljumpForce)
+    #region functions
+    #region IEnumerators
+    private IEnumerator CameraShakeStomp()
     {
-        WalljumpForce = walljumpForce;
+        camerashake.InduceStress(1.1f);
+        yield return new WaitForSeconds(0.14f);
+        camerashake.InduceStress(0);
     }
-    [PunRPC]
-    public void psIce2()
+    IEnumerator ChangeSwimRotation(float v_start, float v_end, float duration)
     {
-        psIce.Play();
+        float elapsed = 0.0f;
+        while (elapsed < duration)
+        {
+            SwimRotation = Mathf.Lerp(v_start, v_end, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        SwimRotation = v_end;
+        waitforRotation = false;
     }
-    [PunRPC]
-    public void psFire2()
+    private IEnumerator changetheGravity()
     {
-        psFire.Play();
+        if (MenuController.power == 4)
+        {
+            PlayerController.Gravitation = true;
+            yield return new WaitForSeconds(15);
+            PlayerController.Gravitation = false;
+        }
     }
-    public void Fireattack()
+    private IEnumerator DoubleJumpCooldown()
     {
-        if (!photonView.isMine)
-            photonView.RPC("ThisGuyIsOnFire", PhotonTargets.Others);
+        yield return new WaitForSeconds(5);
+        DBCoolDown = false;
     }
-    [PunRPC]
-    public void ThisGuyIsOnFire()
+    private IEnumerator visible()
     {
-        StartCoroutine("FireHead");
+        photonView.RPC("sidebar", PhotonTargets.Others);
+        yield return new WaitForSeconds(1.5f);
+        photonView.RPC("Invisibillity", PhotonTargets.Others);
+    }
+    private IEnumerator FrozenFeet()
+    {
+        photonView.RPC("IceFeetStart", PhotonTargets.AllBuffered);
+        RightLowLeg.sharedMaterial = IceFriction;
+        LeftLowLeg.sharedMaterial = IceFriction;
+        yield return new WaitForSeconds(20);
+        RightLowLeg.sharedMaterial = HighFriction;
+        LeftLowLeg.sharedMaterial = HighFriction;
+        photonView.RPC("IceFeetStop", PhotonTargets.AllBuffered);
+
     }
     private IEnumerator FireHead()
     {
@@ -117,15 +152,106 @@ public class PlayerController : MonoBehaviour
         photonView.RPC("FireOff", PhotonTargets.All);
         HeadOnFire = false;
     }
-    [PunRPC]
-    public void FireOn()
+    private IEnumerator YourFrozen()
     {
-        OnFireParticles.Play();
+        isFrozen = true;
+        yield return new WaitForSeconds(5);
+        isFrozen = false;
     }
-    [PunRPC]
-    public void FireOff()
+    private IEnumerator WaitForRegenerating()
     {
-        OnFireParticles.Stop();
+        regenerating = false;
+        float HealthBeforeWaiting = currentHealth;
+        yield return new WaitForSeconds(10);
+        if (currentHealth == HealthBeforeWaiting)
+        {
+            regenerating = true;
+        }
+    }
+    private IEnumerator leftarmgrow()
+    {
+        leftarmsize = true;
+        yield return new WaitForSeconds(15);
+        leftarmsize = false;
+    }
+    private IEnumerator shoot()
+    {
+        yield return new WaitForSeconds(0.35f);
+        PhotonNetwork.Instantiate(RightHand.name, ShootingPoint.position, ShootingPoint.rotation, 0);
+        photonView.RPC("startGrapling", PhotonTargets.All);
+        //Instantiate(RightHand, ShootingPoint.position, ShootingPoint.rotation);
+    }
+    #endregion
+    #region normal voids
+
+    public void jumpBoostLevelUp()
+    {
+        jumpBoost += 1;
+        jumpForce += 500;
+        SaveJumpForce += 500;
+
+    }
+
+    public void speedBoostLevelUp()
+    {
+        speedBoost += 1;
+        playerSpeed += 250;
+    }
+    public void strengthBoostLevelUp()
+    {
+        strengthBoost += 1;
+        damage[] strength = GetComponentsInChildren<damage>();
+        foreach (damage strength2 in strength)
+        {
+            strength2.multiplyer += 0.1f;
+        }
+    }
+    public void healthBoostLevelUp()
+    {
+        healthBoost += 1;
+        maxHealth += 25f;
+    }
+    private IEnumerator deadbody()
+    {
+        if (MenuController.power == 2 && photonView.isMine)
+            photonView.RPC("sidebar", PhotonTargets.Others);
+        Balance[] balances = GetComponentsInChildren<Balance>();
+        foreach (Balance theBalances in balances)
+        {
+            theBalances.enabled = false;
+        }
+        BalanceArms[] balancesarms = GetComponentsInChildren<BalanceArms>();
+        foreach (BalanceArms theBalanceArms in balancesarms)
+        {
+            theBalanceArms.enabled = false;
+        }
+        FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
+        foreach (FollowMouse FollowTheMouse in followMouse)
+        {
+            FollowTheMouse.enabled = false;
+        }
+
+        yield return new WaitForSeconds(4);
+        if (MenuController.selectedgamemode == 2)
+        {
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<BattleRoyaleManager>().dead_screen();
+            Debug.Log("DeadScreen");
+        }
+        photonView.RPC("dead", PhotonTargets.All);
+    }
+    private IEnumerator sizeBack()
+    {
+        yield return new WaitForSeconds(20);
+        sizeBackToNormal = true;
+    }
+    public void Damage(float damageamount)
+    {
+        if (!photonView.isMine)
+            photonView.RPC("Damage2", PhotonTargets.Others, damageamount);
+    }
+    public void delete()
+    {
+        PhotonNetwork.Destroy(gameObject);
     }
     private void FireAttack()
     {
@@ -159,6 +285,135 @@ public class PlayerController : MonoBehaviour
         if (!photonView.isMine)
             photonView.RPC("FreezeFeet2", PhotonTargets.Others);
     }
+    public void Fireattack()
+    {
+        if (!photonView.isMine)
+            photonView.RPC("ThisGuyIsOnFire", PhotonTargets.Others);
+    }
+    public PlayerController(float walljumpForce)
+    {
+        WalljumpForce = walljumpForce;
+    }
+    public void Line(Vector3 pos)
+    {
+        photonView.RPC("Line2", PhotonTargets.All, pos);
+    }
+    public void loseEnergy(float amount)
+    {
+        if (currentEnergy >= 0)
+            currentEnergy -= amount;
+    }
+    public void Grapple(Vector3 pos, Rigidbody2D RB)
+    {
+        if (MenuController.power == 1 && photonView.isMine)
+        {
+            springjoint.connectedBody = RB;
+            springjoint.connectedAnchor = pos;
+            springjoint.enabled = true;
+            if (MenuController.power == 1 && photonView.isMine)
+            {
+                GameObject.FindGameObjectWithTag("LowerArm").GetComponent<FollowMouse>().enabled = false;
+                GameObject.FindGameObjectWithTag("UpperArm").GetComponent<FollowMouse>().enabled = false;
+            }
+        }
+    }
+    private void shootGravityBall()
+    {
+        //PhotonNetwork.Instantiate(GravityBall.name, ShootingPoint2.position, ShootingPoint.rotation, 0);
+    }
+
+    private IEnumerator FireRate()
+    {
+        yield return new WaitForSeconds(firerate);
+        readytofire = true;
+    }
+
+    public void Freeze1()
+    {
+        if (!photonView.isMine)
+        {
+            photonView.RPC("Freeze2", PhotonTargets.Others);
+            Debug.Log("Freeze1");
+        }
+    }
+    private IEnumerator stamping()
+    {
+
+        direction = true;
+        anim.Play("Stomp");
+        stomp = true;
+        yield return new WaitForSeconds(1);
+        stomp = false;
+        photonView.RPC("UnCameraShake", PhotonTargets.All);
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject theplayers in players)
+        {
+            if (!theplayers.GetComponent<PlayerController>().photonView.isMine)
+                theplayers.GetComponent<PlayerController>().Damage(40);
+        }
+    }
+    #endregion
+    #region PunRPC voids
+    [PunRPC]
+    public void firestart()
+    {
+        FireParticles.Play();
+    }
+    [PunRPC]
+    public void firestop()
+    {
+        FireParticles.Stop();
+    }
+    [PunRPC]
+    public void Invisibillity()
+    {
+        if (!photonView.isMine)
+        {
+            SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer theTransparency in Transparency)
+            {
+                theTransparency.color = new Color(1f, 1f, 1f, 0f);
+            }
+        }
+    }
+    [PunRPC]
+    public void sidebar()
+    {
+        if (!photonView.isMine)
+        {
+            SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer theTransparency in Transparency)
+            {
+                theTransparency.color = new Color(0.2f, 0.2f, 0.2f, 1f);
+            }
+        }
+    }
+    [PunRPC]
+    public void GravitationChange(bool theGravitation)
+    {
+        Gravitation = theGravitation;
+    }
+    [PunRPC]
+    public void hidehealthbar()
+    {
+        GetComponentInChildren<HelthBar>().gameObject.SetActive(false);
+    }
+    [PunRPC]
+    public void OponentHealth(float thehealths)
+    {
+        if (Oponenthealthbar)
+            Oponenthealthbar.SetHealth(thehealths); ;
+    }
+    [PunRPC]
+    public void Damage2(float TheDamageAmont)
+    {
+        if (MenuController.power == 2 && photonView.isMine)
+            StartCoroutine("visible");
+        currentHealth -= TheDamageAmont;
+        healthbar.SetHealth(currentHealth);
+        StartCoroutine("WaitForRegenerating");
+        photonView.RPC("OponentHealth", PhotonTargets.Others, currentHealth);
+    }
     [PunRPC]
     public void FreezeFeet2()
     {
@@ -177,47 +432,92 @@ public class PlayerController : MonoBehaviour
         IceFoot1.SetActive(false);
         IceFoot2.SetActive(false);
     }
-    private IEnumerator FrozenFeet()
+    [PunRPC]
+    public void FireOn()
     {
-        photonView.RPC("IceFeetStart", PhotonTargets.AllBuffered);
-        RightLowLeg.sharedMaterial = IceFriction;
-        LeftLowLeg.sharedMaterial = IceFriction;
-        yield return new WaitForSeconds(20);
-        RightLowLeg.sharedMaterial = HighFriction;
-        LeftLowLeg.sharedMaterial = HighFriction;
-        photonView.RPC("IceFeetStop", PhotonTargets.AllBuffered);
-
+        OnFireParticles.Play();
     }
     [PunRPC]
-    public void OponentHealth(float thehealths)
+    public void FireOff()
+    {
+        OnFireParticles.Stop();
+    }
+    [PunRPC]
+    public void ThisGuyIsOnFire()
+    {
+        StartCoroutine("FireHead");
+    }
+    [PunRPC]
+    public void psIce2()
+    {
+        psIce.Play();
+    }
+    [PunRPC]
+    public void psFire2()
+    {
+        psFire.Play();
+    }
+    [PunRPC]
+    public void Frooozen1()
+    {
+        SpriteRenderer[] Transparency2 = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer theTransparency in Transparency2)
+        {
+            theTransparency.color = new Color(0.7f, 1f, 1f, 0.9f);
+        }
+    }
+    [PunRPC]
+    public void Frooozen2()
+    {
+        SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer theTransparency in Transparency)
+        {
+            theTransparency.color = new Color(1f, 1f, 1f, 1f);
+        }
+    }
+    [PunRPC]
+    public void UnCameraShake()
+    {
+        StartCoroutine("CameraShakeStomp");
+    }
+    [PunRPC]
+    public void Freeze2()
+    {
+        StartCoroutine("YourFrozen");
+    }
+    [PunRPC]
+    public void UpdateHealthBar(float theHealth)
     {
         if (Oponenthealthbar)
-            Oponenthealthbar.SetHealth(thehealths); ;
+            Oponenthealthbar.SetHealth(theHealth);
     }
     [PunRPC]
-    public void Damage2(float TheDamageAmont)
+    public void dead()
     {
-        if (MenuController.power == 2 && photonView.isMine)
-            StartCoroutine("visible");
-        currentHealth -= TheDamageAmont;
-        healthbar.SetHealth(currentHealth);
-        StartCoroutine("WaitForRegenerating");
-        photonView.RPC("OponentHealth", PhotonTargets.Others, currentHealth);
-    }
-    public void Damage(float damageamount)
-    {
-        if (!photonView.isMine)
-            photonView.RPC("Damage2", PhotonTargets.Others, damageamount);
-    }
-    public void delete()
-    {
-        PhotonNetwork.Destroy(gameObject);
+
+        Destroy(gameObject);
     }
     [PunRPC]
-    public void hidehealthbar()
+    public void Line2(Vector3 pos)
     {
-        GetComponentInChildren<HelthBar>().gameObject.SetActive(false);
+        lr.SetPosition(0, pos);
     }
+    [PunRPC]
+    public void startGrapling()
+    {
+        Debug.Log("Start");
+        lr.enabled = true;
+    }
+    [PunRPC]
+    public void stopGrapling()
+    {
+        Debug.Log("Stop");
+        lr.enabled = false;
+    }
+    #endregion
+    #endregion
+
+    #region startandUpdae
     private void Start()
     {
 
@@ -295,150 +595,6 @@ public class PlayerController : MonoBehaviour
                 RBCHILDREN.isKinematic = true;
                 RBCHILDREN.gravityScale = 0;
             }
-        }
-    }
-    [PunRPC]
-    public void UpdateHealthBar(float theHealth)
-    {
-        if (Oponenthealthbar)
-            Oponenthealthbar.SetHealth(theHealth);
-    }
-    [PunRPC]
-    public void dead()
-    {
-        
-        Destroy(gameObject); 
-    }
-    private IEnumerator WaitForRegenerating()
-    {
-        regenerating = false;
-        float HealthBeforeWaiting = currentHealth;
-        yield return new WaitForSeconds(10);
-        if (currentHealth == HealthBeforeWaiting)
-        {
-            regenerating = true;
-        }
-    }
-    private IEnumerator leftarmgrow()
-    {
-        leftarmsize = true;
-        yield return new WaitForSeconds(15);
-        leftarmsize = false;
-    }
-    [PunRPC]
-    public void Line2(Vector3 pos)
-    {
-        lr.SetPosition(0, pos);
-    }
-    public void Line(Vector3 pos)
-    {
-        photonView.RPC("Line2", PhotonTargets.All, pos);
-    }
-    public void loseEnergy(float amount)
-    {
-        if (currentEnergy >= 0)
-            currentEnergy -= amount;
-    }
-    public void Grapple(Vector3 pos, Rigidbody2D RB)
-    {
-        if (MenuController.power == 1 && photonView.isMine)
-        {
-            springjoint.connectedBody = RB;
-            springjoint.connectedAnchor = pos;
-            springjoint.enabled = true;
-            if (MenuController.power == 1 && photonView.isMine)
-            {
-                GameObject.FindGameObjectWithTag("LowerArm").GetComponent<FollowMouse>().enabled = false;
-                GameObject.FindGameObjectWithTag("UpperArm").GetComponent<FollowMouse>().enabled = false;
-            }
-        }
-    }
-    [PunRPC]
-    public void startGrapling()
-    {
-        Debug.Log("Start");
-        lr.enabled = true;
-    }
-    [PunRPC]
-    public void stopGrapling()
-    {
-        Debug.Log("Stop");
-        lr.enabled = false;
-    }
-    private IEnumerator shoot()
-    {
-        yield return new WaitForSeconds(0.35f);
-        PhotonNetwork.Instantiate(RightHand.name, ShootingPoint.position, ShootingPoint.rotation, 0);
-        photonView.RPC("startGrapling", PhotonTargets.All);
-        //Instantiate(RightHand, ShootingPoint.position, ShootingPoint.rotation);
-    }
-    private void shootGravityBall()
-    {
-        //PhotonNetwork.Instantiate(GravityBall.name, ShootingPoint2.position, ShootingPoint.rotation, 0);
-    }
-
-    private IEnumerator FireRate()
-    {
-        yield return new WaitForSeconds(firerate);
-        readytofire = true;
-    }
-    private bool stop = true;
-    public void Freeze1()
-    {
-        if (!photonView.isMine)
-        {
-            photonView.RPC("Freeze2", PhotonTargets.Others);
-            Debug.Log("Freeze1");
-        }
-    }
-    private IEnumerator stamping()
-    {
-
-        direction = true;
-        anim.Play("Stomp");
-        stomp = true;
-        yield return new WaitForSeconds(1);
-        stomp = false;
-        photonView.RPC("UnCameraShake", PhotonTargets.All);
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        foreach (GameObject theplayers in players)
-        {
-            if (!theplayers.GetComponent<PlayerController>().photonView.isMine)
-                theplayers.GetComponent<PlayerController>().Damage(40);
-        }
-    }
-    [PunRPC]
-    public void UnCameraShake()
-    {
-        StartCoroutine("CameraShakeStomp");
-    }
-    [PunRPC]
-    public void Freeze2()
-    {
-        StartCoroutine("YourFrozen");
-    }
-    private IEnumerator YourFrozen()
-    {
-        isFrozen = true;
-        yield return new WaitForSeconds(5);
-        isFrozen = false;
-    }
-    [PunRPC]
-    public void Frooozen1()
-    {
-        SpriteRenderer[] Transparency2 = GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer theTransparency in Transparency2)
-        {
-            theTransparency.color = new Color(0.7f, 1f, 1f, 0.9f);
-        }
-    }
-    [PunRPC]
-    public void Frooozen2()
-    {
-        SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer theTransparency in Transparency)
-        {
-            theTransparency.color = new Color(1f, 1f, 1f, 1f);
         }
     }
     private void Update()
@@ -564,7 +720,7 @@ public class PlayerController : MonoBehaviour
 
         if (currentHealth <= 0 && Dead == false)
         {
-            if (MenuController.gamemode != 2)
+            if (MenuController.selectedgamemode != 2)
                 GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().StartCoroutine("Respawn");
             Dead = true;
             StartCoroutine("deadbody");
@@ -588,6 +744,7 @@ public class PlayerController : MonoBehaviour
             KeyInput2();
         }
     }
+    //Use KeyInput2 as FixedUpdate only running when the player isn't dead and the owner of the photonview
     void KeyInput2()
     {
         if (HeadOnFire == true)
@@ -618,44 +775,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Hast Du schon Gehofft?");
 
     }
-    private IEnumerator deadbody()
-    {
-        if (MenuController.power == 2 && photonView.isMine)
-            photonView.RPC("sidebar", PhotonTargets.Others);
-        Balance[] balances = GetComponentsInChildren<Balance>();
-        foreach (Balance theBalances in balances)
-        {
-            theBalances.enabled = false;
-        }
-        BalanceArms[] balancesarms = GetComponentsInChildren<BalanceArms>();
-        foreach (BalanceArms theBalanceArms in balancesarms)
-        {
-            theBalanceArms.enabled = false;
-        }
-        FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
-        foreach (FollowMouse FollowTheMouse in followMouse)
-        {
-            FollowTheMouse.enabled = false;
-        }
-
-        yield return new WaitForSeconds(4);
-        if (MenuController.gamemode == 2)
-        {
-            GameObject.FindGameObjectWithTag("GameController").GetComponent<BattleRoyaleManager>().dead_screen();
-            Debug.Log("DeadScreen");
-        }
-        photonView.RPC("dead", PhotonTargets.All);
-    }
-    private IEnumerator sizeBack()
-    {
-        yield return new WaitForSeconds(20);
-        sizeBackToNormal = true;
-    }
-    [PunRPC]
-    public void GravitationChange(bool theGravitation)
-    {
-        Gravitation = theGravitation;
-    }
+    //Use KeyInput as Update only running when the player isn't dead and the owner of the photonview
     void KeyInput()
     {
         if (isInWater == true && Bubles.isPlaying == false)
@@ -964,204 +1084,5 @@ public class PlayerController : MonoBehaviour
                 direction = true;
             }
     }
-    private IEnumerator DoubleJumpCooldown()
-    {
-        yield return new WaitForSeconds(5);
-        DBCoolDown = false;
-    }
-    private IEnumerator visible()
-    {
-        photonView.RPC("sidebar", PhotonTargets.Others);
-        yield return new WaitForSeconds(1.5f);
-        photonView.RPC("Invisibillity", PhotonTargets.Others);
-    }
-
-    [PunRPC]
-    public void Invisibillity()
-    {
-        if (!photonView.isMine)
-        {
-            SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
-            foreach (SpriteRenderer theTransparency in Transparency)
-            {
-                theTransparency.color = new Color(1f, 1f, 1f, 0f);
-            }
-        }
-    }
-    [PunRPC]
-    public void sidebar()
-    {
-        if (!photonView.isMine)
-        {
-            SpriteRenderer[] Transparency = GetComponentsInChildren<SpriteRenderer>();
-            foreach (SpriteRenderer theTransparency in Transparency)
-            {
-                theTransparency.color = new Color(0.2f, 0.2f, 0.2f, 1f);
-            }
-        }
-    }
-
-    public void jumpBoostLevelUp()
-    {
-        jumpBoost += 1;
-        jumpForce += 500;
-        SaveJumpForce += 500;
-
-    }
-
-    public void speedBoostLevelUp()
-    {
-        speedBoost += 1;
-        playerSpeed += 250;
-    }
-    public void strengthBoostLevelUp()
-    {
-        strengthBoost += 1;
-        damage[] strength = GetComponentsInChildren<damage>();
-        foreach (damage strength2 in strength)
-        {
-            strength2.multiplyer += 0.1f;
-        }
-    }
-    public void healthBoostLevelUp()
-    {
-        healthBoost += 1;
-        maxHealth += 25f;
-    }
-    [PunRPC]
-    public void firestart()
-    {
-        FireParticles.Play();
-    }
-    [PunRPC]
-    public void firestop()
-    {
-        FireParticles.Stop();
-    }
-    private IEnumerator changetheGravity()
-    {
-        if (MenuController.power == 4)
-        {
-            PlayerController.Gravitation = true;
-            yield return new WaitForSeconds(15);
-            PlayerController.Gravitation = false;
-        }
-    }
-    private void dontdestroyjet()
-    {
-        if (sizeBackToNormal == true && MenuController.power == 3 && size != 0 && size != -1)
-        {
-            damage[] dammage = GetComponentsInChildren<damage>();
-            foreach (damage DAMAGE in dammage)
-            {
-                DAMAGE.multiplyer = 1;
-            }
-            size = 0;
-            stop = false;
-            playerSpeed -= 500;
-            jumpForce -= 1000;
-            positionRadius -= 0.4f;
-            FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
-            foreach (FollowMouse FollowTheMouse in followMouse)
-            {
-                FollowTheMouse.Maxspeed -= 30;
-            }
-            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
-            foreach (Rigidbody2D RBCHILDREN in rbChildren)
-            {
-                RBCHILDREN.mass -= 0.3f;
-            }
-            stop = true;
-            sizeBackToNormal = false;
-        }
-        if (sizeBackToNormal == true && MenuController.power == 3 && size == -1)
-        {
-            damage[] dammage = GetComponentsInChildren<damage>();
-            foreach (damage DAMAGE in dammage)
-            {
-                DAMAGE.multiplyer = 1;
-            }
-            size = 0;
-            stop = false;
-            stop = true;
-            sizeBackToNormal = false;
-        }
-        if ((Input.GetKey(KeyCode.E) || (GameManager.E_pressed == true && photonView.isMine)) && MenuController.power == 3 && size != 1 && currentEnergy >= maxEnergy)
-        {
-            GameManager.E_pressed = false;
-            damage[] dammage = GetComponentsInChildren<damage>();
-            foreach (damage DAMAGE in dammage)
-            {
-                DAMAGE.multiplyer = 1;
-            }
-            size = 1;
-            stop = false;
-            playerSpeed += 500;
-            jumpForce += 1000;
-            positionRadius += 0.4f;
-            FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
-            foreach (FollowMouse FollowTheMouse in followMouse)
-            {
-                FollowTheMouse.Maxspeed += 30;
-            }
-            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
-            foreach (Rigidbody2D RBCHILDREN in rbChildren)
-            {
-                RBCHILDREN.mass += 0.3f;
-            }
-            stop = true;
-            loseEnergy(maxEnergy);
-            StartCoroutine("sizeBack");
-        }
-        if ((Input.GetKey(KeyCode.Q) || (GameManager.Q_pressed == true && photonView.isMine)) && MenuController.power == 3 && size != -1 && currentEnergy >= maxEnergy)
-        {
-            GameManager.Q_pressed = false;
-            damage[] dammage = GetComponentsInChildren<damage>();
-            foreach (damage DAMAGE in dammage)
-            {
-                DAMAGE.multiplyer = 2;
-            }
-            size = -1;
-            stop = false;
-            Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
-            stop = true;
-            loseEnergy(maxEnergy);
-            StartCoroutine("sizeBack");
-            if (MenuController.power == 3 && transform.localScale.x <= 1.5f && photonView.isMine && size == 1)
-            {
-                transform.localScale += new Vector3(growspeed, growspeed, growspeed);
-            }
-            if (MenuController.power == 3 && transform.localScale.x > 1 && photonView.isMine && size == 0)
-            {
-                transform.localScale -= new Vector3(growspeed, growspeed, growspeed);
-            }
-            if (MenuController.power == 3 && transform.localScale.x < 1 && photonView.isMine && size == 0)
-            {
-                transform.localScale += new Vector3(growspeed, growspeed, growspeed);
-            }
-            if (MenuController.power == 3 && transform.localScale.x > 0.6f && photonView.isMine && size == -1)
-            {
-                transform.localScale -= new Vector3(growspeed, growspeed, growspeed);
-            }
-        }
-    }
-    public float SwimRotation;
-    private IEnumerator CameraShakeStomp()
-    {
-        camerashake.InduceStress(1.1f);
-        yield return new WaitForSeconds(0.14f);
-        camerashake.InduceStress(0);
-    }
-    IEnumerator ChangeSwimRotation(float v_start, float v_end, float duration)
-    {
-        float elapsed = 0.0f;
-        while (elapsed < duration)
-        {
-            SwimRotation = Mathf.Lerp(v_start, v_end, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-        SwimRotation = v_end;
-        waitforRotation = false;
-    }
+    #endregion
 }

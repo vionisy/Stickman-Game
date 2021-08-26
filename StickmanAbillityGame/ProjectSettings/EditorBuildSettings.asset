@@ -32,4 +32,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DungeonRoyaleWater.unity
     guid: 3b782e43ec0ae17448b70d83dce01204
+  - enabled: 1
+    path: Assets/Scenes/DuellMenu.unity
+    guid: efe2b8c9382bca74e85ab5aa6da9ae59
+  - enabled: 1
+    path: Assets/Scenes/Duell.unity
+    guid: db6a5fdd1c4dc7f4dbb49fb64c497d27
+  - enabled: 1
+    path: Assets/Scenes/YouWon.unity
+    guid: d5ee21edf4115844ebc1ec66c271c243
   m_configObjects: {}

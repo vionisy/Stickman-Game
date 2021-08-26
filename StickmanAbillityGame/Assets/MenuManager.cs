@@ -12,6 +12,7 @@ public class MenuManager : MonoBehaviour
     public float minplayers;
     public float maxplayers;
     static public int ownPlayerNumber;
+    public float theGamemode;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,7 +33,10 @@ public class MenuManager : MonoBehaviour
         }
         if (PhotonNetwork.playerList.Length >= maxplayers)
         {
-            PhotonNetwork.LoadLevel("BattleRoyale");
+            if (theGamemode == 1)
+                PhotonNetwork.LoadLevel("BattleRoyale");
+            else if (theGamemode == 2)
+                PhotonNetwork.LoadLevel("Duell");
         }
     }
     private IEnumerator StartGame()
@@ -63,6 +67,11 @@ public class MenuManager : MonoBehaviour
         TimeUntillStart.text = countdown.ToString();
         countdownstarted = true;
         if (countdown == 0)
-            PhotonNetwork.LoadLevel("BattleRoyale");
+        {
+            if (theGamemode == 1)
+                PhotonNetwork.LoadLevel("BattleRoyale");
+            else if (theGamemode == 2)
+                PhotonNetwork.LoadLevel("Duell");
+        }
     }
 }
