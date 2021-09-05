@@ -10,7 +10,7 @@ public class ItemSpawner : MonoBehaviour
     void Start()
     {
         random = Random.Range(1, 2);
-        if (random == 1)
+        if (random == 1 && MenuManager.ownPlayerNumber == 1)
         {
             Debug.Log("Spawn");
             PhotonNetwork.Instantiate(ItemPrefab.name, new Vector2(transform.position.x, transform.position.y), Quaternion.identity, 0);

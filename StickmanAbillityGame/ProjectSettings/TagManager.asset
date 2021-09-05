@@ -18,6 +18,11 @@ TagManager:
   - ButtonE
   - Head2
   - YourDead
+  - StrenghtBar
+  - SpeedBar
+  - JumpboostBar
+  - HealthboostBar
+  - Ai
   layers:
   - Default
   - TransparentFX

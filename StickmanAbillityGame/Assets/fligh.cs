@@ -10,10 +10,25 @@ public class fligh : MonoBehaviour
     private bool stop = false;
     void Start()
     {
+        StartCoroutine("range");
         photonView = GetComponent<PhotonView>();
         rb.velocity = transform.right * Speed;
     }
-
+    private IEnumerator range()
+    {
+        yield return new WaitForSeconds(0.35f);
+        if (stop == false)
+        {
+            PhotonNetwork.Destroy(gameObject);
+            GameObject[] player = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject PLAYER in player)
+            {
+                if (PLAYER.GetComponent<PlayerController>().photonView.isMine)
+                    PLAYER.GetComponent<PlayerController>().photonView.RPC("stopGrapling", PhotonTargets.All);
+            }
+        }
+    }
+    
     // Update is called once per frame
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -31,6 +46,16 @@ public class fligh : MonoBehaviour
             {
                 if (PLAYER.GetComponent<PlayerController>().photonView.isMine)
                     PLAYER.GetComponent<PlayerController>().Grapple(transform.position, GetComponent<Rigidbody2D>());
+            }
+        }
+        if (collision.gameObject.GetComponentInParent<PlayerController>() != null)
+        {
+            PhotonNetwork.Destroy(gameObject);
+            GameObject[] player = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject PLAYER in player)
+            {
+                if (PLAYER.GetComponent<PlayerController>().photonView.isMine)
+                    PLAYER.GetComponent<PlayerController>().photonView.RPC("stopGrapling", PhotonTargets.All);
             }
         }
     }

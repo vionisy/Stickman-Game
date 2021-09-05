@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class damage : MonoBehaviour
 {
+    public bool KI = false;
     public float fieldofImpact;
     public float force;
     public LayerMask LayerToHit;
@@ -15,6 +16,8 @@ public class damage : MonoBehaviour
     public Transform Hand;
     public float multiplyer = 1;
     public ParticleSystem ps;
+    public float maxdamage = 150;
+    private float damagetoapply;
     private void Start()
     {
         camerashake = FindObjectOfType<Camera>().GetComponent<StressReceiver>();
@@ -36,24 +39,33 @@ public class damage : MonoBehaviour
                 if (speed >= 30 && (collision.gameObject.GetComponentInParent<PlayerController>() || collision.gameObject.GetComponentInParent<TheBraaiiinnn>()))
                 {
                     photonView.RPC("knockback", PhotonTargets.Others, speed);
-                    Debug.Log("CameraShake");
-                    StartCoroutine("CameraShake");
+;                   StartCoroutine("CameraShake");
                     speed += 10;
                 }
                 PlayerController playerHit = collision.gameObject.GetComponentInParent<PlayerController>();
-                if (playerHit != null && playerHit.photonView)
+                if (playerHit != null && playerHit.photonView && !(KI == false && MenuController.selectedgamemode == 3))
+                {
                     photonView.RPC("knockback", PhotonTargets.Others, speed);
-                    if (!playerHit.photonView.isMine)
-                        playerHit.Damage(speed * 0.4f);
-                    else
-                        playerHit.Damage2(speed * 0.4f);
-                TheBraaiiinnn KI = collision.gameObject.GetComponentInParent<TheBraaiiinnn>();
-                if (KI != null && KI.photonView)
+                    damagetoapply = speed * 0.4f;
+                    if (damagetoapply >= maxdamage)
+                    {
+                        damagetoapply = maxdamage;
+                    }
+                    if (playerHit != null && !playerHit.photonView.isMine)
+                        playerHit.Damage(damagetoapply);
+                    else if (playerHit != null)
+                        playerHit.Damage2(damagetoapply);
+                }
+                TheBraaiiinnn aKI = collision.gameObject.GetComponentInParent<TheBraaiiinnn>();
+                if (aKI != null)// && KI.photonView)
                     photonView.RPC("knockback", PhotonTargets.Others, speed);
-                    if (!KI.photonView.isMine)
-                        KI.Damage(speed * 0.4f);
-                    else
-                        KI.Damage2(speed * 0.4f);
+                    damagetoapply = speed * 0.4f;
+                    if (damagetoapply >= maxdamage)
+                    {
+                        damagetoapply = maxdamage;
+                    }
+                    if (aKI != null)
+                        aKI.Damage(damagetoapply);
                 //collision.gameObject.GetComponentInParent<PlayerController>().Damage(speed * 0.4f);
                 
                 ps.Play();

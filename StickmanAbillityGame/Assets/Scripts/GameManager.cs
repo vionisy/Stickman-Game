@@ -16,30 +16,44 @@ public class GameManager : MonoBehaviour
     static public bool E_pressed;
     static public bool Q_pressed;
     public bool KITest = false;
+    public static float playernumber;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.K) && KITest == true)
-            StartCoroutine("spawnKI");
+            //StartCoroutine("spawnKI");
         if (Input.GetKeyDown(KeyCode.Escape) && MenuScreen.active == false)
             MenuScreen.SetActive(true);
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
+        {
+            GameObject Head = player.GetComponentInChildren<CircleCollider2D>().gameObject;
+            if (player.GetComponent<PhotonView>() && player.GetComponent<PhotonView>().isMine)
+            {
+                SceneCamera.transform.position = new Vector3(Head.transform.position.x, Head.transform.position.y, -10);
+            }
+        }
     }
     private void Awake()
     {
         GameCanvas.SetActive(true);
     }
+    private void Start()
+    {
+        playernumber = PhotonNetwork.playerList.Length;
+    }
 
     public void SpawnPlayer()
     {
-        float randomValue = Random.Range(-1f, 1f);
-        PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(this.transform.position.x * randomValue, this.transform.position.y), Quaternion.identity, 0);
+        float randomValue = Random.Range(-20f, 20f);
+        PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(this.transform.position.x + randomValue, this.transform.position.y), Quaternion.identity, 0);
         GameCanvas.SetActive(false);
         SceneCamera.SetActive(true);
     }
     public IEnumerator Respawn()
     {
         yield return new WaitForSeconds(respwanTime);
-        float randomValue = Random.Range(-10f, 10f);
-        PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(this.transform.position.x * randomValue, this.transform.position.y), Quaternion.identity, 0);
+        float randomValue = Random.Range(-20f, 20f);
+        PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(this.transform.position.x + randomValue, this.transform.position.y), Quaternion.identity, 0);
     }
     public IEnumerator spawnKI()
     {
@@ -54,11 +68,9 @@ public class GameManager : MonoBehaviour
         {
             if (thePlayer.GetComponent<PhotonView>().isMine)
             {
-                thePlayer.GetComponent<PlayerController>().delete();
+                thePlayer.GetComponent<PlayerController>().Damage(100000);
             }
         }
-        float randomValue = Random.Range(-1f, 1f);
-        PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(this.transform.position.x * randomValue, this.transform.position.y), Quaternion.identity, 0);
     }
     public void OpenMenu()
     {

@@ -73,4 +73,8 @@ MonoBehaviour:
   - ThisGuyIsOnFire
   - UnCameraShake
   - UpdateHealthBar
+  - Update
+  - destroy
+  - Start
+  - VulcanoAction
   DisableAutoOpenWizard: 1

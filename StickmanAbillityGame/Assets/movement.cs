@@ -63,6 +63,16 @@ public class movement : MonoBehaviour
                     obj.GetComponent<Rigidbody2D>().AddForce(direction * (speed * -1));
                 }
             }
+            TheBraaiiinnn Ki = obj.GetComponentInParent<TheBraaiiinnn>();
+            if (Ki != null)
+            {
+                if (Ki.photonView.isMine)
+                {
+                    //player.Damage2(0.008f);
+                    Vector2 direction = obj.transform.position - transform.position;
+                    obj.GetComponent<Rigidbody2D>().AddForce(direction * (speed * -1));
+                }
+            }
         }
     }
 }

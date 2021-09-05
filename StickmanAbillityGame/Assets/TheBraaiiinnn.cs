@@ -28,8 +28,6 @@ public class TheBraaiiinnn : MonoBehaviour
     private FixedJoystick joystick;
     private FixedJoystick joystick2;
     public GameObject leftarm;
-    public float maxEnergy = 100;  
-    private float currentEnergy;
     public static bool Gravitation = false;
     public Animator anim;
     public Rigidbody2D rb;
@@ -54,7 +52,6 @@ public class TheBraaiiinnn : MonoBehaviour
     public float maxHealth = 100;
     private float currentHealth;
     private HelthBar healthbar;
-    private HelthBar energybar;
     private HelthBar Oponenthealthbar;
     public bool Dead = false;
     private bool gravity = false;
@@ -104,6 +101,8 @@ public class TheBraaiiinnn : MonoBehaviour
     {
         if (!photonView.isMine)
             photonView.RPC("ThisGuyIsOnFire", PhotonTargets.Others);
+        else
+            ThisGuyIsOnFire();
     }
     [PunRPC]
     public void ThisGuyIsOnFire()
@@ -141,24 +140,12 @@ public class TheBraaiiinnn : MonoBehaviour
             }
         }
     }
-    private void iceField()
-    {
-        photonView.RPC("psIce2", PhotonTargets.All);
-        Collider2D[] objects = Physics2D.OverlapCircleAll(rb.transform.position, IcefieldofImpact, LayerToFreeze);
-        foreach (Collider2D obj in objects)
-        {
-            Vector2 direction = obj.transform.position - rb.transform.position;
-            if (obj.GetComponentInParent<PlayerController>())
-            {
-                obj.GetComponentInParent<PlayerController>().FreezeFeet1();
-                obj.GetComponentInParent<PlayerController>().Damage(3);
-            }
-        }
-    }
     public void FreezeFeet1()
     {
         if (!photonView.isMine)
             photonView.RPC("FreezeFeet2", PhotonTargets.Others);
+        else
+            FreezeFeet2();
     }
     [PunRPC]
     public void FreezeFeet2()
@@ -207,15 +194,12 @@ public class TheBraaiiinnn : MonoBehaviour
     {
         if (!photonView.isMine)
             photonView.RPC("Damage2", PhotonTargets.Others, damageamount);
+        else
+            Damage2(damageamount);
     }
     public void delete()
     {
         PhotonNetwork.Destroy(gameObject);
-    }
-    [PunRPC]
-    public void hidehealthbar()
-    {
-        GetComponentInChildren<HelthBar>().gameObject.SetActive(false);
     }
     private void Start()
     {
@@ -233,7 +217,6 @@ public class TheBraaiiinnn : MonoBehaviour
         OnFireParticles.Stop();
         FireParticles.Stop();
         psIce.Stop();
-        currentEnergy = maxEnergy;
         readytofire = true;
         springjoint.enabled = false;
         FollowMouse[] followMouse = GetComponentsInChildren<FollowMouse>();
@@ -244,20 +227,14 @@ public class TheBraaiiinnn : MonoBehaviour
         springjoint = GetComponentInChildren<SpringJoint2D>();
         cam = FindObjectOfType<Camera>();
         //healthbar = GameObject.FindGameObjectWithTag("OwnHealthBar").GetComponent<HelthBar>();
-        energybar = GameObject.FindGameObjectWithTag("EnergyBar").GetComponent<HelthBar>();
-        GameObject[] oponenthealthbars = GameObject.FindGameObjectsWithTag("OponentsHealthbar");
-        foreach (GameObject thehealth in oponenthealthbars)
-        {
-            thehealth.SetActive(true);
-            healthbar = thehealth.GetComponentInChildren<HelthBar>();
-        }
-        energybar.SetMaxHealth(maxEnergy);
+        //GameObject[] oponenthealthbars = GameObject.FindGameObjectsWithTag("OponentsHealthbar");
+        //foreach (GameObject thehealth in oponenthealthbars)
+        //{
+            //thehealth.SetActive(true);
+            //healthbar = thehealth.GetComponentInChildren<HelthBar>();
+        //}
         currentHealth = maxHealth;
         healthbar.SetMaxHealth(maxHealth);
-        if (Oponenthealthbar)
-        {
-            Oponenthealthbar.SetMaxHealth(maxHealth);
-        }
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         SaveJumpForce = jumpForce;
         if (!photonView.isMine)
@@ -269,12 +246,6 @@ public class TheBraaiiinnn : MonoBehaviour
                 RBCHILDREN.gravityScale = 0;
             }
         }
-    }
-    [PunRPC]
-    public void UpdateHealthBar(float theHealth)
-    {
-        if (Oponenthealthbar)
-            Oponenthealthbar.SetHealth(theHealth);
     }
     [PunRPC]
     public void dead()
@@ -305,11 +276,6 @@ public class TheBraaiiinnn : MonoBehaviour
     public void Line(Vector3 pos)
     {
         photonView.RPC("Line2", PhotonTargets.All, pos);
-    }
-    public void loseEnergy(float amount)
-    {
-        if (currentEnergy >= 0)
-            currentEnergy -= amount;
     }
     public void Grapple(Vector3 pos, Rigidbody2D RB)
     {
@@ -362,6 +328,8 @@ public class TheBraaiiinnn : MonoBehaviour
             photonView.RPC("Freeze2", PhotonTargets.Others);
             Debug.Log("Freeze1");
         }
+        else
+            Freeze2();
     }
     private IEnumerator stamping()
     {
@@ -477,14 +445,6 @@ public class TheBraaiiinnn : MonoBehaviour
                 follow.enabled = false;
             }
         }
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            jumpBoostLevelUp();
-            speedBoostLevelUp();
-            strengthBoostLevelUp();
-            healthBoostLevelUp();
-        }
-        energybar.SetHealth(currentEnergy);
         
 
         if (currentHealth <= 0 && Dead == false)
@@ -507,17 +467,13 @@ public class TheBraaiiinnn : MonoBehaviour
     }
     void KeyInput2()
     {
+        photonView.RPC("UpdateHealthBar", PhotonTargets.Others, currentHealth);
         if (HeadOnFire == true)
             Damage2(0.1f);
-        if (fireOn == true)
-            loseEnergy(0.6f);
         Vector3 Leftarmsscale = leftarm.transform.localScale;
-        if (currentEnergy <= maxEnergy)
-            currentEnergy += 0.07f;
         if (regenerating == true && currentHealth <= maxHealth)
         {
             currentHealth += 0.1f;
-            photonView.RPC("UpdateHealthBar", PhotonTargets.Others, currentHealth);
         }
 
     }

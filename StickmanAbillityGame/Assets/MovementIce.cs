@@ -16,7 +16,11 @@ public class MovementIce : MonoBehaviour
         if (collision.gameObject.GetComponentInParent<PlayerController>() && photonView.isMine)
         {
             collision.gameObject.GetComponentInParent<PlayerController>().Freeze1();
-            Debug.Log("awfshdf");
+        }
+        if (collision.gameObject.GetComponentInParent<TheBraaiiinnn>() && photonView.isMine)
+        {
+            Debug.Log("adawd");
+            collision.gameObject.GetComponentInParent<TheBraaiiinnn>().Freeze1();
         }
         if (photonView.isMine)
         {

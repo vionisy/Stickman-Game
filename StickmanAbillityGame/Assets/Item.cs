@@ -6,6 +6,7 @@ public class Item : MonoBehaviour
 {
     private int UpgradeType;
     CircleCollider2D playerEntered;
+    public PhotonView photonView;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,12 +14,12 @@ public class Item : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         playerEntered = FindClosestEnemy().gameObject.GetComponentInParent<PlayerController>().GetComponentInChildren<CircleCollider2D>();
         if (Vector2.Distance(playerEntered.transform.position, transform.position) <= 10)
         {
-            transform.position += ((playerEntered.transform.position - transform.position) * 0.034f);
+            transform.position += ((playerEntered.transform.position - transform.position) * 0.15f);
         }
         if (Vector2.Distance(playerEntered.transform.position, transform.position) <= 1f)
         {
@@ -31,8 +32,15 @@ public class Item : MonoBehaviour
                 playerEntered.GetComponentInParent<PlayerController>().strengthBoostLevelUp();
             else if (UpgradeType == 4)
                 playerEntered.GetComponentInParent<PlayerController>().healthBoostLevelUp();
-            PhotonNetwork.Destroy(gameObject);
+            photonView.RPC("destroy", PhotonTargets.All);
+            
         }
+    }
+    [PunRPC]
+    public void destroy()
+    {
+        if (MenuManager.ownPlayerNumber == 1)
+            PhotonNetwork.Destroy(gameObject);
     }
     public GameObject FindClosestEnemy()
     {

@@ -7,6 +7,7 @@ public class FireDamage : MonoBehaviour
     private bool damage = false;
     private PlayerController player;
     private PhotonView photonView;
+    private TheBraaiiinnn Ai;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +19,8 @@ public class FireDamage : MonoBehaviour
         Debug.Log("lol");
         photonView = collision.gameObject.GetComponentInParent<PhotonView>();
         player = collision.gameObject.GetComponentInParent<PlayerController>();
-        
+        Ai = collision.gameObject.GetComponentInParent<TheBraaiiinnn>();
+
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -30,6 +32,10 @@ public class FireDamage : MonoBehaviour
         if (photonView && !photonView.isMine && player && damage == true)
         {
             player.Damage(1.2f);
+        }
+        if (Ai && damage == true)
+        {
+            Ai.Damage(1.2f);
         }
     }
 }

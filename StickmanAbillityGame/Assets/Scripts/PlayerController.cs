@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     #region variables
     #region private
+    private bool FlightOn = false;
     private float num;
     private StressReceiver camerashake;
     private bool stomp = false;
@@ -25,6 +26,10 @@ public class PlayerController : MonoBehaviour
     private HelthBar healthbar;
     private HelthBar energybar;
     private HelthBar Oponenthealthbar;
+    private HelthBar JumpboostBar;
+    private HelthBar SpeedBar;
+    private HelthBar HealthboostBar;
+    private HelthBar StrenghtBar;
     private bool isOnWallLeft;
     private bool isInWater;
     private bool isOnWallRight;
@@ -43,6 +48,8 @@ public class PlayerController : MonoBehaviour
     private bool stop = true;
     #endregion
     #region public
+    public ParticleSystem Flightparticles1;
+    public ParticleSystem Flightparticles2;
     public float SwimRotation;
     public bool waitforRotation = false;
     public ParticleSystem Bubles;
@@ -176,7 +183,7 @@ public class PlayerController : MonoBehaviour
     }
     private IEnumerator shoot()
     {
-        yield return new WaitForSeconds(0.35f);
+        yield return new WaitForSeconds(0.5f);
         PhotonNetwork.Instantiate(RightHand.name, ShootingPoint.position, ShootingPoint.rotation, 0);
         photonView.RPC("startGrapling", PhotonTargets.All);
         //Instantiate(RightHand, ShootingPoint.position, ShootingPoint.rotation);
@@ -187,15 +194,16 @@ public class PlayerController : MonoBehaviour
     public void jumpBoostLevelUp()
     {
         jumpBoost += 1;
-        jumpForce += 500;
+        jumpForce += 50;
         SaveJumpForce += 500;
-
+        JumpboostBar.SetHealth(jumpBoost);
     }
 
     public void speedBoostLevelUp()
     {
         speedBoost += 1;
         playerSpeed += 250;
+        SpeedBar.SetHealth(speedBoost);
     }
     public void strengthBoostLevelUp()
     {
@@ -205,11 +213,13 @@ public class PlayerController : MonoBehaviour
         {
             strength2.multiplyer += 0.1f;
         }
+        StrenghtBar.SetHealth(strengthBoost);
     }
     public void healthBoostLevelUp()
     {
         healthBoost += 1;
         maxHealth += 25f;
+        HealthboostBar.SetHealth(healthBoost);
     }
     private IEnumerator deadbody()
     {
@@ -235,7 +245,6 @@ public class PlayerController : MonoBehaviour
         if (MenuController.selectedgamemode == 2)
         {
             GameObject.FindGameObjectWithTag("GameController").GetComponent<BattleRoyaleManager>().dead_screen();
-            Debug.Log("DeadScreen");
         }
         photonView.RPC("dead", PhotonTargets.All);
     }
@@ -264,6 +273,10 @@ public class PlayerController : MonoBehaviour
             {
                 obj.GetComponentInParent<PlayerController>().Fireattack();
             }
+            if (obj.GetComponentInParent<TheBraaiiinnn>())
+            {
+                obj.GetComponentInParent<TheBraaiiinnn>().Fireattack();
+            }
         }
     }
     private void iceField()
@@ -277,6 +290,11 @@ public class PlayerController : MonoBehaviour
             {
                 obj.GetComponentInParent<PlayerController>().FreezeFeet1();
                 obj.GetComponentInParent<PlayerController>().Damage(3);
+            }
+            if (obj.GetComponentInParent<TheBraaiiinnn>())
+            {
+                obj.GetComponentInParent<TheBraaiiinnn>().FreezeFeet1();
+                obj.GetComponentInParent<TheBraaiiinnn>().Damage(3);
             }
         }
     }
@@ -333,7 +351,6 @@ public class PlayerController : MonoBehaviour
         if (!photonView.isMine)
         {
             photonView.RPC("Freeze2", PhotonTargets.Others);
-            Debug.Log("Freeze1");
         }
     }
     private IEnumerator stamping()
@@ -349,7 +366,14 @@ public class PlayerController : MonoBehaviour
         foreach (GameObject theplayers in players)
         {
             if (!theplayers.GetComponent<PlayerController>().photonView.isMine)
-                theplayers.GetComponent<PlayerController>().Damage(40);
+                theplayers.GetComponent<PlayerController>().Damage(80);
+        }
+        GameObject[] Ki= GameObject.FindGameObjectsWithTag("Ai");
+        foreach (GameObject theplayers in Ki)
+        {
+            Debug.Log("stomp");
+            if (theplayers.GetComponent<TheBraaiiinnn>())
+                theplayers.GetComponent<TheBraaiiinnn>().Damage(80);
         }
     }
     #endregion
@@ -505,13 +529,11 @@ public class PlayerController : MonoBehaviour
     [PunRPC]
     public void startGrapling()
     {
-        Debug.Log("Start");
         lr.enabled = true;
     }
     [PunRPC]
     public void stopGrapling()
     {
-        Debug.Log("Stop");
         lr.enabled = false;
     }
     #endregion
@@ -565,10 +587,26 @@ public class PlayerController : MonoBehaviour
         }
         springjoint = GetComponentInChildren<SpringJoint2D>();
         cam = FindObjectOfType<Camera>();
+        if (MenuController.selectedgamemode == 2)
+        {
+            SpeedBar = GameObject.FindGameObjectWithTag("SpeedBar").GetComponent<HelthBar>();
+            StrenghtBar = GameObject.FindGameObjectWithTag("StrenghtBar").GetComponent<HelthBar>();
+            HealthboostBar = GameObject.FindGameObjectWithTag("HealthboostBar").GetComponent<HelthBar>();
+            JumpboostBar = GameObject.FindGameObjectWithTag("JumpboostBar").GetComponent<HelthBar>();
+            HealthboostBar.SetMaxHealth(20);
+            StrenghtBar.SetMaxHealth(20);
+            JumpboostBar.SetMaxHealth(20);
+            SpeedBar.SetMaxHealth(20);
+            HealthboostBar.SetHealth(0);
+            StrenghtBar.SetHealth(0);
+            JumpboostBar.SetHealth(0);
+            SpeedBar.SetHealth(0);
+        }
         healthbar = GameObject.FindGameObjectWithTag("OwnHealthBar").GetComponent<HelthBar>();
         energybar = GameObject.FindGameObjectWithTag("EnergyBar").GetComponent<HelthBar>();
         GameObject[] oponenthealthbars = GameObject.FindGameObjectsWithTag("OponentsHealthbar");
-        energybar.SetMaxHealth(maxEnergy);
+        if (photonView.isMine)
+            energybar.SetMaxHealth(maxEnergy);
         foreach (GameObject thehealth in oponenthealthbars)
         {
             if (!thehealth.GetComponent<PhotonView>().isMine)
@@ -599,8 +637,6 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        
-        
         if (isFrozen == false && Dead == false)
         {
             //photonView.RPC("Frooozen2", PhotonTargets.All);
@@ -688,7 +724,8 @@ public class PlayerController : MonoBehaviour
             //Acivate John Cena
             JohnCena = true;
         }
-        energybar.SetHealth(currentEnergy);
+        if (photonView.isMine)
+            energybar.SetHealth(currentEnergy);
         if (lr.enabled == true && GameObject.FindGameObjectWithTag("RightFist"))
             lr.SetPosition(0, GameObject.FindGameObjectWithTag("RightFist").transform.position);
         lr.SetPosition(1, Hand1.transform.position);
@@ -720,15 +757,16 @@ public class PlayerController : MonoBehaviour
 
         if (currentHealth <= 0 && Dead == false)
         {
-            if (MenuController.selectedgamemode != 2)
-                GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().StartCoroutine("Respawn");
             Dead = true;
             StartCoroutine("deadbody");
+            if (MenuController.selectedgamemode != 2 && MenuController.selectedgamemode != 1 && photonView.isMine)
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().StartCoroutine("Respawn");
         }
         if (photonView.isMine && Dead == false && isFrozen == false)
         {
             KeyInput();
         }
+       
 
     }
     private void FixedUpdate()
@@ -747,6 +785,58 @@ public class PlayerController : MonoBehaviour
     //Use KeyInput2 as FixedUpdate only running when the player isn't dead and the owner of the photonview
     void KeyInput2()
     {
+        photonView.RPC("UpdateHealthBar", PhotonTargets.Others, currentHealth);
+        if (FlightOn == true)
+        {
+            currentEnergy -= 0.3f;
+            if (currentEnergy <= 1)
+            {
+                Flightparticles1.Stop();
+                Flightparticles2.Stop();
+                FlightOn = false;
+                Rigidbody2D[] rig2ds = GetComponentsInChildren<Rigidbody2D>();
+                foreach (Rigidbody2D rig in rig2ds)
+                {
+                    rig.mass = 1;
+                }
+            }
+            if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") > 0) || (joystick != null && joystick.Horizontal >= 0.1))
+            {
+                rb.AddForce(rb.transform.right * 700 * Time.deltaTime);
+            }
+            if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") < 0) || (joystick != null && joystick.Horizontal <= -0.1))
+            {
+                rb.AddForce(rb.transform.right * -700 * Time.deltaTime);
+            }
+            if ((Input.GetAxisRaw("Vertical") != 0 && Input.GetAxisRaw("Vertical") < 0) || (joystick != null && joystick.Vertical <= -0.1))
+            {
+                rb.AddForce(rb.transform.up * -1000 * Time.deltaTime);
+            }
+            if ((Input.GetAxisRaw("Vertical") != 0 && Input.GetAxisRaw("Vertical") > 0) || (joystick != null && joystick.Vertical >= -0.1))
+            {
+                rb.AddForce(rb.transform.up * 4000 * Time.deltaTime);
+            }
+            if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") > 0) || (joystick != null && joystick.Horizontal >= 0.1))
+            {
+            }
+            else if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") < 0) || (joystick != null && joystick.Horizontal <= -0.1))
+            {
+            }
+            else if ((Input.GetAxisRaw("Vertical") != 0 && Input.GetAxisRaw("Vertical") < 0) || (joystick != null && joystick.Vertical <= -0.1))
+            {
+            }
+            else if ((Input.GetAxisRaw("Vertical") != 0 && Input.GetAxisRaw("Vertical") > 0) || (joystick != null && joystick.Vertical >= -0.1))
+            {
+            }
+            else
+            {
+                Rigidbody2D[] rig2ds = GetComponentsInChildren<Rigidbody2D>();
+                foreach (Rigidbody2D rig in rig2ds)
+                {
+                    rig.velocity -= rig.velocity / 50;
+                }
+            }
+        }
         if (HeadOnFire == true)
             Damage2(0.1f);
         if (fireOn == true)
@@ -761,15 +851,13 @@ public class PlayerController : MonoBehaviour
         {
             leftarm.GetComponent<damage>().multiplyer = 1.5f;
             leftarm.transform.localScale += new Vector3(0, 0.01f, 0);
-            Debug.Log(Leftarmsscale.y);
         }
         if (currentEnergy <= maxEnergy)
             currentEnergy += 0.07f;
         if (regenerating == true && currentHealth <= maxHealth)
         {
             currentHealth += 0.1f;
-            healthbar.SetHealth(currentHealth);
-            photonView.RPC("UpdateHealthBar", PhotonTargets.Others, currentHealth);
+            healthbar.SetHealth(currentHealth); 
         }
         if (JohnCena == true)
             Debug.Log("Hast Du schon Gehofft?");
@@ -829,13 +917,10 @@ public class PlayerController : MonoBehaviour
             loseEnergy(50);
             FireAttack();
         }
-        //Debug.Log(fireOn);
         if ((Input.GetKeyDown(KeyCode.E) || (GameManager.E_pressed == true && photonView.isMine)) && MenuController.power == 6 && currentEnergy >= 1)
         {
-            Debug.Log("1");
             if (fireOn == false)
             {
-                Debug.Log("1");
                 fireOn = true;
                 photonView.RPC("firestart", PhotonTargets.All);
                 FireDamage.SetActive(true);
@@ -843,18 +928,44 @@ public class PlayerController : MonoBehaviour
             else if (fireOn == true)
             {
                 photonView.RPC("firestop", PhotonTargets.All);
-                Debug.Log("2");
                 fireOn = false;
                 FireDamage.SetActive(false);
             }
             GameManager.E_pressed = false;
         }
-
+        if ((Input.GetKeyDown(KeyCode.E) || (GameManager.E_pressed == true && photonView.isMine)) && MenuController.power == 7 && currentEnergy >= 1)
+        {
+            if (FlightOn == false)
+            {
+                Flightparticles1.Play();
+                Flightparticles2.Play();
+                FlightOn = true;
+                Rigidbody2D[] rig2ds = GetComponentsInChildren<Rigidbody2D>();
+                foreach (Rigidbody2D rig in rig2ds)
+                {
+                    rig.mass = 0.05f;
+                }
+            }
+            else if (FlightOn == true)
+            {
+                Flightparticles1.Stop();
+                Flightparticles2.Stop();
+                FlightOn = false;
+                Rigidbody2D[] rig2ds = GetComponentsInChildren<Rigidbody2D>();
+                foreach (Rigidbody2D rig in rig2ds)
+                {
+                    rig.mass = 1;
+                }
+            }
+            GameManager.E_pressed = false;
+        }
+        
         if (currentEnergy <= 1)
         {
             fireOn = false;
             photonView.RPC("firestop", PhotonTargets.All);
             FireDamage.SetActive(false);
+
         }
         if ((Input.GetKeyDown(KeyCode.Q) || (GameManager.Q_pressed == true && photonView.isMine)) && MenuController.power == 4 && readytofire == true && currentEnergy >= 100)
         {
@@ -1083,6 +1194,7 @@ public class PlayerController : MonoBehaviour
                     rb.AddForce(Vector2.down * WalljumpForce);
                 direction = true;
             }
+
     }
     #endregion
 }

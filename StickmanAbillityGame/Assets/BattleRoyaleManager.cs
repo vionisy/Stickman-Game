@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class BattleRoyaleManager : MonoBehaviour
 {
+    public bool battleRoyale = true;
     private bool foundOne = false;
     private Vector3 SpawnPosition;
     public Transform[] Spawnpoints;
@@ -29,7 +30,7 @@ public class BattleRoyaleManager : MonoBehaviour
     {
         if (PhotonNetwork.playerList.Length == 1)
         {
-            PhotonNetwork.LoadLevel("YouWon");
+            //PhotonNetwork.LoadLevel("YouWon");
         }
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject player in players)
@@ -44,6 +45,8 @@ public class BattleRoyaleManager : MonoBehaviour
     }
     private void Awake()
     {
+        if (battleRoyale == true)
+            MenuController.power = 0;
         PhotonNetwork.room.IsOpen = false;
         SpawnPlayer();
     }
