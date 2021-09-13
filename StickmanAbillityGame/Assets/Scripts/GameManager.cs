@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    private Vector3 spawnposition = new Vector3(-599.2f, 11, 0);
+    public bool CameraFollow = true;
+    public Vector3 spawnposition = new Vector3(-599.2f, 11, 0);
     public GameObject HandyCanvas;
     public GameObject PlayerPreafab;
     public GameObject KI;
@@ -28,7 +29,7 @@ public class GameManager : MonoBehaviour
         foreach (GameObject player in players)
         {
             GameObject Head = player.GetComponentInChildren<CircleCollider2D>().gameObject;
-            if (player.GetComponent<PhotonView>() && player.GetComponent<PhotonView>().isMine)
+            if (player.GetComponent<PhotonView>() && player.GetComponent<PhotonView>().isMine && CameraFollow == true)
             {
                 SceneCamera.transform.position = new Vector3(Head.transform.position.x, Head.transform.position.y, -10);
             }
@@ -50,7 +51,7 @@ public class GameManager : MonoBehaviour
     public void SpawnPlayer()
     {
         float randomValue = Random.Range(-20f, 20f);
-        PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(spawnposition.x + randomValue, spawnposition.y), Quaternion.identity, 0);
+        PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(spawnposition.x + randomValue, spawnposition.y + 15), Quaternion.identity, 0);
         GameCanvas.SetActive(false);
         SceneCamera.SetActive(true);
     }
@@ -58,13 +59,13 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(respwanTime);
         float randomValue = Random.Range(-20f, 20f);
-        PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(spawnposition.x + randomValue, spawnposition.y), Quaternion.identity, 0);
+        PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(spawnposition.x + randomValue, spawnposition.y + 15), Quaternion.identity, 0);
     }
     public IEnumerator spawnKI()
     {
         yield return new WaitForSeconds(0.3f);
         float randomValue = Random.Range(-10f, 10f);
-        PhotonNetwork.Instantiate(KI.name, new Vector2(this.transform.position.x * randomValue, this.transform.position.y), Quaternion.identity, 0);
+        PhotonNetwork.Instantiate(KI.name, new Vector2(this.transform.position.x * randomValue, this.transform.position.y + 15), Quaternion.identity, 0);
     }
     public void reset()
     {

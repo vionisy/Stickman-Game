@@ -303,6 +303,13 @@ public class PlayerController : MonoBehaviour
         if (!photonView.isMine)
             photonView.RPC("FreezeFeet2", PhotonTargets.Others);
     }
+    public void Fireattack3()
+    {
+        if (!photonView.isMine)
+            photonView.RPC("ThisGuyIsOnFire", PhotonTargets.Others);
+        else
+            ThisGuyIsOnFire();
+    }
     public void Fireattack()
     {
         if (!photonView.isMine)
@@ -771,7 +778,7 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (MenuController.power == 3 && photonView.isMine && transform.localScale.x <= 1.5f)
+        if (MenuController.power == 3 && photonView.isMine && transform.localScale.x <= 1.4f)
         {
             transform.localScale += new Vector3(0.01f, 0.01f, 0.01f);
 

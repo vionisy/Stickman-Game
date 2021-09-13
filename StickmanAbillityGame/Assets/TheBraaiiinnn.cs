@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class TheBraaiiinnn : MonoBehaviour
 {
+    public bool isBoss = false;
     public ParticleSystem Bubles;
     private bool jump = false;
     private bool armsActive;
@@ -136,7 +137,7 @@ public class TheBraaiiinnn : MonoBehaviour
             Vector2 direction = obj.transform.position - rb.transform.position;
             if (obj.GetComponentInParent<PlayerController>())
             {
-                obj.GetComponentInParent<PlayerController>().Fireattack();
+                obj.GetComponentInParent<PlayerController>().Fireattack3();
             }
         }
     }
@@ -203,6 +204,8 @@ public class TheBraaiiinnn : MonoBehaviour
     }
     private void Start()
     {
+        if (isBoss == true)
+            StartCoroutine("FireStart");
         HelthBar[] oponenthealthbars1 = GetComponentsInChildren<HelthBar>();
         foreach (HelthBar thehealth in oponenthealthbars1)
         {
@@ -866,5 +869,11 @@ public class TheBraaiiinnn : MonoBehaviour
             yield return null;
         }
         armRotation = v_end;
+    }
+    private IEnumerator FireStart()
+    {
+        yield return new WaitForSeconds(7);
+        FireAttack();
+        StartCoroutine("FireStart");
     }
 }

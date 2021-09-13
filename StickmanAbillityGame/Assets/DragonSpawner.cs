@@ -43,8 +43,8 @@ public class DragonSpawner : MonoBehaviour
             if (GameManager.playernumber == 1)
             {
                 PhotonNetwork.Instantiate(Dragon.name, new Vector2(this.transform.position.x, this.transform.position.y), Quaternion.identity, 0);
+                Destroy(gameObject);
             }
-            Destroy(gameObject);
         }
     }
 }

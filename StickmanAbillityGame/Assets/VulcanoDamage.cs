@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class VulcanoDamage : MonoBehaviour
 {
+    public float damagemultiplyer = 1;
     private bool damage = false;
     private PlayerController player;
     private PhotonView photonView;
@@ -30,11 +31,11 @@ public class VulcanoDamage : MonoBehaviour
         if (player && damage == true)
         {
             if (player.photonView.isMine)
-                player.Damage2(10f);
+                player.Damage2(10f * damagemultiplyer);
             else
-                player.Damage(10f);
+                player.Damage(10f * damagemultiplyer);
         }
-        if (Ai && damage == true)
+        if (Ai && damage == true && Ai.isBoss == false)
         {
             Ai.Damage(10f);
         }

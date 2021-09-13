@@ -135,7 +135,7 @@ public class MenuController : MonoBehaviour
         else if (selectedgamemode == 3)
             PhotonNetwork.LoadLevel("Map1");
         else if (selectedgamemode == 4)
-            PhotonNetwork.LoadLevel("DungeonRoyaleWater");
+            PhotonNetwork.LoadLevel("Map2");
     }
 
 }
