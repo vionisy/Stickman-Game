@@ -38,14 +38,16 @@ public class damage : MonoBehaviour
                 speed *= multiplyer;
                 if (speed >= 30 && (collision.gameObject.GetComponentInParent<PlayerController>() || collision.gameObject.GetComponentInParent<TheBraaiiinnn>()))
                 {
-                    photonView.RPC("knockback", PhotonTargets.Others, speed);
+                    if (MenuController.selectedgamemode != 3 && MenuController.selectedgamemode != 4)
+                        photonView.RPC("knockback", PhotonTargets.Others, speed);
 ;                   StartCoroutine("CameraShake");
                     speed += 10;
                 }
                 PlayerController playerHit = collision.gameObject.GetComponentInParent<PlayerController>();
-                if (playerHit != null && playerHit.photonView && !(KI == false && MenuController.selectedgamemode == 3))
+                if (playerHit != null && playerHit.photonView && !(KI == false && MenuController.selectedgamemode == 3 && MenuController.selectedgamemode == 4))
                 {
-                    photonView.RPC("knockback", PhotonTargets.Others, speed);
+                    if (MenuController.selectedgamemode != 3 && MenuController.selectedgamemode != 4)
+                        photonView.RPC("knockback", PhotonTargets.Others, speed);
                     damagetoapply = speed * 0.4f;
                     if (damagetoapply >= maxdamage)
                     {
@@ -58,8 +60,14 @@ public class damage : MonoBehaviour
                 }
                 TheBraaiiinnn aKI = collision.gameObject.GetComponentInParent<TheBraaiiinnn>();
                 if (aKI != null)// && KI.photonView)
-                    photonView.RPC("knockback", PhotonTargets.Others, speed);
-                    damagetoapply = speed * 0.4f;
+                    if (MenuController.selectedgamemode != 3 && MenuController.selectedgamemode != 4)
+                        photonView.RPC("knockback", PhotonTargets.Others, speed);
+                    if (MenuController.selectedgamemode == 4)
+                    {
+                        damagetoapply = speed * 0.8f;
+                    }
+                    else
+                        damagetoapply = speed * 0.4f;
                     if (damagetoapply >= maxdamage)
                     {
                         damagetoapply = maxdamage;

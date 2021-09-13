@@ -382,16 +382,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18cf750569dd9b543a19614afd687c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeBeforeSpawning: 15
+  TimeBeforeSpawning: 1
   Enemies:
-  - {fileID: 8557466016732343683, guid: 074d9ce823c48c84ebbbe790f28f8c62, type: 3}
   - {fileID: 8557466016732343683, guid: b78da13efc9973241b09e08b7a7759b3, type: 3}
   - {fileID: 8557466016732343683, guid: 91fc02c94016510428a520bcfed163aa, type: 3}
   - {fileID: 8557466016732343683, guid: 91fc02c94016510428a520bcfed163aa, type: 3}
   - {fileID: 8557466016732343683, guid: f4434a035eea93349b644cf1f275e68a, type: 3}
   - {fileID: 8557466016732343683, guid: c099f8d796076f749a6d11c1599fbd9a, type: 3}
   - {fileID: 8557466016732343683, guid: 660d4e717bc8d1a42ba3c603b314d72a, type: 3}
-  - {fileID: 8557466016732343683, guid: c7eaa2f72e1c944489931e7b1fa808a0, type: 3}
+  - {fileID: 8557466016732343683, guid: 09b230e69122add4389a099d0d9c49ca, type: 3}
+  spawnrate: 16
 --- !u!4 &52324015
 Transform:
   m_ObjectHideFlags: 0
@@ -1761,14 +1761,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TimeBeforeSpawning: 1
   Enemies:
-  - {fileID: 8557466016732343683, guid: 074d9ce823c48c84ebbbe790f28f8c62, type: 3}
-  - {fileID: 8557466016732343683, guid: c7eaa2f72e1c944489931e7b1fa808a0, type: 3}
   - {fileID: 8557466016732343683, guid: b78da13efc9973241b09e08b7a7759b3, type: 3}
   - {fileID: 8557466016732343683, guid: 91fc02c94016510428a520bcfed163aa, type: 3}
   - {fileID: 8557466016732343683, guid: 91fc02c94016510428a520bcfed163aa, type: 3}
   - {fileID: 8557466016732343683, guid: c099f8d796076f749a6d11c1599fbd9a, type: 3}
   - {fileID: 8557466016732343683, guid: 660d4e717bc8d1a42ba3c603b314d72a, type: 3}
   - {fileID: 8557466016732343683, guid: f4434a035eea93349b644cf1f275e68a, type: 3}
+  - {fileID: 8557466016732343683, guid: 09b230e69122add4389a099d0d9c49ca, type: 3}
+  spawnrate: 16
 --- !u!4 &427158511
 Transform:
   m_ObjectHideFlags: 0

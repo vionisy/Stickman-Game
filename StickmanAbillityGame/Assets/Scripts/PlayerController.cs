@@ -646,10 +646,6 @@ public class PlayerController : MonoBehaviour
     {
         if (isFrozen == false && Dead == false)
         {
-            //photonView.RPC("Frooozen2", PhotonTargets.All);
-            Headrb.mass = 0.5f;
-            LeftLowLeg.mass = 1f;
-            RightLowLeg.mass = 1f;
             FixedJoint2D[] freeze = GetComponentsInChildren<FixedJoint2D>();
             foreach (FixedJoint2D frozen in freeze)
             {
@@ -658,50 +654,18 @@ public class PlayerController : MonoBehaviour
                     frozen.enabled = false;
                 }
             }
-            Balance[] balance = GetComponentsInChildren<Balance>();
-            foreach (Balance theBalance in balance)
+            Rigidbody2D[] rigidbodies = GetComponentsInChildren<Rigidbody2D>();
+            foreach (Rigidbody2D rbs in rigidbodies)
             {
-                theBalance.enabled = true;
-            }
-            FollowMouse[] mouse = GetComponentsInChildren<FollowMouse>();
-            foreach (FollowMouse follow in mouse)
-            {
-                follow.enabled = true;
-            }
-            BalanceArms[] balancearms = GetComponentsInChildren<BalanceArms>();
-            foreach (BalanceArms theBalance in balancearms)
-            {
-                theBalance.enabled = true;
+                rbs.freezeRotation = false;
             }
         }
         else if (isFrozen == true && Dead == false)
         {
-            //photonView.RPC("Frooozen1", PhotonTargets.All);
-            LeftLowLeg.mass = 0.5f;
-            RightLowLeg.mass = 0.5f;
-            Headrb.mass = 10f;
-            FixedJoint2D[] freeze = GetComponentsInChildren<FixedJoint2D>();
-            foreach (FixedJoint2D frozen in freeze)
+            Rigidbody2D[] rigidbodies = GetComponentsInChildren<Rigidbody2D>();
+            foreach (Rigidbody2D rbs in rigidbodies)
             {
-                if (frozen.gameObject.name != "Chest" && frozen.gameObject.name != "Neck")
-                {
-                    frozen.enabled = true;
-                }
-            }
-            Balance[] balance = GetComponentsInChildren<Balance>();
-            foreach (Balance theBalance in balance)
-            {
-                theBalance.enabled = false;
-            }
-            BalanceArms[] balancearms = GetComponentsInChildren<BalanceArms>();
-            foreach (BalanceArms theBalance in balancearms)
-            {
-                theBalance.enabled = false;
-            }
-            FollowMouse[] mouse = GetComponentsInChildren<FollowMouse>();
-            foreach (FollowMouse follow in mouse)
-            {
-                follow.enabled = false;
+                rbs.freezeRotation = true;
             }
         }
         FixedJoystick[] fixedJoysticks = FindObjectsOfType<FixedJoystick>();
@@ -993,7 +957,10 @@ public class PlayerController : MonoBehaviour
             foreach (Rigidbody2D gravitation in Gravity01)
             {
                 gravity = false;
-                gravitation.gravityScale = 1.5f;
+                if (MenuController.power == 4)
+                    gravitation.gravityScale = 1.2f;
+                else
+                    gravitation.gravityScale = 1.5f;
             }
 
         }

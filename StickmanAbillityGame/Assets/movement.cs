@@ -39,7 +39,7 @@ public class movement : MonoBehaviour
             rb.velocity = new Vector3(0, 0, 0);
         }
     }
-    void Update()
+    void FixedUpdate()
     {
         if (gravitation == true)
         {
@@ -58,7 +58,7 @@ public class movement : MonoBehaviour
             {
                 if (player.photonView.isMine)
                 {
-                    //player.Damage2(0.008f);
+                    //player.Damage(0.008f);
                     Vector2 direction = obj.transform.position - transform.position;
                     obj.GetComponent<Rigidbody2D>().AddForce(direction * (speed * -1));
                 }
@@ -68,7 +68,7 @@ public class movement : MonoBehaviour
             {
                 if (Ki.photonView.isMine)
                 {
-                    //player.Damage2(0.008f);
+                    //player.Damage(0.008f);
                     Vector2 direction = obj.transform.position - transform.position;
                     obj.GetComponent<Rigidbody2D>().AddForce(direction * (speed * -1));
                 }

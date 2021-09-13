@@ -33,9 +33,9 @@ public class FireDamage : MonoBehaviour
         {
             player.Damage(1.2f);
         }
-        if (Ai && damage == true)
+        if (Ai && damage == true && Ai.TypeFire == false)
         {
-            Ai.Damage(1.2f);
+            Ai.Damage(4f);
         }
     }
 }

@@ -24439,6 +24439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 103e3ebaad7315541ba83047c9005b25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TypeFire: 1
   isBoss: 1
   Bubles: {fileID: 1425334234804681446}
   IceFoot1: {fileID: 4247529117173814309}

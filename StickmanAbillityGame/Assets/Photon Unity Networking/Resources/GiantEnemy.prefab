@@ -23153,7 +23153,7 @@ MonoBehaviour:
   mousebutton: 0
   photonView: {fileID: 6923915807836418976}
   Hand: {fileID: 8456736317450065272}
-  multiplyer: 2
+  multiplyer: 0.5
   ps: {fileID: 619617329911011620}
   maxdamage: 150
 --- !u!255 &8753638905173375131
@@ -24099,7 +24099,7 @@ MonoBehaviour:
   mousebutton: 0
   photonView: {fileID: 918374086884013362}
   Hand: {fileID: 7408628593774938163}
-  multiplyer: 2
+  multiplyer: 0.5
   ps: {fileID: 6715787803417094594}
   maxdamage: 150
 --- !u!231 &1340846660254910250
@@ -24453,7 +24453,7 @@ MonoBehaviour:
   anim: {fileID: 7342628976529560613}
   rb: {fileID: 8557466015949629164}
   jumpForce: 4000
-  playerSpeed: 1000
+  playerSpeed: 700
   JumpHeight: {x: 0, y: 0}
   positionRadius: 1
   ground:

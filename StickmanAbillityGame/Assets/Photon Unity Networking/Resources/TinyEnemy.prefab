@@ -23153,7 +23153,7 @@ MonoBehaviour:
   mousebutton: 0
   photonView: {fileID: 6923915807836418976}
   Hand: {fileID: 8456736317450065272}
-  multiplyer: 5
+  multiplyer: 20
   ps: {fileID: 619617329911011620}
   maxdamage: 150
 --- !u!255 &8753638905173375131
@@ -24099,7 +24099,7 @@ MonoBehaviour:
   mousebutton: 0
   photonView: {fileID: 918374086884013362}
   Hand: {fileID: 7408628593774938163}
-  multiplyer: 5
+  multiplyer: 20
   ps: {fileID: 6715787803417094594}
   maxdamage: 150
 --- !u!231 &1340846660254910250

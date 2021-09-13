@@ -77,4 +77,6 @@ MonoBehaviour:
   - destroy
   - Start
   - VulcanoAction
+  - ChangeState
+  - EnableFire
   DisableAutoOpenWizard: 1

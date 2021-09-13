@@ -32,12 +32,13 @@ public class VulcanoDamage : MonoBehaviour
         {
             if (player.photonView.isMine)
                 player.Damage2(10f * damagemultiplyer);
-            else
-                player.Damage(10f * damagemultiplyer);
+            //else
+                //player.Damage(10f * damagemultiplyer);
         }
         if (Ai && damage == true && Ai.isBoss == false)
         {
-            Ai.Damage(10f);
+            if (Ai.photonView.isMine)
+                Ai.Damage(10f);
         }
     }
 }

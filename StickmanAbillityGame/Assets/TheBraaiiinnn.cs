@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class TheBraaiiinnn : MonoBehaviour
 {
+    public bool TypeFire = false;
     public bool isBoss = false;
     public ParticleSystem Bubles;
     private bool jump = false;
@@ -390,10 +391,6 @@ public class TheBraaiiinnn : MonoBehaviour
         Brain();
         if (isFrozen == false && Dead == false)
         {
-            //photonView.RPC("Frooozen2", PhotonTargets.All);
-            Headrb.mass = 0.5f;
-            LeftLowLeg.mass = 1f;
-            RightLowLeg.mass = 1f;
             FixedJoint2D[] freeze = GetComponentsInChildren<FixedJoint2D>();
             foreach (FixedJoint2D frozen in freeze)
             {
@@ -402,50 +399,18 @@ public class TheBraaiiinnn : MonoBehaviour
                     frozen.enabled = false;
                 }
             }
-            Balance[] balance = GetComponentsInChildren<Balance>();
-            foreach (Balance theBalance in balance)
+            Rigidbody2D[] rigidbodies = GetComponentsInChildren<Rigidbody2D>();
+            foreach (Rigidbody2D rbs in rigidbodies)
             {
-                theBalance.enabled = true;
-            }
-            FollowMouse[] mouse = GetComponentsInChildren<FollowMouse>();
-            foreach (FollowMouse follow in mouse)
-            {
-                follow.enabled = true;
-            }
-            BalanceArms[] balancearms = GetComponentsInChildren<BalanceArms>();
-            foreach (BalanceArms theBalance in balancearms)
-            {
-                theBalance.enabled = true;
+                rbs.freezeRotation = false;
             }
         }
         else if (isFrozen == true && Dead == false)
         {
-            //photonView.RPC("Frooozen1", PhotonTargets.All);
-            LeftLowLeg.mass = 0.5f;
-            RightLowLeg.mass = 0.5f;
-            Headrb.mass = 10f;
-            FixedJoint2D[] freeze = GetComponentsInChildren<FixedJoint2D>();
-            foreach (FixedJoint2D frozen in freeze)
+            Rigidbody2D[] rigidbodies = GetComponentsInChildren<Rigidbody2D>();
+            foreach (Rigidbody2D rbs in rigidbodies)
             {
-                if (frozen.gameObject.name != "Chest" && frozen.gameObject.name != "Neck")
-                {
-                    frozen.enabled = true;
-                }
-            }
-            Balance[] balance = GetComponentsInChildren<Balance>();
-            foreach (Balance theBalance in balance)
-            {
-                theBalance.enabled = false;
-            }
-            BalanceArms[] balancearms = GetComponentsInChildren<BalanceArms>();
-            foreach (BalanceArms theBalance in balancearms)
-            {
-                theBalance.enabled = false;
-            }
-            FollowMouse[] mouse = GetComponentsInChildren<FollowMouse>();
-            foreach (FollowMouse follow in mouse)
-            {
-                follow.enabled = false;
+                rbs.freezeRotation = true;
             }
         }
         
@@ -471,8 +436,8 @@ public class TheBraaiiinnn : MonoBehaviour
     void KeyInput2()
     {
         photonView.RPC("UpdateHealthBar", PhotonTargets.Others, currentHealth);
-        if (HeadOnFire == true)
-            Damage2(0.1f);
+        if (HeadOnFire == true && TypeFire == false)
+            Damage2(0.5f);
         Vector3 Leftarmsscale = leftarm.transform.localScale;
         if (regenerating == true && currentHealth <= maxHealth)
         {
