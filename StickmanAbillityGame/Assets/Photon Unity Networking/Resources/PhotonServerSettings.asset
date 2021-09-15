@@ -29,13 +29,16 @@ MonoBehaviour:
   RunInBackground: 1
   RpcList:
   - changeCountdown
+  - ChangeState
   - Chat
   - ColorRpc
   - connectRigidbody
   - Damage2
   - dead
+  - destroy
   - DestroyRpc
   - DoJump
+  - EnableFire
   - FireOff
   - FireOn
   - firestart
@@ -66,17 +69,11 @@ MonoBehaviour:
   - RequestForPickupTimes
   - sidebar
   - spawn2
-  - spawned
   - startGrapling
   - stopGrapling
   - TaggedPlayer
   - ThisGuyIsOnFire
   - UnCameraShake
   - UpdateHealthBar
-  - Update
-  - destroy
-  - Start
   - VulcanoAction
-  - ChangeState
-  - EnableFire
   DisableAutoOpenWizard: 1
