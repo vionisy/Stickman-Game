@@ -136,6 +136,8 @@ public class MenuController : MonoBehaviour
             PhotonNetwork.LoadLevel("Map1");
         else if (selectedgamemode == 4)
             PhotonNetwork.LoadLevel("Map2");
+        else if (selectedgamemode == 5)
+            PhotonNetwork.LoadLevel("Map3");
     }
 
 }

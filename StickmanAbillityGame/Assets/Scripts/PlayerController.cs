@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
     #region normal voids
-
+    
     public void jumpBoostLevelUp()
     {
         jumpBoost += 1;
@@ -391,6 +391,17 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
     #region PunRPC voids
+    [PunRPC]
+    public void Jumping()
+    {
+        if (GameManager.playernumber == 1)
+        {
+            if (gravity == false)
+                rb.AddForce(Vector2.up * jumpForce);
+            else
+                rb.AddForce(Vector2.down * jumpForce);
+        }
+    }
     [PunRPC]
     public void firestart()
     {
@@ -639,7 +650,7 @@ public class PlayerController : MonoBehaviour
             Oponenthealthbar.SetMaxHealth(maxHealth);
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         SaveJumpForce = jumpForce;
-        if (!photonView.isMine)
+        if (GameManager.playernumber != 1)
         {
             Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
             foreach (Rigidbody2D RBCHILDREN in rbChildren)
@@ -651,6 +662,18 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
+        if (photonView.isMine)
+        {
+            if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == true) && Onlyonce == true)
+            {
+                Onlyonce = false;
+                photonView.RPC("Jumping", PhotonTargets.All);
+            }
+            else if (joystick != null && joystick.Vertical <= 0.3)
+            {
+                Onlyonce = true;
+            }
+        }
         if (isFrozen == false && Dead == false)
         {
             FixedJoint2D[] freeze = GetComponentsInChildren<FixedJoint2D>();
@@ -740,7 +763,7 @@ public class PlayerController : MonoBehaviour
             if (MenuController.selectedgamemode != 2 && MenuController.selectedgamemode != 1 && photonView.isMine)
                 GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().StartCoroutine("Respawn");
         }
-        if (photonView.isMine && Dead == false && isFrozen == false)
+        if (GameManager.playernumber == 1 && Dead == false && isFrozen == false)
         {
             KeyInput();
         }
@@ -799,7 +822,7 @@ public class PlayerController : MonoBehaviour
 
 
         }
-        if (photonView.isMine && Dead == false && isFrozen == false)
+        if (GameManager.playernumber == 1 && Dead == false && isFrozen == false)
         {
             KeyInput2();
         }
@@ -824,19 +847,19 @@ public class PlayerController : MonoBehaviour
             }
             if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") > 0) || (joystick != null && joystick.Horizontal >= 0.1))
             {
-                rb.AddForce(rb.transform.right * 700 * Time.deltaTime);
+                rb.AddForce(rb.transform.right * 350 * Time.deltaTime);
             }
             if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") < 0) || (joystick != null && joystick.Horizontal <= -0.1))
             {
-                rb.AddForce(rb.transform.right * -700 * Time.deltaTime);
+                rb.AddForce(rb.transform.right * -350 * Time.deltaTime);
             }
             if ((Input.GetAxisRaw("Vertical") != 0 && Input.GetAxisRaw("Vertical") < 0) || (joystick != null && joystick.Vertical <= -0.1))
             {
-                rb.AddForce(rb.transform.up * -1000 * Time.deltaTime);
+                rb.AddForce(rb.transform.up * -500 * Time.deltaTime);
             }
             if ((Input.GetAxisRaw("Vertical") != 0 && Input.GetAxisRaw("Vertical") > 0) || (joystick != null && joystick.Vertical >= -0.1))
             {
-                rb.AddForce(rb.transform.up * 4000 * Time.deltaTime);
+                rb.AddForce(rb.transform.up * 2000 * Time.deltaTime);
             }
             if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") > 0) || (joystick != null && joystick.Horizontal >= 0.1))
             {
@@ -1142,6 +1165,40 @@ public class PlayerController : MonoBehaviour
                 rb.AddForce(rb.transform.up * 10000 * Time.deltaTime);
             }
         }
+            if (isInWater == true)
+            {
+                
+                anim.enabled = false;
+                foreach (Balance swimming in GetComponentsInChildren<Balance>())
+                {
+                    swimming.targetRotation = SwimRotation;
+                }
+                foreach (BalanceArms swimming in GetComponentsInChildren<BalanceArms>())
+                {
+                    swimming.force = 20;
+                    swimming.targetRotation = SwimRotation + swimmanim;
+                }
+            }
+            else
+                anim.enabled = true;
+            if ((isOnGround == false && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == false) && Onlyonce == true) && DoubleJump == true && MenuController.power == 2)
+            {
+                DBCoolDown = true;
+                StartCoroutine("DoubleJumpCooldown");
+                DoubleJump = false;
+                Onlyonce = false;
+                if (gravity == false)
+                    rb.AddForce(Vector2.up * jumpForce);
+                else
+                    rb.AddForce(Vector2.down * jumpForce);
+            }
+            if (isOnGround == true && DBCoolDown == false)
+                DoubleJump = true;
+            isOnWallLeft = Physics2D.OverlapCircle(playerPos2.position, positionRadius, ground);
+            isOnWallRight = Physics2D.OverlapCircle(playerPos1.position, positionRadius, ground);
+            isOnGround = Physics2D.OverlapCircle(playerPos.position, positionRadius, ground);
+            isInWater = Physics2D.OverlapCircle(playerPos.position, positionRadius, water);
+            if (Input.GetKey(KeyCode.J) && Input.GetKey(KeyCode.O) && Input.GetKey(KeyCode.N) && Input.GetKey(KeyCode.H))
         if (isInWater == true)
         {
 
@@ -1219,7 +1276,6 @@ public class PlayerController : MonoBehaviour
                 rb.AddForce(Vector2.down * WalljumpForce);
             direction = true;
         }
-
     }
     #endregion
 }

@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     static public bool Q_pressed;
     public bool KITest = false;
     public static float playernumber;
+    public PhotonView photonView;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.K) && KITest == true)
@@ -47,11 +49,18 @@ public class GameManager : MonoBehaviour
     {
         playernumber = PhotonNetwork.playerList.Length;
     }
-
+    [PunRPC]
+    public void InstansiatePlayer()
+    {
+        if (playernumber == 1)
+        {
+            float randomValue = Random.Range(-20f, 20f);
+            PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(spawnposition.x + randomValue, spawnposition.y + 15), Quaternion.identity, 0);
+        }
+    }
     public void SpawnPlayer()
     {
-        float randomValue = Random.Range(-20f, 20f);
-        PhotonNetwork.Instantiate(PlayerPreafab.name, new Vector2(spawnposition.x + randomValue, spawnposition.y + 15), Quaternion.identity, 0);
+        photonView.RPC("InstansiatePlayer", PhotonTargets.All);   
         GameCanvas.SetActive(false);
         SceneCamera.SetActive(true);
     }
