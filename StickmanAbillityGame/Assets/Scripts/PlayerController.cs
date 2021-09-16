@@ -566,6 +566,10 @@ public class PlayerController : MonoBehaviour
     #region startandUpdae
     private void Start()
     {
+        if (MenuController.power == 2)
+        {
+            maxEnergy = 50;
+        }
         dashCount = startDashCount;
 
         camerashake = FindObjectOfType<Camera>().GetComponent<StressReceiver>();
@@ -772,50 +776,6 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        #region <Dash Abillity>
-        //dash
-
-        if (MenuController.power == 2)
-        {
-            if (dashDirection == 0)
-            {
-                if (Input.GetKeyDown(KeyCode.E) && Input.GetKey(KeyCode.A))
-                {
-                    dashDirection = 1;
-                }
-
-                if (Input.GetKeyDown(KeyCode.E) && Input.GetKey(KeyCode.D))
-                {
-                    dashDirection = 2;
-                }
-
-            }
-            else
-            {
-                if (dashCount <= 0)
-                {
-                    dashDirection = 0;
-                    dashCount = startDashCount;
-                    rb.velocity = Vector2.zero;
-                }
-
-
-                dashCount -= Time.deltaTime;
-                {
-                    
-                    if (dashDirection == 1)
-                    {
-                        rb.velocity = Vector2.left * dashSpeed;
-                    }
-                    if (dashDirection == 2)
-                    {
-                        rb.velocity = Vector2.right * dashSpeed;
-                    }
-                }
-            }
-        }
-          
-        #endregion
         if (MenuController.power == 3 && photonView.isMine && transform.localScale.x <= 1.4f)
         {
             transform.localScale += new Vector3(0.01f, 0.01f, 0.01f);
@@ -911,6 +871,31 @@ public class PlayerController : MonoBehaviour
     //Use KeyInput as Update only running when the player isn't dead and the owner of the photonview
     void KeyInput()
     {
+        #region <Dash Abillity>
+        //dash
+        if (MenuController.power == 2)
+        {
+            if (Input.GetKey(KeyCode.A))
+            {
+                if (Input.GetKeyDown(KeyCode.E) && currentEnergy >= 30)
+                {
+                    loseEnergy(30);
+                    rb.AddForce(Vector2.left * dashSpeed * Time.deltaTime);
+                    //rb.velocity = Vector2.left * dashSpeed;
+                }
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                if (Input.GetKeyDown(KeyCode.E) && currentEnergy >= 30)
+                {
+                    loseEnergy(30);
+                    rb.AddForce(Vector2.right * dashSpeed * Time.deltaTime);
+                    //rb.velocity = Vector2.right * dashSpeed;
+                }
+            }
+        }
+
+        #endregion
         if (isInWater == true && Bubles.isPlaying == false)
             Bubles.Play();
         else if (isInWater == false && Bubles.isPlaying == true)
@@ -1227,8 +1212,9 @@ public class PlayerController : MonoBehaviour
         {
             Onlyonce = true;
         }
-        if ((isOnGround == false && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == false) && Onlyonce == true) && DoubleJump == true && MenuController.power == 2)
+        if ((isOnGround == false && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == false) && Onlyonce == true) && MenuController.power == 2 && currentEnergy >= 20)
         {
+            loseEnergy(20);
             DBCoolDown = true;
             StartCoroutine("DoubleJumpCooldown");
             DoubleJump = false;
