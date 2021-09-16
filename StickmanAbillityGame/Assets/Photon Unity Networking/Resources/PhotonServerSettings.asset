@@ -27,5 +27,55 @@ MonoBehaviour:
   PunLogging: 0
   NetworkLogging: 1
   RunInBackground: 1
-  RpcList: []
-  DisableAutoOpenWizard: 0
+  RpcList:
+  - changeCountdown
+  - ChangeState
+  - Chat
+  - ColorRpc
+  - connectRigidbody
+  - Damage2
+  - dead
+  - destroy
+  - DestroyRpc
+  - DoJump
+  - EnableFire
+  - FireOff
+  - FireOn
+  - firestart
+  - firestop
+  - Flash
+  - Freeze2
+  - FreezeFeet2
+  - Frooozen1
+  - Frooozen2
+  - GravitationChange
+  - hidehealthbar
+  - IceFeetStart
+  - IceFeetStop
+  - InstansiatePlayer
+  - InstantiateRpc
+  - Invisibillity
+  - Jumping
+  - knockback
+  - Line2
+  - Marco
+  - OponentHealth
+  - PickupItemInit
+  - Polo
+  - psFire2
+  - psIce2
+  - PunPickup
+  - PunPickupSimple
+  - PunRespawn
+  - RequestForPickupItems
+  - RequestForPickupTimes
+  - sidebar
+  - spawn2
+  - startGrapling
+  - stopGrapling
+  - TaggedPlayer
+  - ThisGuyIsOnFire
+  - UnCameraShake
+  - UpdateHealthBar
+  - VulcanoAction
+  DisableAutoOpenWizard: 1
