@@ -43751,7 +43751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2676b83b8d122a145a6d1c043fb4f0bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashSpeed: 100
+  dashSpeed: 800000
   startDashCount: 0.1
   Flightparticles1: {fileID: 8780225992817837166}
   Flightparticles2: {fileID: 5207592462551818588}
@@ -43771,7 +43771,7 @@ MonoBehaviour:
   anim: {fileID: 7342628976529560613}
   swimmanim: 0
   rb: {fileID: 8557466015949629164}
-  jumpForce: 4000
+  jumpForce: 2500
   playerSpeed: 2898.45
   JumpHeight: {x: 0, y: 0}
   positionRadius: 1
