@@ -46,8 +46,14 @@ public class PlayerController : MonoBehaviour
     private int healthBoost = 0;
     private bool HeadOnFire = false;
     private bool stop = true;
+    private float dashCount;
+    private int dashDirection;
     #endregion
     #region public
+    public float dashSpeed;
+    public float startDashCount;
+
+
     public ParticleSystem Flightparticles1;
     public ParticleSystem Flightparticles2;
     public float SwimRotation;
@@ -190,7 +196,7 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
     #region normal voids
-
+    
     public void jumpBoostLevelUp()
     {
         jumpBoost += 1;
@@ -375,7 +381,7 @@ public class PlayerController : MonoBehaviour
             if (!theplayers.GetComponent<PlayerController>().photonView.isMine)
                 theplayers.GetComponent<PlayerController>().Damage(80);
         }
-        GameObject[] Ki= GameObject.FindGameObjectsWithTag("Ai");
+        GameObject[] Ki = GameObject.FindGameObjectsWithTag("Ai");
         foreach (GameObject theplayers in Ki)
         {
             Debug.Log("stomp");
@@ -385,6 +391,17 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
     #region PunRPC voids
+    [PunRPC]
+    public void Jumping()
+    {
+        if (GameManager.playernumber == 1)
+        {
+            if (gravity == false)
+                rb.AddForce(Vector2.up * jumpForce);
+            else
+                rb.AddForce(Vector2.down * jumpForce);
+        }
+    }
     [PunRPC]
     public void firestart()
     {
@@ -549,6 +566,7 @@ public class PlayerController : MonoBehaviour
     #region startandUpdae
     private void Start()
     {
+        dashCount = startDashCount;
 
         camerashake = FindObjectOfType<Camera>().GetComponent<StressReceiver>();
         if (MenuController.power == 3 && photonView.isMine)
@@ -632,7 +650,7 @@ public class PlayerController : MonoBehaviour
             Oponenthealthbar.SetMaxHealth(maxHealth);
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         SaveJumpForce = jumpForce;
-        if (!photonView.isMine)
+        if (GameManager.playernumber != 1)
         {
             Rigidbody2D[] rbChildren = GetComponentsInChildren<Rigidbody2D>();
             foreach (Rigidbody2D RBCHILDREN in rbChildren)
@@ -644,6 +662,18 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
+        if (photonView.isMine)
+        {
+            if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == true) && Onlyonce == true)
+            {
+                Onlyonce = false;
+                photonView.RPC("Jumping", PhotonTargets.All);
+            }
+            else if (joystick != null && joystick.Vertical <= 0.3)
+            {
+                Onlyonce = true;
+            }
+        }
         if (isFrozen == false && Dead == false)
         {
             FixedJoint2D[] freeze = GetComponentsInChildren<FixedJoint2D>();
@@ -733,22 +763,66 @@ public class PlayerController : MonoBehaviour
             if (MenuController.selectedgamemode != 2 && MenuController.selectedgamemode != 1 && photonView.isMine)
                 GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().StartCoroutine("Respawn");
         }
-        if (photonView.isMine && Dead == false && isFrozen == false)
+        if (GameManager.playernumber == 1 && Dead == false && isFrozen == false)
         {
             KeyInput();
         }
-       
+
 
     }
     private void FixedUpdate()
     {
+        #region <Dash Abillity>
+        //dash
+
+        if (MenuController.power == 2)
+        {
+            if (dashDirection == 0)
+            {
+                if (Input.GetKeyDown(KeyCode.E) && Input.GetKey(KeyCode.A))
+                {
+                    dashDirection = 1;
+                }
+
+                if (Input.GetKeyDown(KeyCode.E) && Input.GetKey(KeyCode.D))
+                {
+                    dashDirection = 2;
+                }
+
+            }
+            else
+            {
+                if (dashCount <= 0)
+                {
+                    dashDirection = 0;
+                    dashCount = startDashCount;
+                    rb.velocity = Vector2.zero;
+                }
+
+
+                dashCount -= Time.deltaTime;
+                {
+                    
+                    if (dashDirection == 1)
+                    {
+                        rb.velocity = Vector2.left * dashSpeed;
+                    }
+                    if (dashDirection == 2)
+                    {
+                        rb.velocity = Vector2.right * dashSpeed;
+                    }
+                }
+            }
+        }
+          
+        #endregion
         if (MenuController.power == 3 && photonView.isMine && transform.localScale.x <= 1.4f)
         {
             transform.localScale += new Vector3(0.01f, 0.01f, 0.01f);
 
 
         }
-        if (photonView.isMine && Dead == false && isFrozen == false)
+        if (GameManager.playernumber == 1 && Dead == false && isFrozen == false)
         {
             KeyInput2();
         }
@@ -773,19 +847,19 @@ public class PlayerController : MonoBehaviour
             }
             if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") > 0) || (joystick != null && joystick.Horizontal >= 0.1))
             {
-                rb.AddForce(rb.transform.right * 700 * Time.deltaTime);
+                rb.AddForce(rb.transform.right * 350 * Time.deltaTime);
             }
             if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") < 0) || (joystick != null && joystick.Horizontal <= -0.1))
             {
-                rb.AddForce(rb.transform.right * -700 * Time.deltaTime);
+                rb.AddForce(rb.transform.right * -350 * Time.deltaTime);
             }
             if ((Input.GetAxisRaw("Vertical") != 0 && Input.GetAxisRaw("Vertical") < 0) || (joystick != null && joystick.Vertical <= -0.1))
             {
-                rb.AddForce(rb.transform.up * -1000 * Time.deltaTime);
+                rb.AddForce(rb.transform.up * -500 * Time.deltaTime);
             }
             if ((Input.GetAxisRaw("Vertical") != 0 && Input.GetAxisRaw("Vertical") > 0) || (joystick != null && joystick.Vertical >= -0.1))
             {
-                rb.AddForce(rb.transform.up * 4000 * Time.deltaTime);
+                rb.AddForce(rb.transform.up * 2000 * Time.deltaTime);
             }
             if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") > 0) || (joystick != null && joystick.Horizontal >= 0.1))
             {
@@ -828,7 +902,7 @@ public class PlayerController : MonoBehaviour
         if (regenerating == true && currentHealth <= maxHealth)
         {
             currentHealth += 0.1f;
-            healthbar.SetHealth(currentHealth); 
+            healthbar.SetHealth(currentHealth);
         }
         if (JohnCena == true)
             Debug.Log("Hast Du schon Gehofft?");
@@ -930,7 +1004,7 @@ public class PlayerController : MonoBehaviour
             }
             GameManager.E_pressed = false;
         }
-        
+
         if (currentEnergy <= 1)
         {
             fireOn = false;
@@ -1050,7 +1124,7 @@ public class PlayerController : MonoBehaviour
 
             if (isInWater == true)
             {
-                
+
                 if (SwimRotation != 90)
                 {
                     if (SwimRotation >= 270 && SwimRotation < 90)
@@ -1107,18 +1181,6 @@ public class PlayerController : MonoBehaviour
             }
             else
                 anim.enabled = true;
-            if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == true) && Onlyonce == true)
-            {
-                Onlyonce = false;
-                if (gravity == false)
-                    rb.AddForce(Vector2.up * jumpForce);
-                else
-                    rb.AddForce(Vector2.down * jumpForce);
-            }
-            else if (joystick != null && joystick.Vertical <= 0.3)
-            {
-                Onlyonce = true;
-            }
             if ((isOnGround == false && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == false) && Onlyonce == true) && DoubleJump == true && MenuController.power == 2)
             {
                 DBCoolDown = true;
@@ -1137,38 +1199,83 @@ public class PlayerController : MonoBehaviour
             isOnGround = Physics2D.OverlapCircle(playerPos.position, positionRadius, ground);
             isInWater = Physics2D.OverlapCircle(playerPos.position, positionRadius, water);
             if (Input.GetKey(KeyCode.J) && Input.GetKey(KeyCode.O) && Input.GetKey(KeyCode.N) && Input.GetKey(KeyCode.H))
-            {
-                maxHealth = 3000;
-                currentHealth = maxHealth;
-                damage[] dammage = GetComponentsInChildren<damage>();
-                foreach (damage DAMAGE in dammage)
-                {
-                    DAMAGE.multiplyer = 5;
-                }
-                playerSpeed = 5000;
-                jumpForce = 7000;
-            }
-            if (isOnGround == false && isOnWallRight == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3) && Onlyonce == true && isOnGround == false && isOnWallLeft == true)
-            {
-                Onlyonce = false;
-                rb.AddForce(Vector2.left * WalljumpForce);
-                if (gravity == false)
-                    rb.AddForce(Vector2.up * WalljumpForce);
-                else
-                    rb.AddForce(Vector2.down * WalljumpForce);
-                direction = false;
-            }
-            if (isOnGround == false && isOnWallLeft == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3) && Onlyonce == true && isOnGround == false && isOnWallLeft == true)
-            {
-                Onlyonce = false;
-                rb.AddForce(Vector2.right * WalljumpForce);
-                if (gravity == false)
-                    rb.AddForce(Vector2.up * WalljumpForce);
-                else
-                    rb.AddForce(Vector2.down * WalljumpForce);
-                direction = true;
-            }
+        if (isInWater == true)
+        {
 
+            anim.enabled = false;
+            foreach (Balance swimming in GetComponentsInChildren<Balance>())
+            {
+                swimming.targetRotation = SwimRotation;
+            }
+            foreach (BalanceArms swimming in GetComponentsInChildren<BalanceArms>())
+            {
+                swimming.force = 20;
+                swimming.targetRotation = SwimRotation + swimmanim;
+            }
+        }
+        else
+            anim.enabled = true;
+        if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == true) && Onlyonce == true)
+        {
+            Onlyonce = false;
+            if (gravity == false)
+                rb.AddForce(Vector2.up * jumpForce);
+            else
+                rb.AddForce(Vector2.down * jumpForce);
+        }
+        else if (joystick != null && joystick.Vertical <= 0.3)
+        {
+            Onlyonce = true;
+        }
+        if ((isOnGround == false && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == false) && Onlyonce == true) && DoubleJump == true && MenuController.power == 2)
+        {
+            DBCoolDown = true;
+            StartCoroutine("DoubleJumpCooldown");
+            DoubleJump = false;
+            Onlyonce = false;
+            if (gravity == false)
+                rb.AddForce(Vector2.up * jumpForce);
+            else
+                rb.AddForce(Vector2.down * jumpForce);
+        }
+        if (isOnGround == true && DBCoolDown == false)
+            DoubleJump = true;
+        isOnWallLeft = Physics2D.OverlapCircle(playerPos2.position, positionRadius, ground);
+        isOnWallRight = Physics2D.OverlapCircle(playerPos1.position, positionRadius, ground);
+        isOnGround = Physics2D.OverlapCircle(playerPos.position, positionRadius, ground);
+        isInWater = Physics2D.OverlapCircle(playerPos.position, positionRadius, water);
+        if (Input.GetKey(KeyCode.J) && Input.GetKey(KeyCode.O) && Input.GetKey(KeyCode.N) && Input.GetKey(KeyCode.H))
+        {
+            maxHealth = 3000;
+            currentHealth = maxHealth;
+            damage[] dammage = GetComponentsInChildren<damage>();
+            foreach (damage DAMAGE in dammage)
+            {
+                DAMAGE.multiplyer = 5;
+            }
+            playerSpeed = 5000;
+            jumpForce = 7000;
+        }
+        if (isOnGround == false && isOnWallRight == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3) && Onlyonce == true && isOnGround == false && isOnWallLeft == true)
+        {
+            Onlyonce = false;
+            rb.AddForce(Vector2.left * WalljumpForce);
+            if (gravity == false)
+                rb.AddForce(Vector2.up * WalljumpForce);
+            else
+                rb.AddForce(Vector2.down * WalljumpForce);
+            direction = false;
+        }
+        if (isOnGround == false && isOnWallLeft == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3) && Onlyonce == true && isOnGround == false && isOnWallLeft == true)
+        {
+            Onlyonce = false;
+            rb.AddForce(Vector2.right * WalljumpForce);
+            if (gravity == false)
+                rb.AddForce(Vector2.up * WalljumpForce);
+            else
+                rb.AddForce(Vector2.down * WalljumpForce);
+            direction = true;
+        }
     }
     #endregion
 }

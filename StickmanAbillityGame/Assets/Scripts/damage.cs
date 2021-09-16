@@ -24,6 +24,7 @@ public class damage : MonoBehaviour
     }
     void FixedUpdate()
     {
+        Debug.Log(multiplyer);
         speed = Vector3.Distance(oldPosition, transform.position) * 100f;
         oldPosition = transform.position;
     }
@@ -74,7 +75,6 @@ public class damage : MonoBehaviour
                     }
                     if (aKI != null)
                         aKI.Damage(damagetoapply);
-                //collision.gameObject.GetComponentInParent<PlayerController>().Damage(speed * 0.4f);
                 
                 ps.Play();
             }
@@ -94,7 +94,7 @@ public class damage : MonoBehaviour
         foreach (Collider2D obj in objects)
         {
             Vector2 direction = obj.transform.position - Hand.transform.position;
-            obj.GetComponent<Rigidbody2D>().AddForce(direction * (speed * 3));
+            obj.GetComponent<Rigidbody2D>().AddForce(direction * (speed * 0.3f));
         }
     }
 }
