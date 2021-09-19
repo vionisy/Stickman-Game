@@ -78,4 +78,11 @@ MonoBehaviour:
   - UnCameraShake
   - UpdateHealthBar
   - VulcanoAction
+  - changeDirection
+  - moving
+  - mousefollow
+  - setactive
+  - setactive2
+  - mousefollow1
+  - mousefollow2
   DisableAutoOpenWizard: 1

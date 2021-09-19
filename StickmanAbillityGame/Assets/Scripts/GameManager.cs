@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
         foreach (GameObject player in players)
         {
             GameObject Head = player.GetComponentInChildren<CircleCollider2D>().gameObject;
-            if (player.GetComponent<PhotonView>() && player.GetComponent<PhotonView>().isMine && CameraFollow == true)
+            if (player.GetComponent<PlayerController>().ownplayernumber == playernumber && CameraFollow == true)
             {
                 SceneCamera.transform.position = new Vector3(Head.transform.position.x, Head.transform.position.y, -10);
             }

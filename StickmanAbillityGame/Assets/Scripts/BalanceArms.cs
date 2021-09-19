@@ -30,12 +30,16 @@ public class BalanceArms : MonoBehaviour
     }
     public void FixedUpdate()
     {
+        //stopit = true;
         if (Input.GetKey(mousebutton) && DisableOnMouseClick == true && disabled == 1)
         {
-            stopit = true;
+            //stopit = true;
         }
         else if (disabled == 1)
-            stopit = false;
+        {
+
+        }
+            //stopit = false;
         FixedJoystick[] fixedJoysticks = FindObjectsOfType<FixedJoystick>();
         if (GameManager.HandyControllsOn == true)
             foreach (FixedJoystick joysticks in fixedJoysticks)

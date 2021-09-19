@@ -13,16 +13,18 @@ public class FollowMouse : MonoBehaviour
     private PlayerController playerController;
     private FixedJoystick joystick;
     private float rotationZ;
-    private bool active = false;
+    public bool active = false;
     private bool active2 = false;
+    private Vector3 playerpos;
     private void Awake()
     {
+        playerpos.z = 90;
         playerController = GetComponentInParent<PlayerController>();
         cam = FindObjectOfType<Camera>();
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
         FixedJoystick[] fixedJoysticks = FindObjectsOfType<FixedJoystick>();
         if (GameManager.HandyControllsOn == true)
@@ -35,49 +37,32 @@ public class FollowMouse : MonoBehaviour
             }
         else
             joystick = null;
-        if (photonView.isMine)
+        if (joystick == null && Input.GetKey(mousebutton) && GetComponentInParent<PlayerController>().ownplayernumber == GameManager.playernumber)
         {
-            if (Time.timeScale == 0.5)
-            {
-                speed = 5;
-            }
-            else if (Time.timeScale == 1)
-            {
-                speed = Maxspeed;
-            }
-            else if (Time.timeScale != 1 && Time.timeScale != 0.5)
-            {
-                speed = 2;
-            }
-            if (joystick == null && Input.GetKey(mousebutton))
-            {
-                active = true;
-            }
-            else
-            {
-                active = false;
-            }
-            if (joystick != null && (joystick.Vertical != 0 || joystick.Horizontal != 0))
-            {
-                active2 = true;
-            }
-            else
-            {
-                active2 = false;
-            }
-            Vector3 playerpos = new Vector3(cam.ScreenToWorldPoint(Input.mousePosition).x, cam.ScreenToWorldPoint(Input.mousePosition).y, 90);
-            Vector3 difference = playerpos - transform.position;
-            if(GameManager.HandyControllsOn == false)
-                rotationZ = Mathf.Atan2(difference.x, -difference.y) * Mathf.Rad2Deg;
-            else if (GameManager.HandyControllsOn == true)
-                rotationZ = Mathf.Atan2(joystick.Direction.x, -joystick.Direction.y) * Mathf.Rad2Deg;
-            if (photonView.isMine && (active == true || active2 == true))
-            {
-                rb.MoveRotation(Mathf.LerpAngle(rb.rotation, rotationZ, speed * Time.fixedDeltaTime));
-            }
+            active = true;
+            photonView.RPC("setactive", PhotonTargets.MasterClient, true);
         }
-    
-        if(playerController.Dead == true)
+        else if (GetComponentInParent<PlayerController>().ownplayernumber == GameManager.playernumber)
+        {
+            active = false;
+            photonView.RPC("setactive", PhotonTargets.MasterClient, false);
+        }
+        if (joystick != null && (joystick.Vertical != 0 || joystick.Horizontal != 0))
+        {
+            //photonView.RPC("setactive2", PhotonTargets.MasterClient, true);
+        }
+        else
+        {
+            //photonView.RPC("setactive2", PhotonTargets.MasterClient, false);
+        }
+        if (GetComponentInParent<PlayerController>().ownplayernumber == GameManager.playernumber && active == true)
+        {
+             Vector2 valueToSend = new Vector2(cam.ScreenToWorldPoint(Input.mousePosition).x, cam.ScreenToWorldPoint(Input.mousePosition).y);
+             photonView.RPC("mousefollow1", PhotonTargets.MasterClient, valueToSend.x);
+             photonView.RPC("mousefollow2", PhotonTargets.MasterClient, valueToSend.y);
+        }
+        
+        if (playerController.Dead == true)
         {
             speed = 0;
             Maxspeed = 0;
@@ -87,7 +72,41 @@ public class FollowMouse : MonoBehaviour
             speed = 35;
             Maxspeed = 35;
         }
-
-    
+        if (GameManager.playernumber == 1)
+        { 
+            Vector3 difference = playerpos - transform.position;
+            if (GameManager.HandyControllsOn == false)
+                rotationZ = Mathf.Atan2(difference.x, -difference.y) * Mathf.Rad2Deg;
+            else if (GameManager.HandyControllsOn == true)
+                rotationZ = Mathf.Atan2(joystick.Direction.x, -joystick.Direction.y) * Mathf.Rad2Deg;
+            if (GameManager.playernumber == 1 && (active == true || active2 == true))
+            {
+                rb.MoveRotation(Mathf.LerpAngle(rb.rotation, rotationZ, speed * Time.fixedDeltaTime));
+            }
+        }
+    }
+    [PunRPC]
+    public void mousefollow1(float thepos)
+    {
+        playerpos.x = thepos;
+    }
+    [PunRPC]
+    public void mousefollow2(float thepos)
+    {
+        playerpos.y = thepos;
+    }
+    [PunRPC]
+    public void setactive(bool state)
+    {
+        active = state;
+        if (active == true)
+            GetComponent<BalanceArms>().stopittrue();
+        else if (active == false)
+            GetComponent<BalanceArms>().stopitfalse();
+    }
+    [PunRPC]
+    public void setactive2(bool state)
+    {
+        active2 = state;
     }
 }

@@ -24,7 +24,6 @@ public class damage : MonoBehaviour
     }
     void FixedUpdate()
     {
-        Debug.Log(multiplyer);
         speed = Vector3.Distance(oldPosition, transform.position) * 100f;
         oldPosition = transform.position;
     }

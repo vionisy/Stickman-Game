@@ -21,7 +21,6 @@ public class MenuController : MonoBehaviour
 
     public static float power = 0;
     public static float selectedgamemode = 0;
-    private bool username = false;
     
 
     private void Awake()

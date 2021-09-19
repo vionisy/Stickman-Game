@@ -52,8 +52,8 @@ public class PlayerController : MonoBehaviour
     #region public
     public float dashSpeed;
     public float startDashCount;
-
-
+    public ParticleSystem Snow;
+    public ParticleSystem DashParticles;
     public ParticleSystem Flightparticles1;
     public ParticleSystem Flightparticles2;
     public float SwimRotation;
@@ -103,6 +103,8 @@ public class PlayerController : MonoBehaviour
     public PhysicsMaterial2D IceFriction;
     public ParticleSystem psIce;
     public ParticleSystem psFire;
+    public ParticleSystem DoubleJumpParticles;
+    public float ownplayernumber;
     #endregion
     #endregion
 
@@ -394,8 +396,80 @@ public class PlayerController : MonoBehaviour
     [PunRPC]
     public void Jumping()
     {
-        if (GameManager.playernumber == 1)
+        if (GameManager.playernumber == 1 && isOnGround == true)
         {
+            if (gravity == false)
+                rb.AddForce(Vector2.up * jumpForce);
+            else
+                rb.AddForce(Vector2.down * jumpForce);
+        }
+    }
+    [PunRPC]
+    public void moving(int right)
+    {
+        if (GameManager.playernumber == 1 && stomp == false && isInWater == false)
+        {
+            if (right == 1)
+            {
+                if (isOnGround == true)
+                {
+                    anim.Play("Walk");
+                    direction = true;
+                    if (gravity == false)
+                    {
+                        rb.AddForce(Vector2.right * playerSpeed * Time.deltaTime);
+                    }
+                    else
+                    {
+                        rb.AddForce(Vector2.left * playerSpeed * Time.deltaTime);
+                    }
+                }
+                else
+                {
+                    if (direction == true && stomp == false)
+                        anim.Play("Idle");
+                    if (direction == false && stomp == false)
+                        anim.Play("Idle2");
+                }
+            }
+            else if (right == 2)
+            {
+                if (isOnGround == true)
+                {
+                    anim.Play("WalkBack");
+                    direction = false;
+                    if (gravity == true)
+                    {
+                        rb.AddForce(Vector2.right * playerSpeed * Time.deltaTime);
+                    }
+                    else
+                    {
+                        rb.AddForce(Vector2.left * playerSpeed * Time.deltaTime);
+                    }
+                }
+                else
+                {
+                    if (direction == true && stomp == false)
+                        anim.Play("Idle");
+                    if (direction == false && stomp == false)
+                        anim.Play("Idle2");
+                }
+            }
+            else
+            {
+                if (direction == true && stomp == false && isInWater == false)
+                    anim.Play("Idle");
+                if (direction == false && stomp == false && isInWater == false)
+                    anim.Play("Idle2");
+            }
+        }
+    }
+    [PunRPC]
+    public void changeDirection(bool right)
+    {
+        if (GameManager.playernumber == 1 && isOnGround == true)
+        {
+            Debug.Log("3");
             if (gravity == false)
                 rb.AddForce(Vector2.up * jumpForce);
             else
@@ -566,6 +640,8 @@ public class PlayerController : MonoBehaviour
     #region startandUpdae
     private void Start()
     {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        ownplayernumber = players.Length;
         if (MenuController.power == 2)
         {
             maxEnergy = 50;
@@ -648,6 +724,14 @@ public class PlayerController : MonoBehaviour
                 thehealth.SetActive(false);
             }
         }
+        if (GameManager.playernumber == ownplayernumber && MenuController.selectedgamemode == 5)
+        {
+            Snow.Play();
+        }
+        if (1 == ownplayernumber)
+            jumpForce *= 0.75f;
+        else
+            jumpForce *= 1.5f;
         currentHealth = maxHealth;
         healthbar.SetMaxHealth(maxHealth);
         if (Oponenthealthbar)
@@ -666,18 +750,18 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        if (photonView.isMine)
+        if (ownplayernumber == GameManager.playernumber)
         {
-            if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == true) && Onlyonce == true)
+            if (Input.GetKeyDown(KeyCode.Space) || ((joystick != null && joystick.Vertical >= 0.3) && Onlyonce == true))
             {
                 Onlyonce = false;
-                photonView.RPC("Jumping", PhotonTargets.All);
+                photonView.RPC("Jumping", PhotonTargets.MasterClient);
             }
             else if (joystick != null && joystick.Vertical <= 0.3)
             {
                 Onlyonce = true;
             }
-        }
+        } 
         if (isFrozen == false && Dead == false)
         {
             FixedJoint2D[] freeze = GetComponentsInChildren<FixedJoint2D>();
@@ -776,11 +860,26 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (ownplayernumber == GameManager.playernumber)
+        { 
+            if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") > 0) || (joystick != null && joystick.Horizontal >= 0.1))
+            {
+                photonView.RPC("moving", PhotonTargets.MasterClient, 1);
+
+            }
+            else if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") < 0) || (joystick != null && joystick.Horizontal <= -0.1))
+            {
+                photonView.RPC("moving", PhotonTargets.MasterClient, 2);
+
+            }
+            else
+            {
+                photonView.RPC("moving", PhotonTargets.MasterClient, 3);
+            }
+        }
         if (MenuController.power == 3 && photonView.isMine && transform.localScale.x <= 1.4f)
         {
             transform.localScale += new Vector3(0.01f, 0.01f, 0.01f);
-
-
         }
         if (GameManager.playernumber == 1 && Dead == false && isFrozen == false)
         {
@@ -790,7 +889,7 @@ public class PlayerController : MonoBehaviour
     //Use KeyInput2 as FixedUpdate only running when the player isn't dead and the owner of the photonview
     void KeyInput2()
     {
-        photonView.RPC("UpdateHealthBar", PhotonTargets.Others, currentHealth);
+        //photonView.RPC("UpdateHealthBar", PhotonTargets.Others, currentHealth);
         if (FlightOn == true)
         {
             currentEnergy -= 0.3f;
@@ -881,6 +980,7 @@ public class PlayerController : MonoBehaviour
                 {
                     loseEnergy(30);
                     rb.AddForce(Vector2.left * dashSpeed * Time.deltaTime);
+                    DashParticles.Play();
                     //rb.velocity = Vector2.left * dashSpeed;
                 }
             }
@@ -888,6 +988,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.E) && currentEnergy >= 30)
                 {
+                    DashParticles.Play();
                     loseEnergy(30);
                     rb.AddForce(Vector2.right * dashSpeed * Time.deltaTime);
                     //rb.velocity = Vector2.right * dashSpeed;
@@ -1031,60 +1132,6 @@ public class PlayerController : MonoBehaviour
         {
             jumpForce = SaveJumpForce;
         }
-        if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") > 0) || (joystick != null && joystick.Horizontal >= 0.1) && stomp == false && isInWater == false)
-        {
-            if (isOnGround == true)
-            {
-                direction = true;
-                anim.Play("Walk");
-                if (gravity == false)
-                {
-                    rb.AddForce(Vector2.right * playerSpeed * Time.deltaTime);
-                }
-                else
-                {
-                    rb.AddForce(Vector2.left * playerSpeed * Time.deltaTime);
-                }
-            }
-            else
-            {
-                if (direction == true && stomp == false)
-                    anim.Play("Idle");
-                if (direction == false && stomp == false)
-                    anim.Play("Idle2");
-            }
-
-        }
-        else if ((Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Horizontal") < 0) || (joystick != null && joystick.Horizontal <= -0.1) && isInWater == false)
-        {
-            if (isOnGround == true)
-            {
-                anim.Play("WalkBack");
-                direction = false;
-                if (gravity == true)
-                {
-                    rb.AddForce(Vector2.right * playerSpeed * Time.deltaTime);
-                }
-                else
-                {
-                    rb.AddForce(Vector2.left * playerSpeed * Time.deltaTime);
-                }
-            }
-            else
-            {
-                if (direction == true && stomp == false)
-                    anim.Play("Idle");
-                if (direction == false && stomp == false)
-                    anim.Play("Idle2");
-            }
-        }
-        else
-        {
-            if (direction == true && stomp == false && isInWater == false)
-                anim.Play("Idle");
-            if (direction == false && stomp == false && isInWater == false)
-                anim.Play("Idle2");
-        }
         if (SwimRotation > 360)
             SwimRotation = 1;
         else if (SwimRotation < 0)
@@ -1168,8 +1215,8 @@ public class PlayerController : MonoBehaviour
                 anim.enabled = true;
             if ((isOnGround == false && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == false) && Onlyonce == true) && DoubleJump == true && MenuController.power == 2)
             {
+                DoubleJumpParticles.Play();
                 DBCoolDown = true;
-                StartCoroutine("DoubleJumpCooldown");
                 DoubleJump = false;
                 Onlyonce = false;
                 if (gravity == false)
