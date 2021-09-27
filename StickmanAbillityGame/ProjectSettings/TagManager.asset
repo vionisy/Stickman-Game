@@ -24,6 +24,10 @@ TagManager:
   - HealthboostBar
   - Ai
   - Target
+  - ScoreManager
+  - Dragonfightcam
+  - Dragon
+  - FightDragon
   layers:
   - Default
   - TransparentFX
@@ -46,7 +50,7 @@ TagManager:
   - Item
   - Lava
   - FireBoss
-  - 
+  - SnowFlakes
   - 
   - 
   - 

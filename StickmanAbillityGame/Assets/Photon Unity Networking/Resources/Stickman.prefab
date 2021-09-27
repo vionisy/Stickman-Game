@@ -20248,7 +20248,7 @@ GameObject:
   - component: {fileID: 7528823893100133742}
   - component: {fileID: 2924323100595744184}
   - component: {fileID: 8447702758596315298}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Snow
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
@@ -20263,7 +20263,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2598031053291957315}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 77, y: 56.4, z: -11.036154}
+  m_LocalPosition: {x: 26, y: 56.4, z: -11.036154}
   m_LocalScale: {x: 2.0526652, y: 2.0526652, z: 2.0526652}
   m_Children: []
   m_Father: {fileID: 8557466016234894936}
@@ -20405,7 +20405,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: -5
+      scalar: -2
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -21102,7 +21102,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 150
+      scalar: 100
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -21725,7 +21725,7 @@ ParticleSystem:
     x:
       serializedVersion: 2
       minMaxState: 0
-      scalar: -8
+      scalar: -0.5
       minScalar: 0
       maxCurve:
         serializedVersion: 2

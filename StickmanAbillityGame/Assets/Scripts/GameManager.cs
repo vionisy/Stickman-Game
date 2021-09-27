@@ -23,6 +23,10 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (GameObject.FindGameObjectWithTag("Dragonfightcam") && GameObject.FindGameObjectWithTag("Dragonfightcam").activeSelf == true)
+        {
+            SceneCamera.SetActive(false);
+        }
         if (Input.GetKeyDown(KeyCode.K) && KITest == true)
             //StartCoroutine("spawnKI");
         if (Input.GetKeyDown(KeyCode.Escape) && MenuScreen.active == false)

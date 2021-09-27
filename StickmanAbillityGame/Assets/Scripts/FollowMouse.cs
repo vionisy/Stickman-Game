@@ -26,6 +26,10 @@ public class FollowMouse : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (GameObject.FindGameObjectWithTag("Dragonfightcam") && GameObject.FindGameObjectWithTag("Dragonfightcam").activeSelf == true)
+        {
+            cam = GameObject.FindGameObjectWithTag("Dragonfightcam").GetComponent<Camera>();
+        }
         FixedJoystick[] fixedJoysticks = FindObjectsOfType<FixedJoystick>();
         if (GameManager.HandyControllsOn == true)
             foreach (FixedJoystick joysticks in fixedJoysticks)
@@ -49,11 +53,11 @@ public class FollowMouse : MonoBehaviour
         }
         if (joystick != null && (joystick.Vertical != 0 || joystick.Horizontal != 0))
         {
-            //photonView.RPC("setactive2", PhotonTargets.MasterClient, true);
+            photonView.RPC("setactive2", PhotonTargets.MasterClient, true);
         }
         else
         {
-            //photonView.RPC("setactive2", PhotonTargets.MasterClient, false);
+            photonView.RPC("setactive2", PhotonTargets.MasterClient, false);
         }
         if (GetComponentInParent<PlayerController>().ownplayernumber == GameManager.playernumber && active == true)
         {

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class TheBraaiiinnn : MonoBehaviour
 {
+    public float points = 50;
+    public float attackRange = 10;
     public bool TypeFire = false;
     public bool isBoss = false;
     public ParticleSystem Bubles;
@@ -249,6 +251,8 @@ public class TheBraaiiinnn : MonoBehaviour
     [PunRPC]
     public void dead()
     {
+        if (MenuController.selectedgamemode == 4)
+            GameObject.FindGameObjectWithTag("ScoreManager").GetComponent<scoremanager>().addScore(points);
         Destroy(gameObject);
     }
     private IEnumerator WaitForRegenerating()
@@ -442,6 +446,7 @@ public class TheBraaiiinnn : MonoBehaviour
     }
     private IEnumerator deadbody()
     {
+        isFrozen = false;
         Balance[] balances = GetComponentsInChildren<Balance>();
         foreach (Balance theBalances in balances)
         {
@@ -810,7 +815,7 @@ public class TheBraaiiinnn : MonoBehaviour
             }
             thearms.SetActiveState(armsActive);
         }
-        if (FindClosestEnemy() != null && Vector3.Distance(FindClosestEnemy().transform.position, rb.transform.position) <= 10f && Onlyonce1 == true)
+        if (FindClosestEnemy() != null && Vector3.Distance(FindClosestEnemy().transform.position, rb.transform.position) <= attackRange && Onlyonce1 == true)
         {
             if (Random.value <= 0.65)
                 StartCoroutine("ArmHit1");
