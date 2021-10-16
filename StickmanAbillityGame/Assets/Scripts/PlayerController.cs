@@ -369,6 +369,8 @@ public class PlayerController : MonoBehaviour
         {
             photonView.RPC("Freeze2", PhotonTargets.Others);
         }
+        else
+            Freeze2();
     }
     private IEnumerator stamping()
     {

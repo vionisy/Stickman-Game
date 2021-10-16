@@ -20,7 +20,7 @@ public class FollowMouse : MonoBehaviour
     {
         playerpos.z = 90;
         playerController = GetComponentInParent<PlayerController>();
-        cam = FindObjectOfType<Camera>();
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
 

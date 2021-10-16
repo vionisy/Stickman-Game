@@ -487,23 +487,6 @@ public class TheBraaiiinnn : MonoBehaviour
 
         Rigidbody2D[] Gravity01 = GetComponentsInChildren<Rigidbody2D>();
         Balance[] Balances = GetComponentsInChildren<Balance>();
-        if (PlayerController.Gravitation == true)
-        {
-            foreach (Rigidbody2D gravitation in Gravity01)
-            {
-                gravity = true;
-                gravitation.gravityScale = GravitationScale;
-            }
-        }
-        else
-        {
-            foreach (Rigidbody2D gravitation in Gravity01)
-            {
-                gravity = false;
-                gravitation.gravityScale = 1.5f;
-            }
-
-        }
         if (Time.timeScale != 1)
         {
             jumpForce = 15000;

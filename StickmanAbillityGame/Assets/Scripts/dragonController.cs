@@ -12,6 +12,7 @@ public class dragonController : MonoBehaviour
     public int state = 2;
     public bool fireEnabled;
     public float speed = 40;
+    public float speed_Y;
     public PhotonView photonView;
     void Start()
     {
@@ -40,11 +41,11 @@ public class dragonController : MonoBehaviour
                 target.transform.position = FindClosestEnemy().transform.position;
                 if (transform.position.y > FindClosestEnemy().transform.position.y + 10)
                 {
-                    rb.AddForce(Vector2.up * -10 * Time.deltaTime);
+                    rb.AddForce(Vector2.up * -speed_Y * Time.deltaTime);
                 }
                 else if (transform.position.y < FindClosestEnemy().transform.position.y + 10)
                 {
-                    rb.AddForce(Vector2.up * 10 * Time.deltaTime);
+                    rb.AddForce(Vector2.up * speed_Y * Time.deltaTime);
                 }
                 else
                 {
@@ -86,11 +87,11 @@ public class dragonController : MonoBehaviour
                 target.SetActive(false);
                 if (transform.position.y > FindClosestEnemy().transform.position.y + 18)
                 {
-                    rb.AddForce(Vector2.up * -10 * Time.deltaTime);
+                    rb.AddForce(Vector2.up * -speed_Y * Time.deltaTime);
                 }
                 else if (transform.position.y < FindClosestEnemy().transform.position.y + 18)
                 {
-                    rb.AddForce(Vector2.up * 10 * Time.deltaTime);
+                    rb.AddForce(Vector2.up * speed_Y * Time.deltaTime);
                 }
                 else
                 {
@@ -99,11 +100,11 @@ public class dragonController : MonoBehaviour
                     else if (rb.velocity.y < 0)
                         rb.velocity += new Vector2(0, 0.3f);
                 }
-                if (FindClosestEnemy().transform.position.x >= transform.position.x)
+                if (FindClosestEnemy().transform.position.x >= transform.position.x + 3)
                 {
                     transform.rotation = Quaternion.Euler(0, 180, 0);
                 }
-                else if (FindClosestEnemy().transform.position.x <= transform.position.x)
+                else if (FindClosestEnemy().transform.position.x <= transform.position.x - 3)
                 {
                     transform.rotation = Quaternion.Euler(0, 0, 0);
                 }
@@ -111,12 +112,12 @@ public class dragonController : MonoBehaviour
                 {
                     if (FindClosestEnemy().transform.position.x >= transform.position.x)
                     {
-                        rb.AddForce(Vector2.right * 50 * Time.deltaTime);
+                        rb.AddForce(Vector2.right * speed * Time.deltaTime);
                     }
                     else if (FindClosestEnemy().transform.position.x <= transform.position.x)
                     {
 
-                        rb.AddForce(Vector2.right * -50 * Time.deltaTime);
+                        rb.AddForce(Vector2.right * -speed * Time.deltaTime);
                     }
                 }
             }

@@ -5220,7 +5220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraFollow: 1
-  spawnposition: {x: 2353.16, y: 6, z: 0}
+  spawnposition: {x: -599.6, y: 15.7, z: 0}
   HandyCanvas: {fileID: 1566691326}
   PlayerPreafab: {fileID: 8557466016732343683, guid: ef456f4534c7d134da44cca73530f5bf, type: 3}
   KI: {fileID: 0}
@@ -5913,12 +5913,12 @@ SpriteShapeRenderer:
   m_Sprites:
   - {fileID: 21300000, guid: adfd9d923d17f6d4ab0ee967a1474f37, type: 3}
   - {fileID: 21300000, guid: adfd9d923d17f6d4ab0ee967a1474f37, type: 3}
-  - {fileID: 21300000, guid: a023c5f338541a34786e47794cb2ee5f, type: 3}
-  - {fileID: 21300000, guid: a023c5f338541a34786e47794cb2ee5f, type: 3}
-  - {fileID: 21300000, guid: 51b6adefc547f85499f090df6707937f, type: 3}
-  - {fileID: 21300000, guid: 51b6adefc547f85499f090df6707937f, type: 3}
-  - {fileID: 21300000, guid: 51b6adefc547f85499f090df6707937f, type: 3}
-  - {fileID: 21300000, guid: 51b6adefc547f85499f090df6707937f, type: 3}
+  - {fileID: 21300000, guid: adfd9d923d17f6d4ab0ee967a1474f37, type: 3}
+  - {fileID: 21300000, guid: adfd9d923d17f6d4ab0ee967a1474f37, type: 3}
+  - {fileID: 21300000, guid: adfd9d923d17f6d4ab0ee967a1474f37, type: 3}
+  - {fileID: 21300000, guid: adfd9d923d17f6d4ab0ee967a1474f37, type: 3}
+  - {fileID: 21300000, guid: adfd9d923d17f6d4ab0ee967a1474f37, type: 3}
+  - {fileID: 21300000, guid: adfd9d923d17f6d4ab0ee967a1474f37, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
