@@ -22,7 +22,7 @@ public class MovementIce : MonoBehaviour
             Debug.Log("adawd");
             collision.gameObject.GetComponentInParent<TheBraaiiinnn>().Freeze1();
         }
-        if (photonView.isMine)
+        if (photonView.isMine && !collision.GetComponentInParent<IceDragonManager>())
         {
             PhotonNetwork.Destroy(gameObject);
         }

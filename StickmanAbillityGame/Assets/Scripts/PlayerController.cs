@@ -255,6 +255,8 @@ public class PlayerController : MonoBehaviour
             GameObject.FindGameObjectWithTag("GameController").GetComponent<BattleRoyaleManager>().dead_screen();
         }
         photonView.RPC("dead", PhotonTargets.All);
+        if (MenuController.selectedgamemode == 4)
+            PhotonNetwork.LoadLevel("MainMenu");
     }
     private IEnumerator sizeBack()
     {
@@ -367,6 +369,8 @@ public class PlayerController : MonoBehaviour
         {
             photonView.RPC("Freeze2", PhotonTargets.Others);
         }
+        else
+            Freeze2();
     }
     private IEnumerator stamping()
     {
@@ -640,6 +644,14 @@ public class PlayerController : MonoBehaviour
     #region startandUpdae
     private void Start()
     {
+        if (MenuController.power == 3)
+        {
+            damage[] dammage = GetComponentsInChildren<damage>();
+            foreach (damage DAMAGE in dammage)
+            {
+                DAMAGE.multiplyer = 0.8f;
+            }
+        }
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         ownplayernumber = players.Length;
         if (MenuController.power == 2)
@@ -728,10 +740,8 @@ public class PlayerController : MonoBehaviour
         {
             Snow.Play();
         }
-        if (1 == ownplayernumber)
-            jumpForce *= 0.75f;
-        else
-            jumpForce *= 1.5f;
+        
+        jumpForce *= 1.75f;
         currentHealth = maxHealth;
         healthbar.SetMaxHealth(maxHealth);
         if (Oponenthealthbar)
@@ -747,6 +757,8 @@ public class PlayerController : MonoBehaviour
                 RBCHILDREN.gravityScale = 0;
             }
         }
+        if (MenuController.selectedgamemode == 4)
+            maxHealth += 100;
     }
     private void Update()
     {
@@ -960,7 +972,10 @@ public class PlayerController : MonoBehaviour
             currentEnergy += 0.07f;
         if (regenerating == true && currentHealth <= maxHealth)
         {
-            currentHealth += 0.1f;
+            if (MenuController.selectedgamemode == 4)
+                currentHealth += 0.4f;
+            else
+                currentHealth += 0.2f;
             healthbar.SetHealth(currentHealth);
         }
         if (JohnCena == true)
@@ -1247,18 +1262,7 @@ public class PlayerController : MonoBehaviour
         }
         else
             anim.enabled = true;
-        if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == true) && Onlyonce == true)
-        {
-            Onlyonce = false;
-            if (gravity == false)
-                rb.AddForce(Vector2.up * jumpForce);
-            else
-                rb.AddForce(Vector2.down * jumpForce);
-        }
-        else if (joystick != null && joystick.Vertical <= 0.3)
-        {
-            Onlyonce = true;
-        }
+        
         if ((isOnGround == false && Input.GetKeyDown(KeyCode.Space) || (joystick != null && joystick.Vertical >= 0.3 && isOnGround == false) && Onlyonce == true) && MenuController.power == 2 && currentEnergy >= 20)
         {
             loseEnergy(20);
